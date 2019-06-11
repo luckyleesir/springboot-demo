@@ -1,4 +1,4 @@
-package com.springbootdemo.config;
+package com.lucky.config.mybatis;
 
 import org.mybatis.generator.api.IntrospectedColumn;
 import org.mybatis.generator.api.IntrospectedTable;

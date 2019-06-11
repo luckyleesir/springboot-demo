@@ -1,12 +1,10 @@
-package com.springbootdemo.mapper.auto;
+package com.lucky.mapper.auto;
 
-import com.springbootdemo.model.Account;
-import com.springbootdemo.model.AccountExample;
+import com.lucky.model.Account;
+import com.lucky.model.AccountExample;
 import java.util.List;
-import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
-@Mapper
 public interface AccountMapper {
     long countByExample(AccountExample example);
 

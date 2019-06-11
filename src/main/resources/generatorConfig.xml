@@ -20,13 +20,17 @@
     <context id="mysql" targetRuntime="MyBatis3" defaultModelType="flat">
         <!-- 序列化model-->
         <plugin type="org.mybatis.generator.plugins.SerializablePlugin"/>
-        <!--自定义lombok插件-->
-        <plugin type="com.springbootdemo.config.LombokPlugin"/>
         <!--覆盖生成XML文件-->
         <plugin type="org.mybatis.generator.plugins.UnmergeableXmlMappersPlugin" />
-        <!--配置pageHelper拦截器插件-->
+
+        <!--自定义插件-->
+        <plugin type="com.lucky.config.mybatis.LombokAnnotationPlugin"/>
+        <plugin type="com.lucky.config.mybatis.JacksonAnnotationPlugin"/>
+        <plugin type="com.lucky.config.mybatis.GeneratorSwagger2DocPlugin"/>
+        <plugin type="com.lucky.config.mybatis.FastJsonToJsonPlugin"/>
+
         <!-- 阻止生成自动注释 -->
-        <commentGenerator type="com.springbootdemo.config.MyCommentGenerator">
+        <commentGenerator type="com.lucky.config.mybatis.MyCommentGenerator">
             <property name="suppressDate" value="true"/>
             <property name="suppressAllComments" value="true" />
             <!-- 自动识别数据库关键字，默认false，如果设置为true，根据SqlReservedWords中定义的关键字列表；一般保留默认值，遇到数据库关键字（Java关键字），使用columnOverride覆盖 -->
@@ -57,7 +61,7 @@
             <property name="forceBigDecimals" value="false"/>
         </javaTypeResolver>
         <!-- 生成Model类存放位置 -->
-        <javaModelGenerator targetPackage="com.springbootdemo.model" targetProject="src/main/java">
+        <javaModelGenerator targetPackage="com.lucky.model" targetProject="src/main/java">
             <property name="enableSubPackages" value="true"/>
             <property name="trimStrings" value="true"/>
         </javaModelGenerator>
@@ -66,7 +70,7 @@
             <property name="enableSubPackages" value="true"/>
         </sqlMapGenerator>
         <!-- 生成Dao类存放位置 -->
-        <javaClientGenerator type="XMLMAPPER" targetPackage="com.springbootdemo.mapper.auto" targetProject="src/main/java">
+        <javaClientGenerator type="XMLMAPPER" targetPackage="com.lucky.mapper.auto" targetProject="src/main/java">
             <property name="enableSubPackages" value="true"/>
         </javaClientGenerator>
 
@@ -109,6 +113,8 @@
          注意，table里面很多参数都是对javaModelGenerator，context等元素的默认属性的一个复写；
         -->
 
-        <table tableName="account"/>
+        <table tableName="account">
+            <property name="jacksonFormats" value="create_time,update_time@yyyy-MM-dd HH:mm:ss"/>
+        </table>
     </context>
 </generatorConfiguration>

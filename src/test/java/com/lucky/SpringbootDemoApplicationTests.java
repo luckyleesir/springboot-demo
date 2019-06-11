@@ -1,4 +1,4 @@
-package com.springbootdemo;
+package com.lucky;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;

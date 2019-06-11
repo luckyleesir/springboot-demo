@@ -1,4 +1,4 @@
-package com.springbootdemo;
+package com.lucky;
 
 import org.mybatis.generator.api.MyBatisGenerator;
 import org.mybatis.generator.config.Configuration;

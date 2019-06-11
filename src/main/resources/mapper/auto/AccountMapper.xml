@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.springbootdemo.mapper.auto.AccountMapper">
-  <resultMap id="BaseResultMap" type="com.springbootdemo.model.Account">
+<mapper namespace="com.lucky.mapper.auto.AccountMapper">
+  <resultMap id="BaseResultMap" type="com.lucky.model.Account">
     <id column="user_id" jdbcType="BIGINT" property="userId" />
     <result column="user_name" jdbcType="VARCHAR" property="userName" />
     <result column="password" jdbcType="VARCHAR" property="password" />
@@ -10,7 +10,7 @@
     <result column="sex" jdbcType="VARCHAR" property="sex" />
     <result column="age" jdbcType="INTEGER" property="age" />
     <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
-    <result column="modify_time" jdbcType="TIMESTAMP" property="modifyTime" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
   </resultMap>
   <sql id="Example_Where_Clause">
     <where>
@@ -71,9 +71,9 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    user_id, user_name, password, name, nick, sex, age, create_time, modify_time
+    user_id, user_name, password, name, nick, sex, age, create_time, update_time
   </sql>
-  <select id="selectByExample" parameterType="com.springbootdemo.model.AccountExample" resultMap="BaseResultMap">
+  <select id="selectByExample" parameterType="com.lucky.model.AccountExample" resultMap="BaseResultMap">
     select
     <if test="distinct">
       distinct
@@ -97,21 +97,21 @@
     delete from account
     where user_id = #{userId,jdbcType=BIGINT}
   </delete>
-  <delete id="deleteByExample" parameterType="com.springbootdemo.model.AccountExample">
+  <delete id="deleteByExample" parameterType="com.lucky.model.AccountExample">
     delete from account
     <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
   </delete>
-  <insert id="insert" parameterType="com.springbootdemo.model.Account">
+  <insert id="insert" parameterType="com.lucky.model.Account">
     insert into account (user_id, user_name, password, 
       name, nick, sex, age, 
-      create_time, modify_time)
+      create_time, update_time)
     values (#{userId,jdbcType=BIGINT}, #{userName,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR}, 
       #{name,jdbcType=VARCHAR}, #{nick,jdbcType=VARCHAR}, #{sex,jdbcType=VARCHAR}, #{age,jdbcType=INTEGER}, 
-      #{createTime,jdbcType=TIMESTAMP}, #{modifyTime,jdbcType=TIMESTAMP})
+      #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP})
   </insert>
-  <insert id="insertSelective" parameterType="com.springbootdemo.model.Account">
+  <insert id="insertSelective" parameterType="com.lucky.model.Account">
     insert into account
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="userId != null">
@@ -138,8 +138,8 @@
       <if test="createTime != null">
         create_time,
       </if>
-      <if test="modifyTime != null">
-        modify_time,
+      <if test="updateTime != null">
+        update_time,
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
@@ -167,12 +167,12 @@
       <if test="createTime != null">
         #{createTime,jdbcType=TIMESTAMP},
       </if>
-      <if test="modifyTime != null">
-        #{modifyTime,jdbcType=TIMESTAMP},
+      <if test="updateTime != null">
+        #{updateTime,jdbcType=TIMESTAMP},
       </if>
     </trim>
   </insert>
-  <select id="countByExample" parameterType="com.springbootdemo.model.AccountExample" resultType="java.lang.Long">
+  <select id="countByExample" parameterType="com.lucky.model.AccountExample" resultType="java.lang.Long">
     select count(*) from account
     <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
@@ -205,8 +205,8 @@
       <if test="record.createTime != null">
         create_time = #{record.createTime,jdbcType=TIMESTAMP},
       </if>
-      <if test="record.modifyTime != null">
-        modify_time = #{record.modifyTime,jdbcType=TIMESTAMP},
+      <if test="record.updateTime != null">
+        update_time = #{record.updateTime,jdbcType=TIMESTAMP},
       </if>
     </set>
     <if test="_parameter != null">
@@ -223,12 +223,12 @@
       sex = #{record.sex,jdbcType=VARCHAR},
       age = #{record.age,jdbcType=INTEGER},
       create_time = #{record.createTime,jdbcType=TIMESTAMP},
-      modify_time = #{record.modifyTime,jdbcType=TIMESTAMP}
+      update_time = #{record.updateTime,jdbcType=TIMESTAMP}
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>
   </update>
-  <update id="updateByPrimaryKeySelective" parameterType="com.springbootdemo.model.Account">
+  <update id="updateByPrimaryKeySelective" parameterType="com.lucky.model.Account">
     update account
     <set>
       <if test="userName != null">
@@ -252,13 +252,13 @@
       <if test="createTime != null">
         create_time = #{createTime,jdbcType=TIMESTAMP},
       </if>
-      <if test="modifyTime != null">
-        modify_time = #{modifyTime,jdbcType=TIMESTAMP},
+      <if test="updateTime != null">
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
       </if>
     </set>
     where user_id = #{userId,jdbcType=BIGINT}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.springbootdemo.model.Account">
+  <update id="updateByPrimaryKey" parameterType="com.lucky.model.Account">
     update account
     set user_name = #{userName,jdbcType=VARCHAR},
       password = #{password,jdbcType=VARCHAR},
@@ -267,7 +267,7 @@
       sex = #{sex,jdbcType=VARCHAR},
       age = #{age,jdbcType=INTEGER},
       create_time = #{createTime,jdbcType=TIMESTAMP},
-      modify_time = #{modifyTime,jdbcType=TIMESTAMP}
+      update_time = #{updateTime,jdbcType=TIMESTAMP}
     where user_id = #{userId,jdbcType=BIGINT}
   </update>
 </mapper>
