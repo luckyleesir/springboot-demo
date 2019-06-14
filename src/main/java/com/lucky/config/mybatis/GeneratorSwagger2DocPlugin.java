@@ -38,8 +38,12 @@ public class GeneratorSwagger2DocPlugin extends PluginAdapter {
 
         topLevelClass.addImportedType(apiModelAnnotationPackage);
         topLevelClass.addImportedType(apiModelPropertyAnnotationPackage);
+        if ("createTime".equals(field.getName()) || "updateTime".equals(field.getName())) {
+            field.addAnnotation("@ApiModelProperty(value=\"" + introspectedColumn.getRemarks() + "\" ,example=\"null\")");
+        } else {
+            field.addAnnotation("@ApiModelProperty(value=\"" + introspectedColumn.getRemarks() + "\")");
+        }
 
-        field.addAnnotation("@ApiModelProperty(value=\"" + introspectedColumn.getRemarks() + "\")");
         return super.modelFieldGenerated(field, topLevelClass, introspectedColumn, introspectedTable, modelClassType);
     }
 }

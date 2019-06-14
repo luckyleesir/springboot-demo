@@ -113,7 +113,7 @@
          注意，table里面很多参数都是对javaModelGenerator，context等元素的默认属性的一个复写；
         -->
 
-        <table tableName="account">
+        <table tableName="sys_%">
             <property name="jacksonFormats" value="create_time,update_time@yyyy-MM-dd HH:mm:ss"/>
         </table>
     </context>

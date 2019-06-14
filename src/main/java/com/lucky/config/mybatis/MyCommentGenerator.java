@@ -56,33 +56,4 @@ public class MyCommentGenerator extends DefaultCommentGenerator {
         field.addJavaDocLine(" */");
     }
 
-    @Override
-    public void addFieldComment(Field field, IntrospectedTable introspectedTable) {
-
-    }
-
-    @Override
-    public void addGeneralMethodComment(Method method, IntrospectedTable introspectedTable) {
-
-    }
-
-    @Override
-    public void addGetterComment(Method method, IntrospectedTable introspectedTable, IntrospectedColumn introspectedColumn) {
-
-    }
-
-    @Override
-    public void addSetterComment(Method method, IntrospectedTable introspectedTable, IntrospectedColumn introspectedColumn) {
-
-    }
-
-    @Override
-    public void addClassComment(InnerClass innerClass, IntrospectedTable introspectedTable, boolean markAsDoNotDelete) {
-
-    }
-
-    @Override
-    public void addClassComment(InnerClass innerClass, IntrospectedTable introspectedTable) {
-    }
-
 }

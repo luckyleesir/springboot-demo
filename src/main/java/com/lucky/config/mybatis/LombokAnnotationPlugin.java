@@ -24,7 +24,13 @@ public class LombokAnnotationPlugin extends PluginAdapter {
     @Override
     public boolean modelBaseRecordClassGenerated(TopLevelClass topLevelClass, IntrospectedTable introspectedTable) {
         topLevelClass.addAnnotation("@Data");
+        topLevelClass.addAnnotation("@Builder");
+        topLevelClass.addAnnotation("@AllArgsConstructor");
+        topLevelClass.addAnnotation("@NoArgsConstructor");
+        topLevelClass.addImportedType(new FullyQualifiedJavaType("lombok.Builder"));
         topLevelClass.addImportedType(new FullyQualifiedJavaType("lombok.Data"));
+        topLevelClass.addImportedType(new FullyQualifiedJavaType("lombok.AllArgsConstructor"));
+        topLevelClass.addImportedType(new FullyQualifiedJavaType("lombok.NoArgsConstructor"));
         List<Method> methods = topLevelClass.getMethods();
         List<Method> remove = new ArrayList<>();
         for (Method method : methods) {
