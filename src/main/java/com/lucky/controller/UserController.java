@@ -1,6 +1,5 @@
 package com.lucky.controller;
 
-import com.alibaba.fastjson.JSON;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageInfo;
 import com.lucky.common.response.Result;
@@ -43,7 +42,7 @@ public class UserController {
     @GetMapping("/list")
     public Result list(@RequestParam(defaultValue = "1") int pageNum,
                        @RequestParam(defaultValue = "50") int pageSize,
-                       @RequestParam(defaultValue = "") String orderBy) {
+                       @RequestParam(required = false) String orderBy) {
         Page page = new Page();
         page.setPageNum(pageNum);
         page.setPageSize(pageSize);
@@ -51,6 +50,11 @@ public class UserController {
         List<SysUser> sysUserList = userService.list(page);
         PageInfo<SysUser> sysUserPage = new PageInfo<>(sysUserList);
         return Result.success(sysUserPage);
+    }
+
+    public Result detail(Long userId) {
+
+        return Result.success(null);
     }
 
 }

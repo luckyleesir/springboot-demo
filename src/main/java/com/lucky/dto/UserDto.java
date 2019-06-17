@@ -1,5 +1,6 @@
 package com.lucky.dto;
 
+import com.lucky.model.SysPermission;
 import com.lucky.model.SysRole;
 import com.lucky.model.SysUser;
 import io.swagger.annotations.ApiModel;
@@ -20,4 +21,7 @@ public class UserDto extends SysUser {
 
     @ApiModelProperty(value = "用户角色")
     private List<SysRole> sysRoleList;
+
+    @ApiModelProperty(value = "用户权限")
+    private List<SysPermission> sysPermissionList;
 }

@@ -114,7 +114,7 @@
         -->
 
         <table tableName="sys_%">
-            <property name="jacksonFormats" value="create_time,update_time@yyyy-MM-dd HH:mm:ss"/>
+            <!--<property name="jacksonFormats" value="create_time,update_time@yyyy-MM-dd HH:mm:ss"/>-->
         </table>
     </context>
 </generatorConfiguration>
