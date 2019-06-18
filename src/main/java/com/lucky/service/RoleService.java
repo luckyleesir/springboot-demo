@@ -59,12 +59,12 @@ public interface RoleService {
     List<SysRole> list(Page page);
 
     /**
-     * 获取角色权限
+     * 获取指定角色权限
      *
      * @param roleId 角色id
      * @return 角色权限列表
      */
-    List<SysPermission> getRolePermissionList(Long roleId);
+    List<SysPermission> getPermissionList(Long roleId);
 
     /**
      * 修改角色权限

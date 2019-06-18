@@ -1,12 +1,14 @@
 package com.lucky.service.impl;
 
+import cn.hutool.core.collection.CollUtil;
+import cn.hutool.crypto.SecureUtil;
 import com.github.pagehelper.Page;
-import com.github.pagehelper.PageHelper;
-import com.lucky.dto.UserDto;
 import com.lucky.mapper.auto.*;
+import com.lucky.mapper.custom.SysUserRoleCustomMapper;
 import com.lucky.model.*;
 import com.lucky.service.UserService;
-import org.springframework.beans.BeanUtils;
+import com.lucky.util.PageUtil;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -14,6 +16,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
+ * 用户管理
+ *
  * @author: lucky
  * @date: 2019/6/11 16:28
  */
@@ -30,59 +34,81 @@ public class UserServiceImpl implements UserService {
     private SysPermissionMapper sysPermissionMapper;
     @Resource
     private SysRolePermissionMapper sysRolePermissionMapper;
+    @Resource
+    private SysUserRoleCustomMapper sysUserRoleCustomMapper;
 
     @Override
-    public List<SysUser> list(Page page) {
-        PageHelper.startPage(page.getPageNum(), page.getPageSize(), page.getOrderBy());
+    public int register(SysUser sysUser) {
+        SysUser user = this.getUserByUsername(sysUser.getUsername());
+        if (user != null) {
+            throw new RuntimeException("用户名已存在");
+        }
+        sysUser.setPassword(SecureUtil.md5(sysUser.getPassword()));
+        return sysUserMapper.insertSelective(sysUser);
+    }
+
+    @Override
+    public List<SysUser> list(String name, Page page) {
+        PageUtil.start(page);
         SysUserExample sysUserExample = new SysUserExample();
+        if (StringUtils.isNotBlank(name)) {
+            sysUserExample.createCriteria().andUsernameLike("%" + name + "%");
+            sysUserExample.or().andNameLike("%" + name + "%");
+            sysUserExample.or().andNickLike("%" + name + "%");
+        }
         List<SysUser> sysUserList = sysUserMapper.selectByExample(sysUserExample);
         return sysUserList;
     }
 
 
     @Override
-    public void add(UserDto userDto) {
-        SysUser sysUser = SysUser.builder().build();
-        BeanUtils.copyProperties(userDto, sysUser);
-        sysUserMapper.insertSelective(sysUser);
-        for (SysRole sysRole : userDto.getSysRoleList()) {
-            sysRoleMapper.insertSelective(sysRole);
-        }
+    public SysUser detail(Long userId) {
+        return sysUserMapper.selectByPrimaryKey(userId);
     }
 
     @Override
-    public UserDto detail(Long userId) {
-        UserDto userDto = null;
-        SysUser sysUser = sysUserMapper.selectByPrimaryKey(userId);
-        if (sysUser != null) {
-            userDto = new UserDto();
-            BeanUtils.copyProperties(sysUser, userDto);
-            SysUserRoleExample sysUserRoleExample = new SysUserRoleExample();
-            sysUserRoleExample.createCriteria().andUserIdEqualTo(userId);
-            List<SysUserRole> sysUserRoleList = sysUserRoleMapper.selectByExample(sysUserRoleExample);
-            List<Long> roleIds = new ArrayList<>();
-            for (SysUserRole sysUsersRole : sysUserRoleList) {
-                roleIds.add(sysUsersRole.getRoleId());
-            }
-            //用户角色
-            SysRoleExample sysRoleExample = new SysRoleExample();
-            sysRoleExample.createCriteria().andRoleIdIn(roleIds);
-            List<SysRole> sysRoleList = sysRoleMapper.selectByExample(sysRoleExample);
-            userDto.setSysRoleList(sysRoleList);
+    public int update(Long userId, SysUser sysUser) {
+        sysUser.setUserId(userId);
+        sysUser.setPassword(null);
+        return sysUserMapper.updateByPrimaryKeySelective(sysUser);
+    }
 
-            // 角色权限
-            SysRolePermissionExample sysRolePermissionExample = new SysRolePermissionExample();
-            sysRolePermissionExample.createCriteria().andRoleIdIn(roleIds);
-            List<SysRolePermission> sysRolePermissionList = sysRolePermissionMapper.selectByExample(sysRolePermissionExample);
-            List<Long> permissionIds = new ArrayList<>();
-            for (SysRolePermission sysRolePermission : sysRolePermissionList) {
-                permissionIds.add(sysRolePermission.getPermissionId());
-            }
-            SysPermissionExample sysPermissionExample = new SysPermissionExample();
-            sysPermissionExample.createCriteria().andPermissionIdIn(permissionIds);
-            List<SysPermission> sysPermissionList = sysPermissionMapper.selectByExample(sysPermissionExample);
-            userDto.setSysPermissionList(sysPermissionList);
+    @Override
+    public int delete(Long userId) {
+        return sysUserMapper.deleteByPrimaryKey(userId);
+    }
+
+    @Override
+    public int updateUserRole(Long userId, List<Long> roleIds) {
+        //删除原来的用户角色关系
+        SysUserRoleExample sysUserRoleExample = new SysUserRoleExample();
+        sysUserRoleExample.createCriteria().andUserIdEqualTo(userId);
+        sysUserRoleMapper.deleteByExample(sysUserRoleExample);
+
+        List<SysUserRole> sysUserRoleList = new ArrayList<>();
+        for (Long roleId : roleIds) {
+            SysUserRole sysUserRole = new SysUserRole();
+            sysUserRole.setUserId(userId);
+            sysUserRole.setRoleId(roleId);
+            sysUserRoleList.add(sysUserRole);
         }
-        return userDto;
+        return sysUserRoleCustomMapper.insertList(sysUserRoleList);
+    }
+
+    @Override
+    public List<SysRole> getRoleList(Long userId) {
+        return sysUserRoleCustomMapper.getRoleList(userId);
+    }
+
+    @Override
+    public List<SysPermission> getPermissionList(Long userId) {
+        return sysUserRoleCustomMapper.getPermissionList(userId);
+    }
+
+    @Override
+    public SysUser getUserByUsername(String username) {
+        SysUserExample sysUserExample = new SysUserExample();
+        sysUserExample.createCriteria().andUsernameEqualTo(username);
+        return CollUtil.getFirst(sysUserMapper.selectByExample(sysUserExample));
     }
 }

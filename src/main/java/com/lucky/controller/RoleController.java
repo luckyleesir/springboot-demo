@@ -19,7 +19,7 @@ import java.util.List;
  *
  * @author lucky
  */
-@Api(tags = "角色管理")
+@Api(tags = "RoleController", description = "角色管理")
 @Slf4j
 @RestController
 @RequestMapping("/role")
@@ -74,8 +74,8 @@ public class RoleController {
 
     @ApiOperation(value = "获取角色所有权限")
     @GetMapping("/permission/{roleId}")
-    public Result getRolePermissionList(@PathVariable Long roleId) {
-        List<SysPermission> sysPermissionList = roleService.getRolePermissionList(roleId);
+    public Result getPermissionList(@PathVariable Long roleId) {
+        List<SysPermission> sysPermissionList = roleService.getPermissionList(roleId);
         return Result.success(sysPermissionList);
     }
 

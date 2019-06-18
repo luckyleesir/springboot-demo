@@ -25,5 +25,5 @@ public interface SysRolePermissionCustomMapper {
      * @param roleId 角色id
      * @return 角色权限
      */
-    List<SysPermission> getRolePermissionList(@Param("roleId") Long roleId);
+    List<SysPermission> getPermissionList(@Param("roleId") Long roleId);
 }

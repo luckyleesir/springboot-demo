@@ -60,8 +60,8 @@ public class RoleServiceImpl implements RoleService {
     }
 
     @Override
-    public List<SysPermission> getRolePermissionList(Long roleId) {
-        return sysRolePermissionCustomMapper.getRolePermissionList(roleId);
+    public List<SysPermission> getPermissionList(Long roleId) {
+        return sysRolePermissionCustomMapper.getPermissionList(roleId);
     }
 
     @Override

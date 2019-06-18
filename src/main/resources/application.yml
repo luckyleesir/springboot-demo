@@ -1,0 +1,67 @@
+spring:
+  application:
+    name: Spring-boot-rabbitmq
+  #数据源配置
+  datasource:
+    username: root
+    password:
+    driverClassName: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/demo?serverTimezone=UTC&useUnicode=true&characterEncoding=utf-8&useSSL=false
+    ##  Hikari 连接池配置 ------ 详细配置请访问：https://github.com/brettwooldridge/HikariCP
+    type: com.zaxxer.hikari.HikariDataSource
+    hikari:
+      # 数据库连接超时时间,默认30秒，即30000
+      connection-timeout: 30000
+      auto-commit: true
+      # 此属性控制池中连接的最长生命周期，值0表示无限生命周期，默认1800000即30分钟
+      max-lifetime: 1800000
+      pool-name: MyHikariCP
+      # 最小空闲连接数量
+      minimum-idle: 5
+      connection-test-query: SELECT 1
+      # 空闲连接存活最大时间，默认600000（10分钟）
+      idle-timeout: 180000
+      maximum-pool-size: 10
+  resources:
+    chain:
+      strategy:
+        content:
+          paths: /**
+          enabled: true
+  thymeleaf:
+    mode: HTML5
+    cache: false
+    prefix: classpath:/templates/
+    encoding: UTF-8
+    suffix: .html
+  mvc:
+    static-path-pattern: /static/**
+  rabbitmq:
+    password: 123456
+    port: 5672
+    host: localhost
+    username: admin
+  redis:
+    password: Hik12345+
+    database: 0
+    port: 6379
+    host: localhost
+    lettuce:
+      pool:
+        # 连接池中的最大空闲连接 默认 8
+        max-idle: 8
+        min-idle: 0
+        # 连接池最大连接数（使用负值表示没有限制） 默认 8
+        max-active: 8
+        # 连接池最大阻塞等待时间（使用负值表示没有限制） 默认 -1
+        max-wait: -1ms
+mybatis:
+  mapper-locations: classpath:mapper/**/*.xml
+logging:
+  path: ./logs
+  level:
+    com:
+      lucky: DEBUG
+  config: classpath:logback-spring.xml
+server:
+  port: 8888

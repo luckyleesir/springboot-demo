@@ -10,7 +10,7 @@
         </foreach>
     </insert>
 
-    <select id="getRolePermissionList" resultMap="com.lucky.mapper.auto.SysPermissionMapper.BaseResultMap">
+    <select id="getPermissionList" resultMap="com.lucky.mapper.auto.SysPermissionMapper.BaseResultMap">
         SELECT
             p.*
         FROM

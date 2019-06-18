@@ -19,7 +19,7 @@ import java.util.List;
  *
  * @author lucky
  */
-@Api(tags = "权限管理")
+@Api(tags = "PermissionController",description = "权限管理")
 @Slf4j
 @RestController
 @RequestMapping("/permission")
@@ -71,8 +71,7 @@ public class PermissionController {
                        @RequestParam(defaultValue = "50") int pageSize,
                        @RequestParam(required = false) String orderBy) {
         List<SysPermission> sysPermissionList = permissionService.list(PageUtil.set(pageNum, pageSize, orderBy));
-        PageInfo<SysPermission> sysPermissionPageInfo = new PageInfo<>(sysPermissionList);
-        return Result.success(sysPermissionPageInfo);
+        return Result.success(new PageInfo<>(sysPermissionList));
     }
 
     @ApiOperation(value = "权限树层级")
