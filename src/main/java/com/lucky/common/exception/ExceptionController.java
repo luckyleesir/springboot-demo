@@ -17,21 +17,21 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 public class ExceptionController {
 
     /**
-     * 当未登录或者token失效访问接口时，自定义的返回结果
+     * 当未登录或者token失效访问接口时，拋出由spring security处理
      */
     @ExceptionHandler(AuthenticationException.class)
-    public Result authenticationException(Throwable ex) {
+    public Result authenticationException(Throwable ex) throws Throwable {
         log.error(ex.toString());
-        return Result.unauthorized(ex.getMessage());
+        throw ex;
     }
 
     /**
-     * 当访问接口没有权限时，自定义的返回结果
+     * 当访问接口没有权限时，拋出由spring security处理
      */
     @ExceptionHandler(AccessDeniedException.class)
-    public Result accessDeniedException(Throwable ex) {
+    public void accessDeniedException(Throwable ex) throws Throwable {
         log.error(ex.toString());
-        return Result.forbidden(ex.getMessage());
+        throw ex;
     }
 
     /**

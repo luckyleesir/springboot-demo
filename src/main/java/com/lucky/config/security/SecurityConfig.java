@@ -39,9 +39,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Resource
     private UserService userService;
     @Resource
-    private RestfulAccessDeniedHandler restfulAccessDeniedHandler;
+    private AccessDeniedExceptionHandler accessDeniedExceptionHandler;
     @Resource
-    private RestAuthenticationEntryPoint restAuthenticationEntryPoint;
+    private AuthenticationExceptionHandler authenticationExceptionHandler;
 
     @Override
     protected void configure(HttpSecurity httpSecurity) throws Exception {
@@ -83,8 +83,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         httpSecurity.addFilterBefore(jwtAuthenticationTokenFilter(), UsernamePasswordAuthenticationFilter.class);
         //添加自定义未授权和未登录结果返回
         httpSecurity.exceptionHandling()
-                .accessDeniedHandler(restfulAccessDeniedHandler)
-                .authenticationEntryPoint(restAuthenticationEntryPoint);
+                .accessDeniedHandler(accessDeniedExceptionHandler)
+                .authenticationEntryPoint(authenticationExceptionHandler);
     }
 
     @Override
