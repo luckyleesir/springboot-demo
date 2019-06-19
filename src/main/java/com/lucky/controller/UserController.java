@@ -1,28 +1,28 @@
 package com.lucky.controller;
 
 import com.github.pagehelper.PageInfo;
+import com.google.common.collect.Maps;
 import com.lucky.common.response.Result;
 import com.lucky.model.SysUser;
 import com.lucky.service.UserService;
+import com.lucky.util.JwtTokenUtil;
 import com.lucky.util.PageUtil;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.StringUtils;
-import org.apache.shiro.SecurityUtils;
-import org.apache.shiro.authc.*;
-import org.apache.shiro.subject.Subject;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import java.util.List;
+import java.util.Map;
 
 /**
  * 用户管理
  *
  * @author lucky
  */
-@Api(tags = "UserController",description = "用户管理")
+@Api(tags = "用户管理")
 @Slf4j
 @RestController
 @RequestMapping("/user")
@@ -30,9 +30,11 @@ public class UserController {
 
     @Resource
     private UserService userService;
+    @Resource
+    private JwtTokenUtil jwtTokenUtil;
 
     @ApiOperation(value = "用户注册")
-    @PostMapping("/add")
+    @PostMapping("/register")
     public Result register(@RequestBody SysUser sysUser) {
         int count = userService.register(sysUser);
         if (count==0){
@@ -44,39 +46,24 @@ public class UserController {
     @ApiOperation(value = "用户登录")
     @PostMapping("/login")
     public Result login(@RequestParam String username, @RequestParam String password) {
-        //添加用户认证信息
-        Subject subject = SecurityUtils.getSubject();
-        UsernamePasswordToken usernamePasswordToken = new UsernamePasswordToken(username, password);
-        //进行验证，这里可以捕获异常，然后返回对应信息
-        String msg = "";
-        try {
-            subject.login(usernamePasswordToken);
-        } catch (IncorrectCredentialsException ice) {
-            msg = "用户名或密码不正确";
-        } catch (LockedAccountException lae) {
-            msg = "账户已锁定";
-        } catch (ExcessiveAttemptsException eae) {
-            msg = "用户名或密码错误次数过多";
-        } catch (AuthenticationException ae) {
-            //通过处理Shiro的运行时AuthenticationException就可以控制用户登录失败或密码错误时的情景
-            msg = "用户名或密码不正确";
+        String token = userService.login(username, password);
+        if (token == null) {
+            return Result.failed("用户名或密码错误");
         }
-
-        if (StringUtils.isBlank(msg)) {
-            return Result.success();
-        }
-        return Result.failed(msg);
+        Map<String, String> tokenMap = Maps.newHashMap();
+        tokenMap.put("token", token);
+        tokenMap.put("tokenHead", jwtTokenUtil.getTokenHead());
+        return Result.success(tokenMap);
     }
 
     @ApiOperation(value = "用户登出")
     @PostMapping("/logout")
     public Result logout() {
-        Subject subject = SecurityUtils.getSubject();
-        subject.logout();
         return Result.success();
     }
 
     @ApiOperation(value = "用户列表")
+    @PreAuthorize("hasAuthority('pms:product:read')")
     @GetMapping("/list")
     public Result list(@RequestParam(required = false) String name,
                        @RequestParam(defaultValue = "1") int pageNum,

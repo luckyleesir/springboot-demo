@@ -19,7 +19,7 @@ import java.util.List;
  *
  * @author lucky
  */
-@Api(tags = "RoleController", description = "角色管理")
+@Api(tags = "角色管理")
 @Slf4j
 @RestController
 @RequestMapping("/role")

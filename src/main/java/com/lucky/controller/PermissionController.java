@@ -19,7 +19,7 @@ import java.util.List;
  *
  * @author lucky
  */
-@Api(tags = "PermissionController",description = "权限管理")
+@Api(tags = "权限管理")
 @Slf4j
 @RestController
 @RequestMapping("/permission")

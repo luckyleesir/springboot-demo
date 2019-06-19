@@ -55,13 +55,22 @@ spring:
         max-active: 8
         # 连接池最大阻塞等待时间（使用负值表示没有限制） 默认 -1
         max-wait: -1ms
+
 mybatis:
   mapper-locations: classpath:mapper/**/*.xml
+
 logging:
   path: ./logs
   level:
     com:
       lucky: DEBUG
   config: classpath:logback-spring.xml
+
+jwt:
+  tokenHeader: Authorization #JWT存储的请求头
+  secret: mySecret #JWT加解密使用的密钥
+  expiration: 604800 #JWT的超期限时间(60*60*24)
+  tokenHead: Bearer  #JWT负载中拿到开头
+
 server:
   port: 8888

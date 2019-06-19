@@ -1,7 +1,6 @@
 package com.lucky.service;
 
 import com.github.pagehelper.Page;
-import com.lucky.dto.UserLoginDto;
 import com.lucky.model.SysPermission;
 import com.lucky.model.SysRole;
 import com.lucky.model.SysUser;
@@ -24,6 +23,15 @@ public interface UserService {
      * @return
      */
     int register(SysUser sysUser);
+
+    /**
+     * 用户登录
+     *
+     * @param username 用户名
+     * @param password 密码
+     * @return 登录成功返回token
+     */
+    String login(String username, String password);
 
     /**
      * 分页查询用户
