@@ -24,13 +24,13 @@
         <plugin type="org.mybatis.generator.plugins.UnmergeableXmlMappersPlugin" />
 
         <!--自定义插件-->
-        <plugin type="com.lucky.config.mybatis.LombokAnnotationPlugin"/>
-        <plugin type="com.lucky.config.mybatis.JacksonAnnotationPlugin"/>
-        <plugin type="com.lucky.config.mybatis.GeneratorSwagger2DocPlugin"/>
-        <plugin type="com.lucky.config.mybatis.FastJsonToJsonPlugin"/>
+        <plugin type="com.lucky.config.mybatis.generator.LombokAnnotationPlugin"/>
+        <plugin type="com.lucky.config.mybatis.generator.JacksonAnnotationPlugin"/>
+        <plugin type="com.lucky.config.mybatis.generator.GeneratorSwagger2DocPlugin"/>
+        <plugin type="com.lucky.config.mybatis.generator.FastJsonToJsonPlugin"/>
 
         <!-- 阻止生成自动注释 -->
-        <commentGenerator type="com.lucky.config.mybatis.MyCommentGenerator">
+        <commentGenerator type="com.lucky.config.mybatis.generator.MyCommentGenerator">
             <property name="suppressDate" value="true"/>
             <property name="suppressAllComments" value="true" />
             <!-- 自动识别数据库关键字，默认false，如果设置为true，根据SqlReservedWords中定义的关键字列表；一般保留默认值，遇到数据库关键字（Java关键字），使用columnOverride覆盖 -->

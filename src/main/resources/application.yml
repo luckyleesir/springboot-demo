@@ -1,26 +1,20 @@
 spring:
   application:
     name: Spring-boot-rabbitmq
-  #数据源配置
   datasource:
     username: root
     password:
     driverClassName: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://localhost:3306/demo?serverTimezone=UTC&useUnicode=true&characterEncoding=utf-8&useSSL=false
-    ##  Hikari 连接池配置 ------ 详细配置请访问：https://github.com/brettwooldridge/HikariCP
-    type: com.zaxxer.hikari.HikariDataSource
+    type: com.zaxxer.hikari.HikariDataSource  #Hikari 连接池配置 ------ 详细配置请访问：https://github.com/brettwooldridge/HikariCP
     hikari:
-      # 数据库连接超时时间,默认30秒，即30000
-      connection-timeout: 30000
+      connection-timeout: 30000  # 数据库连接超时时间,默认30秒
       auto-commit: true
-      # 此属性控制池中连接的最长生命周期，值0表示无限生命周期，默认1800000即30分钟
-      max-lifetime: 1800000
+      max-lifetime: 1800000 # 此属性控制池中连接的最长生命周期，值0表示无限生命周期，默认1800000即30分钟
       pool-name: MyHikariCP
-      # 最小空闲连接数量
-      minimum-idle: 5
+      minimum-idle: 5  # 最小空闲连接数量
       connection-test-query: SELECT 1
-      # 空闲连接存活最大时间，默认600000（10分钟）
-      idle-timeout: 180000
+      idle-timeout: 180000 # 空闲连接存活最大时间，默认600000（10分钟）
       maximum-pool-size: 10
   resources:
     chain:
@@ -28,12 +22,6 @@ spring:
         content:
           paths: /**
           enabled: true
-  thymeleaf:
-    mode: HTML5
-    cache: false
-    prefix: classpath:/templates/
-    encoding: UTF-8
-    suffix: .html
   mvc:
     static-path-pattern: /static/**
   rabbitmq:
@@ -48,13 +36,11 @@ spring:
     host: localhost
     lettuce:
       pool:
-        # 连接池中的最大空闲连接 默认 8
-        max-idle: 8
-        min-idle: 0
-        # 连接池最大连接数（使用负值表示没有限制） 默认 8
-        max-active: 8
-        # 连接池最大阻塞等待时间（使用负值表示没有限制） 默认 -1
-        max-wait: -1ms
+        max-idle: 8  # 连接池中的最大空闲连接 默认 8
+        min-idle: 0 # 连接池中的最小空闲连接
+        max-active: 8  # 连接池最大连接数（使用负值表示没有限制） 默认 8
+        max-wait: -1ms # 连接池最大阻塞等待时间（使用负值表示没有限制） 默认 -1
+    timeout: 3000ms # 连接超时时间（毫秒）
 
 mybatis:
   mapper-locations: classpath:mapper/**/*.xml
@@ -69,7 +55,7 @@ logging:
 jwt:
   tokenHeader: Authorization #JWT存储的请求头
   secret: mySecret #JWT加解密使用的密钥
-  expiration: 604800 #JWT的超期限时间(60*60*24)
+  expiration: 600000 #JWT的超期限时间(60*60*24)
   tokenHead: Bearer  #JWT负载中拿到开头
 
 server:

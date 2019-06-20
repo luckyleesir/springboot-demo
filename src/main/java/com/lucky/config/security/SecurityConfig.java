@@ -2,7 +2,7 @@ package com.lucky.config.security;
 
 import com.lucky.model.SysPermission;
 import com.lucky.model.SysUser;
-import com.lucky.service.UserService;
+import com.lucky.service.SysUserService;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -37,7 +37,7 @@ import java.util.List;
 @EnableGlobalMethodSecurity(prePostEnabled=true)
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Resource
-    private UserService userService;
+    private SysUserService sysUserService;
     @Resource
     private AccessDeniedExceptionHandler accessDeniedExceptionHandler;
     @Resource
@@ -106,9 +106,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Bean
     public UserDetailsService userDetailsService() {
         return username -> {
-            SysUser sysUser = userService.getUserByUsername(username);
+            SysUser sysUser = sysUserService.getUserByUsername(username);
             if (sysUser != null) {
-                List<SysPermission> permissionList = userService.getPermissionList(sysUser.getUserId());
+                List<SysPermission> permissionList = sysUserService.getPermissionList(sysUser.getUserId());
                 return new SysUserDetails(sysUser, permissionList);
             }
             throw new UsernameNotFoundException("用户名或密码错误");
