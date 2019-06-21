@@ -24,9 +24,6 @@ layui.use(['form', 'layer', 'jquery'], function () {
                         time: 1500
                     });
                 }
-            },
-            error: function (res) {
-
             }
         });
         return false;

@@ -59,7 +59,6 @@ public class SysUserController {
 
     @ApiOperation(value = "刷新token")
     @GetMapping("/token/refresh")
-    @ResponseBody
     public Result refreshToken(HttpServletRequest request) {
         String token = request.getHeader(jwtTokenUtil.getTokenHeader());
         String refreshToken = sysUserService.refreshToken(token);
@@ -79,7 +78,7 @@ public class SysUserController {
     }
 
     @ApiOperation(value = "用户列表")
-    @PreAuthorize("hasAuthority('pms:product:read')")
+    //@PreAuthorize("hasAuthority('pms:product:read')")
     @GetMapping("/list")
     public Result list(@RequestParam(required = false) String name,
                        @RequestParam(defaultValue = "1") int pageNum,

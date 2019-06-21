@@ -91,7 +91,7 @@ layui.use(['form','element','layer','jquery'],function(){
     })
 
     //外部图标
-    $.get(iconUrl,function(data){
+    $.get("https://at.alicdn.com/t/font_400842_q6tk84n9ywvu0udi.css",function(data){
         $(".outIcons span").text(data.split(".icon-").length-1);
     })
 
