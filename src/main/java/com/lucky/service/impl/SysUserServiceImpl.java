@@ -23,6 +23,7 @@ import org.springframework.stereotype.Service;
 import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 /**
  * 用户管理
@@ -100,6 +101,17 @@ public class SysUserServiceImpl implements SysUserService {
     @Override
     public SysUser detail(Long userId) {
         return sysUserMapper.selectByPrimaryKey(userId);
+    }
+
+    @Override
+    public int add(SysUser sysUser) {
+        SysUser user = this.getUserByUsername(sysUser.getUsername());
+        if (user != null) {
+            throw new RuntimeException("用户名已存在");
+        }
+        //后台管理员直接添加
+        sysUser.setPassword(passwordEncoder.encode(UUID.randomUUID().toString()));
+        return sysUserMapper.insertSelective(sysUser);
     }
 
     @Override

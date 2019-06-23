@@ -1,7 +1,7 @@
 spring:
   datasource:
     username: root
-    password:
+    password: root
     driverClassName: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://localhost:3306/demo?serverTimezone=UTC&useUnicode=true&characterEncoding=utf-8&useSSL=false
     type: com.zaxxer.hikari.HikariDataSource  #Hikari 连接池配置 ------ 详细配置请访问：https://github.com/brettwooldridge/HikariCP
@@ -54,4 +54,4 @@ jwt:
   tokenHead: Bearer  #JWT负载中拿到开头
 
 server:
-  port: 8888
+  port: 8887

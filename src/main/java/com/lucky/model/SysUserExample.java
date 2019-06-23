@@ -305,6 +305,76 @@ public class SysUserExample {
             return (Criteria) this;
         }
 
+        public Criteria andEmailIsNull() {
+            addCriterion("email is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andEmailIsNotNull() {
+            addCriterion("email is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andEmailEqualTo(String value) {
+            addCriterion("email =", value, "email");
+            return (Criteria) this;
+        }
+
+        public Criteria andEmailNotEqualTo(String value) {
+            addCriterion("email <>", value, "email");
+            return (Criteria) this;
+        }
+
+        public Criteria andEmailGreaterThan(String value) {
+            addCriterion("email >", value, "email");
+            return (Criteria) this;
+        }
+
+        public Criteria andEmailGreaterThanOrEqualTo(String value) {
+            addCriterion("email >=", value, "email");
+            return (Criteria) this;
+        }
+
+        public Criteria andEmailLessThan(String value) {
+            addCriterion("email <", value, "email");
+            return (Criteria) this;
+        }
+
+        public Criteria andEmailLessThanOrEqualTo(String value) {
+            addCriterion("email <=", value, "email");
+            return (Criteria) this;
+        }
+
+        public Criteria andEmailLike(String value) {
+            addCriterion("email like", value, "email");
+            return (Criteria) this;
+        }
+
+        public Criteria andEmailNotLike(String value) {
+            addCriterion("email not like", value, "email");
+            return (Criteria) this;
+        }
+
+        public Criteria andEmailIn(List<String> values) {
+            addCriterion("email in", values, "email");
+            return (Criteria) this;
+        }
+
+        public Criteria andEmailNotIn(List<String> values) {
+            addCriterion("email not in", values, "email");
+            return (Criteria) this;
+        }
+
+        public Criteria andEmailBetween(String value1, String value2) {
+            addCriterion("email between", value1, value2, "email");
+            return (Criteria) this;
+        }
+
+        public Criteria andEmailNotBetween(String value1, String value2) {
+            addCriterion("email not between", value1, value2, "email");
+            return (Criteria) this;
+        }
+
         public Criteria andNameIsNull() {
             addCriterion("name is null");
             return (Criteria) this;
@@ -575,6 +645,76 @@ public class SysUserExample {
             return (Criteria) this;
         }
 
+        public Criteria andSignatureIsNull() {
+            addCriterion("signature is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andSignatureIsNotNull() {
+            addCriterion("signature is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andSignatureEqualTo(String value) {
+            addCriterion("signature =", value, "signature");
+            return (Criteria) this;
+        }
+
+        public Criteria andSignatureNotEqualTo(String value) {
+            addCriterion("signature <>", value, "signature");
+            return (Criteria) this;
+        }
+
+        public Criteria andSignatureGreaterThan(String value) {
+            addCriterion("signature >", value, "signature");
+            return (Criteria) this;
+        }
+
+        public Criteria andSignatureGreaterThanOrEqualTo(String value) {
+            addCriterion("signature >=", value, "signature");
+            return (Criteria) this;
+        }
+
+        public Criteria andSignatureLessThan(String value) {
+            addCriterion("signature <", value, "signature");
+            return (Criteria) this;
+        }
+
+        public Criteria andSignatureLessThanOrEqualTo(String value) {
+            addCriterion("signature <=", value, "signature");
+            return (Criteria) this;
+        }
+
+        public Criteria andSignatureLike(String value) {
+            addCriterion("signature like", value, "signature");
+            return (Criteria) this;
+        }
+
+        public Criteria andSignatureNotLike(String value) {
+            addCriterion("signature not like", value, "signature");
+            return (Criteria) this;
+        }
+
+        public Criteria andSignatureIn(List<String> values) {
+            addCriterion("signature in", values, "signature");
+            return (Criteria) this;
+        }
+
+        public Criteria andSignatureNotIn(List<String> values) {
+            addCriterion("signature not in", values, "signature");
+            return (Criteria) this;
+        }
+
+        public Criteria andSignatureBetween(String value1, String value2) {
+            addCriterion("signature between", value1, value2, "signature");
+            return (Criteria) this;
+        }
+
+        public Criteria andSignatureNotBetween(String value1, String value2) {
+            addCriterion("signature not between", value1, value2, "signature");
+            return (Criteria) this;
+        }
+
         public Criteria andStatusIsNull() {
             addCriterion("status is null");
             return (Criteria) this;
@@ -585,52 +725,52 @@ public class SysUserExample {
             return (Criteria) this;
         }
 
-        public Criteria andStatusEqualTo(Boolean value) {
+        public Criteria andStatusEqualTo(Byte value) {
             addCriterion("status =", value, "status");
             return (Criteria) this;
         }
 
-        public Criteria andStatusNotEqualTo(Boolean value) {
+        public Criteria andStatusNotEqualTo(Byte value) {
             addCriterion("status <>", value, "status");
             return (Criteria) this;
         }
 
-        public Criteria andStatusGreaterThan(Boolean value) {
+        public Criteria andStatusGreaterThan(Byte value) {
             addCriterion("status >", value, "status");
             return (Criteria) this;
         }
 
-        public Criteria andStatusGreaterThanOrEqualTo(Boolean value) {
+        public Criteria andStatusGreaterThanOrEqualTo(Byte value) {
             addCriterion("status >=", value, "status");
             return (Criteria) this;
         }
 
-        public Criteria andStatusLessThan(Boolean value) {
+        public Criteria andStatusLessThan(Byte value) {
             addCriterion("status <", value, "status");
             return (Criteria) this;
         }
 
-        public Criteria andStatusLessThanOrEqualTo(Boolean value) {
+        public Criteria andStatusLessThanOrEqualTo(Byte value) {
             addCriterion("status <=", value, "status");
             return (Criteria) this;
         }
 
-        public Criteria andStatusIn(List<Boolean> values) {
+        public Criteria andStatusIn(List<Byte> values) {
             addCriterion("status in", values, "status");
             return (Criteria) this;
         }
 
-        public Criteria andStatusNotIn(List<Boolean> values) {
+        public Criteria andStatusNotIn(List<Byte> values) {
             addCriterion("status not in", values, "status");
             return (Criteria) this;
         }
 
-        public Criteria andStatusBetween(Boolean value1, Boolean value2) {
+        public Criteria andStatusBetween(Byte value1, Byte value2) {
             addCriterion("status between", value1, value2, "status");
             return (Criteria) this;
         }
 
-        public Criteria andStatusNotBetween(Boolean value1, Boolean value2) {
+        public Criteria andStatusNotBetween(Byte value1, Byte value2) {
             addCriterion("status not between", value1, value2, "status");
             return (Criteria) this;
         }

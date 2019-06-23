@@ -5,11 +5,13 @@
     <id column="user_id" jdbcType="BIGINT" property="userId" />
     <result column="username" jdbcType="VARCHAR" property="username" />
     <result column="password" jdbcType="VARCHAR" property="password" />
+    <result column="email" jdbcType="VARCHAR" property="email" />
     <result column="name" jdbcType="VARCHAR" property="name" />
     <result column="nick" jdbcType="VARCHAR" property="nick" />
     <result column="sex" jdbcType="VARCHAR" property="sex" />
     <result column="age" jdbcType="INTEGER" property="age" />
-    <result column="status" jdbcType="BIT" property="status" />
+    <result column="signature" jdbcType="VARCHAR" property="signature" />
+    <result column="status" jdbcType="TINYINT" property="status" />
     <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
     <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
   </resultMap>
@@ -72,7 +74,8 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    user_id, username, password, name, nick, sex, age, status, create_time, update_time
+    user_id, username, password, email, name, nick, sex, age, signature, status, create_time, 
+    update_time
   </sql>
   <select id="selectByExample" parameterType="com.lucky.model.SysUserExample" resultMap="BaseResultMap">
     select
@@ -106,12 +109,14 @@
   </delete>
   <insert id="insert" parameterType="com.lucky.model.SysUser">
     insert into sys_user (user_id, username, password, 
-      name, nick, sex, age, 
+      email, name, nick, 
+      sex, age, signature, 
       status, create_time, update_time
       )
     values (#{userId,jdbcType=BIGINT}, #{username,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR}, 
-      #{name,jdbcType=VARCHAR}, #{nick,jdbcType=VARCHAR}, #{sex,jdbcType=VARCHAR}, #{age,jdbcType=INTEGER}, 
-      #{status,jdbcType=BIT}, #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}
+      #{email,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, #{nick,jdbcType=VARCHAR}, 
+      #{sex,jdbcType=VARCHAR}, #{age,jdbcType=INTEGER}, #{signature,jdbcType=VARCHAR}, 
+      #{status,jdbcType=TINYINT}, #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}
       )
   </insert>
   <insert id="insertSelective" parameterType="com.lucky.model.SysUser">
@@ -126,6 +131,9 @@
       <if test="password != null">
         password,
       </if>
+      <if test="email != null">
+        email,
+      </if>
       <if test="name != null">
         name,
       </if>
@@ -137,6 +145,9 @@
       </if>
       <if test="age != null">
         age,
+      </if>
+      <if test="signature != null">
+        signature,
       </if>
       <if test="status != null">
         status,
@@ -158,6 +169,9 @@
       <if test="password != null">
         #{password,jdbcType=VARCHAR},
       </if>
+      <if test="email != null">
+        #{email,jdbcType=VARCHAR},
+      </if>
       <if test="name != null">
         #{name,jdbcType=VARCHAR},
       </if>
@@ -170,8 +184,11 @@
       <if test="age != null">
         #{age,jdbcType=INTEGER},
       </if>
+      <if test="signature != null">
+        #{signature,jdbcType=VARCHAR},
+      </if>
       <if test="status != null">
-        #{status,jdbcType=BIT},
+        #{status,jdbcType=TINYINT},
       </if>
       <if test="createTime != null">
         #{createTime,jdbcType=TIMESTAMP},
@@ -199,6 +216,9 @@
       <if test="record.password != null">
         password = #{record.password,jdbcType=VARCHAR},
       </if>
+      <if test="record.email != null">
+        email = #{record.email,jdbcType=VARCHAR},
+      </if>
       <if test="record.name != null">
         name = #{record.name,jdbcType=VARCHAR},
       </if>
@@ -211,8 +231,11 @@
       <if test="record.age != null">
         age = #{record.age,jdbcType=INTEGER},
       </if>
+      <if test="record.signature != null">
+        signature = #{record.signature,jdbcType=VARCHAR},
+      </if>
       <if test="record.status != null">
-        status = #{record.status,jdbcType=BIT},
+        status = #{record.status,jdbcType=TINYINT},
       </if>
       <if test="record.createTime != null">
         create_time = #{record.createTime,jdbcType=TIMESTAMP},
@@ -230,11 +253,13 @@
     set user_id = #{record.userId,jdbcType=BIGINT},
       username = #{record.username,jdbcType=VARCHAR},
       password = #{record.password,jdbcType=VARCHAR},
+      email = #{record.email,jdbcType=VARCHAR},
       name = #{record.name,jdbcType=VARCHAR},
       nick = #{record.nick,jdbcType=VARCHAR},
       sex = #{record.sex,jdbcType=VARCHAR},
       age = #{record.age,jdbcType=INTEGER},
-      status = #{record.status,jdbcType=BIT},
+      signature = #{record.signature,jdbcType=VARCHAR},
+      status = #{record.status,jdbcType=TINYINT},
       create_time = #{record.createTime,jdbcType=TIMESTAMP},
       update_time = #{record.updateTime,jdbcType=TIMESTAMP}
     <if test="_parameter != null">
@@ -250,6 +275,9 @@
       <if test="password != null">
         password = #{password,jdbcType=VARCHAR},
       </if>
+      <if test="email != null">
+        email = #{email,jdbcType=VARCHAR},
+      </if>
       <if test="name != null">
         name = #{name,jdbcType=VARCHAR},
       </if>
@@ -262,8 +290,11 @@
       <if test="age != null">
         age = #{age,jdbcType=INTEGER},
       </if>
+      <if test="signature != null">
+        signature = #{signature,jdbcType=VARCHAR},
+      </if>
       <if test="status != null">
-        status = #{status,jdbcType=BIT},
+        status = #{status,jdbcType=TINYINT},
       </if>
       <if test="createTime != null">
         create_time = #{createTime,jdbcType=TIMESTAMP},
@@ -278,11 +309,13 @@
     update sys_user
     set username = #{username,jdbcType=VARCHAR},
       password = #{password,jdbcType=VARCHAR},
+      email = #{email,jdbcType=VARCHAR},
       name = #{name,jdbcType=VARCHAR},
       nick = #{nick,jdbcType=VARCHAR},
       sex = #{sex,jdbcType=VARCHAR},
       age = #{age,jdbcType=INTEGER},
-      status = #{status,jdbcType=BIT},
+      signature = #{signature,jdbcType=VARCHAR},
+      status = #{status,jdbcType=TINYINT},
       create_time = #{createTime,jdbcType=TIMESTAMP},
       update_time = #{updateTime,jdbcType=TIMESTAMP}
     where user_id = #{userId,jdbcType=BIGINT}

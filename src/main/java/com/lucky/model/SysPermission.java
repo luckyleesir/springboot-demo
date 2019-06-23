@@ -50,13 +50,13 @@ public class SysPermission implements Serializable {
      * 权限类型：0->目录；1->菜单；2->按钮（接口绑定权限）
      */
     @ApiModelProperty(value="权限类型：0->目录；1->菜单；2->按钮（接口绑定权限）")
-    private Boolean type;
+    private Byte type;
 
     /**
      * 启用状态；0->禁用；1->启用
      */
     @ApiModelProperty(value="启用状态；0->禁用；1->启用")
-    private Boolean status;
+    private Byte status;
 
     /**
      * 创建时间

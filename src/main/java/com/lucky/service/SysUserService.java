@@ -15,7 +15,6 @@ import java.util.List;
  */
 public interface SysUserService {
 
-
     /**
      * 用户注册
      *
@@ -57,6 +56,13 @@ public interface SysUserService {
      * @return 用户信息
      */
     SysUser detail(Long userId);
+
+    /**
+     * 添加用户
+     * @param sysUser 用户信息
+     * @return 添加条数
+     */
+    int add(SysUser sysUser);
 
     /**
      * 修改用户信息

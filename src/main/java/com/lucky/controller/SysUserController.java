@@ -10,7 +10,6 @@ import com.lucky.util.PageUtil;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -92,6 +91,17 @@ public class SysUserController {
     @GetMapping("/{userId}")
     public Result detail(@PathVariable Long userId) {
         return Result.success(sysUserService.detail(userId));
+    }
+
+
+    @ApiOperation(value = "添加用户")
+    @PostMapping("/add")
+    public Result add(@RequestBody SysUser sysUser) {
+        int count = sysUserService.add(sysUser);
+        if (count==0){
+            return Result.failed();
+        }
+        return Result.success(count);
     }
 
     @ApiOperation(value = "修改用户")

@@ -48,9 +48,10 @@ layui.use(['form', 'layer', 'table', 'laytpl'], function () {
                     return '<a class="layui-blue" href="mailto:' + d.email + '">' + d.email + '</a>';
                 }
             },
+            {field: 'signature', title: '个性签名', align: 'center'},
             {title: '操作', minWidth: 175, templet: '#userListBar', fixed: "right", align: "center"}
         ]],
-        toolbar: true,
+        toolbar: true
     });
 
     //搜索
@@ -66,21 +67,29 @@ layui.use(['form', 'layer', 'table', 'laytpl'], function () {
     });
 
     //添加用户
+    $("#addUserBtn").click(function () {
+        addUser();
+    });
+
     function addUser(edit) {
         var index = layui.layer.open({
             title: "添加用户",
             type: 2,
             content: "userAdd.html",
+            id:edit.userId,
             success: function (layero, index) {
                 var body = layui.layer.getChildFrame('body', index);
                 if (edit) {
-                    body.find(".userName").val(edit.userName);  //登录名
-                    body.find(".userEmail").val(edit.userEmail);  //邮箱
-                    body.find(".userSex input[value=" + edit.userSex + "]").prop("checked", "checked");  //性别
-                    body.find(".userGrade").val(edit.userGrade);  //会员等级
-                    body.find(".userStatus").val(edit.userStatus);    //用户状态
-                    body.find(".userDesc").text(edit.userDesc);    //用户简介
+                    body.find("#username").val(edit.username);  //登录名
+                    body.find("#email").val(edit.email);  //邮箱
+                    body.find("#sex input[value=" + edit.sex + "]").prop("checked", "checked");  //性别
+                    body.find("#status").val(edit.status);    //用户状态
+                    body.find("#signature").text(edit.signature);    //个性签名
+                    var userId = edit.userId;
+                    body.find("#add").remove();
                     form.render();
+                } else {
+                    body.find("#edit").remove();
                 }
                 setTimeout(function () {
                     layui.layer.tips('点击此处返回用户列表', '.layui-layer-setwin .layui-layer-close', {
@@ -88,7 +97,7 @@ layui.use(['form', 'layer', 'table', 'laytpl'], function () {
                     });
                 }, 500)
             }
-        })
+        });
         layui.layer.full(index);
         window.sessionStorage.setItem("index", index);
         //改变窗口大小时，重置弹窗的宽高，防止超出可视区域（如F12调出debug的操作）
@@ -96,10 +105,6 @@ layui.use(['form', 'layer', 'table', 'laytpl'], function () {
             layui.layer.full(window.sessionStorage.getItem("index"));
         })
     }
-
-    $(".addNews_btn").click(function () {
-        addUser();
-    })
 
     //批量删除
     $(".delAll_btn").click(function () {
@@ -152,14 +157,13 @@ layui.use(['form', 'layer', 'table', 'laytpl'], function () {
             });
         } else if (layEvent === 'del') { //删除
             layer.confirm('确定删除此用户？', {icon: 3, title: '提示信息'}, function (index) {
-                // $.get("删除文章接口",{
-                //     newsId : data.newsId  //将需要删除的newsId作为参数传入
-                // },function(data){
-                tableIns.reload();
-                layer.close(index);
-                // })
+                $.post("/api/user/delete/" + data.userId, function (res) {
+                    layer.msg(res.msg);
+                    tableIns.reload();
+                    layer.close(index);
+                })
             });
         }
     });
 
-})
+});

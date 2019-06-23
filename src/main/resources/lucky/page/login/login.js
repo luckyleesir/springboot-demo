@@ -15,7 +15,6 @@ layui.use(['form', 'layer', 'jquery'], function () {
             url: '/api/user/login',
             method: 'post',
             data: data.field,
-            dataType: 'json',
             success: function (res) {
                 if (res.code === 200) {
                     location.href = "../../index.html";
@@ -24,6 +23,9 @@ layui.use(['form', 'layer', 'jquery'], function () {
                         time: 1500
                     });
                 }
+            },
+            error:function () {
+                layer.msg("网络连接中断");
             }
         });
         return false;

@@ -38,7 +38,7 @@ public class SysRole implements Serializable {
      * 启用状态；0->禁用；1->启用
      */
     @ApiModelProperty(value="启用状态；0->禁用；1->启用")
-    private Boolean status;
+    private Byte status;
 
     /**
      * 创建时间

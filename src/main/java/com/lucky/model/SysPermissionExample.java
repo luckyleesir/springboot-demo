@@ -445,52 +445,52 @@ public class SysPermissionExample {
             return (Criteria) this;
         }
 
-        public Criteria andTypeEqualTo(Boolean value) {
+        public Criteria andTypeEqualTo(Byte value) {
             addCriterion("type =", value, "type");
             return (Criteria) this;
         }
 
-        public Criteria andTypeNotEqualTo(Boolean value) {
+        public Criteria andTypeNotEqualTo(Byte value) {
             addCriterion("type <>", value, "type");
             return (Criteria) this;
         }
 
-        public Criteria andTypeGreaterThan(Boolean value) {
+        public Criteria andTypeGreaterThan(Byte value) {
             addCriterion("type >", value, "type");
             return (Criteria) this;
         }
 
-        public Criteria andTypeGreaterThanOrEqualTo(Boolean value) {
+        public Criteria andTypeGreaterThanOrEqualTo(Byte value) {
             addCriterion("type >=", value, "type");
             return (Criteria) this;
         }
 
-        public Criteria andTypeLessThan(Boolean value) {
+        public Criteria andTypeLessThan(Byte value) {
             addCriterion("type <", value, "type");
             return (Criteria) this;
         }
 
-        public Criteria andTypeLessThanOrEqualTo(Boolean value) {
+        public Criteria andTypeLessThanOrEqualTo(Byte value) {
             addCriterion("type <=", value, "type");
             return (Criteria) this;
         }
 
-        public Criteria andTypeIn(List<Boolean> values) {
+        public Criteria andTypeIn(List<Byte> values) {
             addCriterion("type in", values, "type");
             return (Criteria) this;
         }
 
-        public Criteria andTypeNotIn(List<Boolean> values) {
+        public Criteria andTypeNotIn(List<Byte> values) {
             addCriterion("type not in", values, "type");
             return (Criteria) this;
         }
 
-        public Criteria andTypeBetween(Boolean value1, Boolean value2) {
+        public Criteria andTypeBetween(Byte value1, Byte value2) {
             addCriterion("type between", value1, value2, "type");
             return (Criteria) this;
         }
 
-        public Criteria andTypeNotBetween(Boolean value1, Boolean value2) {
+        public Criteria andTypeNotBetween(Byte value1, Byte value2) {
             addCriterion("type not between", value1, value2, "type");
             return (Criteria) this;
         }
@@ -505,52 +505,52 @@ public class SysPermissionExample {
             return (Criteria) this;
         }
 
-        public Criteria andStatusEqualTo(Boolean value) {
+        public Criteria andStatusEqualTo(Byte value) {
             addCriterion("status =", value, "status");
             return (Criteria) this;
         }
 
-        public Criteria andStatusNotEqualTo(Boolean value) {
+        public Criteria andStatusNotEqualTo(Byte value) {
             addCriterion("status <>", value, "status");
             return (Criteria) this;
         }
 
-        public Criteria andStatusGreaterThan(Boolean value) {
+        public Criteria andStatusGreaterThan(Byte value) {
             addCriterion("status >", value, "status");
             return (Criteria) this;
         }
 
-        public Criteria andStatusGreaterThanOrEqualTo(Boolean value) {
+        public Criteria andStatusGreaterThanOrEqualTo(Byte value) {
             addCriterion("status >=", value, "status");
             return (Criteria) this;
         }
 
-        public Criteria andStatusLessThan(Boolean value) {
+        public Criteria andStatusLessThan(Byte value) {
             addCriterion("status <", value, "status");
             return (Criteria) this;
         }
 
-        public Criteria andStatusLessThanOrEqualTo(Boolean value) {
+        public Criteria andStatusLessThanOrEqualTo(Byte value) {
             addCriterion("status <=", value, "status");
             return (Criteria) this;
         }
 
-        public Criteria andStatusIn(List<Boolean> values) {
+        public Criteria andStatusIn(List<Byte> values) {
             addCriterion("status in", values, "status");
             return (Criteria) this;
         }
 
-        public Criteria andStatusNotIn(List<Boolean> values) {
+        public Criteria andStatusNotIn(List<Byte> values) {
             addCriterion("status not in", values, "status");
             return (Criteria) this;
         }
 
-        public Criteria andStatusBetween(Boolean value1, Boolean value2) {
+        public Criteria andStatusBetween(Byte value1, Byte value2) {
             addCriterion("status between", value1, value2, "status");
             return (Criteria) this;
         }
 
-        public Criteria andStatusNotBetween(Boolean value1, Boolean value2) {
+        public Criteria andStatusNotBetween(Byte value1, Byte value2) {
             addCriterion("status not between", value1, value2, "status");
             return (Criteria) this;
         }
