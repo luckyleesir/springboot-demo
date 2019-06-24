@@ -115,13 +115,13 @@ public class SysUserController {
     }
 
     @ApiOperation(value = "删除用户")
-    @PostMapping("/delete/{userId}")
-    public Result delete(@PathVariable Long userId) {
-        int count = sysUserService.delete(userId);
-        if (count == 0) {
-            return Result.failed();
+    @PostMapping("/delete")
+    public Result delete(@RequestBody List<Long> userIds) {
+        int count = sysUserService.delete(userIds);
+        if (count == userIds.size()) {
+            return Result.success(count);
         }
-        return Result.success(count);
+        return Result.failed();
     }
 
     @ApiOperation(value = "修改用户角色")

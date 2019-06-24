@@ -75,13 +75,13 @@ public interface SysUserService {
     int update(Long userId, SysUser sysUser);
 
     /**
-     * 删除用户
+     * 批量删除用户
      *
-     * @param userId 用户id
+     * @param userIds 用户id
      * @return 删除条数
      */
     @Transactional(rollbackFor = {Error.class, Exception.class})
-    int delete(Long userId);
+    int delete(List<Long> userIds);
 
     /**
      * 给用户分配角色

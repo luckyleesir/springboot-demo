@@ -122,8 +122,10 @@ public class SysUserServiceImpl implements SysUserService {
     }
 
     @Override
-    public int delete(Long userId) {
-        return sysUserMapper.deleteByPrimaryKey(userId);
+    public int delete(List<Long> userIds) {
+        SysUserExample sysUserExample = new SysUserExample();
+        sysUserExample.createCriteria().andUserIdIn(userIds);
+        return sysUserMapper.deleteByExample(sysUserExample);
     }
 
     @Override
