@@ -39,8 +39,7 @@ layui.use(['form', 'layer'], function () {
             status: data.field.status,    //用户状态
             signature: $("#signature").val()
         });
-        //TODO
-        var userId =  field.userId;
+        var userId = $("#userId").val();
         $.ajax({
             method: 'post',
             url: '/api/user/update/' + userId,

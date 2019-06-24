@@ -51,6 +51,7 @@ layui.use(['form', 'layer', 'table', 'laytpl'], function () {
             {field: 'signature', title: '个性签名', align: 'center'},
             {title: '操作', minWidth: 175, templet: '#userListBar', fixed: "right", align: "center"}
         ]],
+        size: 'sm',
         toolbar: true
     });
 
@@ -79,6 +80,7 @@ layui.use(['form', 'layer', 'table', 'laytpl'], function () {
             success: function (layero, index) {
                 var body = layui.layer.getChildFrame('body', index);
                 if (edit) {
+                    body.find("#userId").val(edit.userId);  //登录名
                     body.find("#username").val(edit.username);  //登录名
                     body.find("#email").val(edit.email);  //邮箱
                     body.find("#sex input[value=" + edit.sex + "]").prop("checked", "checked");  //性别
