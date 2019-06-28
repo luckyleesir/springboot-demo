@@ -35,12 +35,6 @@ public class SysUser implements Serializable {
     private String password;
 
     /**
-     * 
-     */
-    @ApiModelProperty(value="")
-    private String email;
-
-    /**
      * 姓名
      */
     @ApiModelProperty(value="姓名")
@@ -51,6 +45,12 @@ public class SysUser implements Serializable {
      */
     @ApiModelProperty(value="昵称")
     private String nick;
+
+    /**
+     * 个性签名
+     */
+    @ApiModelProperty(value="个性签名")
+    private String signature;
 
     /**
      * 性别
@@ -65,10 +65,10 @@ public class SysUser implements Serializable {
     private Integer age;
 
     /**
-     * 
+     * 邮箱
      */
-    @ApiModelProperty(value="")
-    private String signature;
+    @ApiModelProperty(value="邮箱")
+    private String email;
 
     /**
      * 启用状态；0->禁用；1->启用

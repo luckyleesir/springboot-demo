@@ -7,8 +7,8 @@ layui.use(['form', 'layer', 'table', 'laytpl'], function () {
 
     //用户列表
     var tableIns = table.render({
-        elem: '#userList',
-        url: '/api/user/list',
+        elem: '#permissionList',
+        url: '/api/permission/list',
         request: {
             pageName: 'pageNum', //页码的参数名称，默认：page
             limitName: 'pageSize' //每页数据量的参数名，默认：limit
@@ -29,27 +29,30 @@ layui.use(['form', 'layer', 'table', 'laytpl'], function () {
         height: "full-125",
         limits: [10, 20, 50, 100],
         limit: 10,
-        id: "userListTable",
+        id: "permissionListTable",
         cols: [[
             {type: "checkbox", fixed: "left", width: 50},
-            {field: 'username', title: '用户名', minWidth: 100, align: "center"},
-            {field: 'name', title: '姓名', minWidth: 100, align: "center"},
-            {field: 'nick', title: '昵称', minWidth: 100, align: "center"},
-            {field: 'sex', title: '性别', align: 'center'},
-            {field: 'age', title: '年龄', align: 'center'},
+            {field: 'permissionId', title: '权限id', minWidth: 100, align: "center"},
+            {field: 'pid', title: '权限父id', minWidth: 100, align: "center"},
+            {field: 'name', title: '权限名称', minWidth: 100, align: "center"},
+            {field: 'value', title: '权限值', align: 'center'},
+            {field: 'url', title: '路径', align: 'center'},
+            {field: 'icon', title: '图标', align: 'center',templet:function (d) {
+                    return '<i class = "layui-icon ' + d.icon + '">';
+                }},
+            {field: 'description', title: '权限描述', align: 'center'},
             {
-                field: 'status', title: '用户状态', align: 'center', templet: function (d) {
+                field: 'type', title: '权限类型', align: 'center', templet: function (d) {
+                    return d.type === 1 ? "菜单" : "按钮";
+                }
+            },
+            {
+                field: 'status', title: '状态', align: 'center', templet: function (d) {
                     return d.status === 1 ? "启用" : "禁用";
                 }
             },
             {field: 'createTime', title: '创建时间', align: 'center', minWidth: 150, sort: true},
-            {
-                field: 'email', title: '用户邮箱', minWidth: 200, align: 'center', templet: function (d) {
-                    return '<a class="layui-blue" href="mailto:' + d.email + '">' + d.email + '</a>';
-                }
-            },
-            {field: 'signature', title: '个性签名', align: 'center'},
-            {title: '操作', minWidth: 175, templet: '#userListBar', fixed: "right", align: "center"}
+            {field: 'updateTime', title: '更新时间', align: 'center', minWidth: 150, sort: true},
         ]],
         size: 'sm',
         toolbar: true
@@ -57,7 +60,7 @@ layui.use(['form', 'layer', 'table', 'laytpl'], function () {
 
     //搜索
     $("#searchBtn").on("click", function () {
-        table.reload("userListTable", {
+        table.reload("permissionListTable", {
             page: {
                 curr: 1 //重新从第 1 页开始
             },
@@ -76,12 +79,15 @@ layui.use(['form', 'layer', 'table', 'laytpl'], function () {
         var index = layui.layer.open({
             title: "添加用户",
             type: 2,
-            content: "userAdd.html",
+            content: "permissionAdd.html",
+            maxmin: true,
+            area: ['600px', '500px'],
             success: function (layero, index) {
                 var body = layui.layer.getChildFrame('body', index);
                 if (edit) {
-                    body.find("#userId").val(edit.userId);  //登录名
-                    body.find("#username").val(edit.username);  //登录名
+                    layui.layer.title('编辑用户',index);
+                    body.find("#permissionId").val(edit.permissionId);  //登录名
+                    body.find("#permissionname").val(edit.permissionname).attr('readonly');  //登录名
                     body.find("#email").val(edit.email);  //邮箱
                     body.find("#sex input[value=" + edit.sex + "]").prop("checked", "checked");  //性别
                     body.find("#status").val(edit.status);    //用户状态
@@ -91,36 +97,25 @@ layui.use(['form', 'layer', 'table', 'laytpl'], function () {
                 } else {
                     body.find("#edit").remove();
                 }
-                setTimeout(function () {
-                    layui.layer.tips('点击此处返回用户列表', '.layui-layer-setwin .layui-layer-close', {
-                        tips: 3
-                    });
-                }, 500)
             }
         });
-        layui.layer.full(index);
-        window.sessionStorage.setItem("index", index);
-        //改变窗口大小时，重置弹窗的宽高，防止超出可视区域（如F12调出debug的操作）
-        $(window).on("resize", function () {
-            layui.layer.full(window.sessionStorage.getItem("index"));
-        })
     }
 
     //批量删除
     $("#delAllBtn").click(function () {
-        var checkStatus = table.checkStatus('userListTable'),
+        var checkStatus = table.checkStatus('permissionListTable'),
             data = checkStatus.data,
-            userIds = [];
+            permissionIds = [];
         if (data.length > 0) {
-            for (var i in data) {
-                userIds.push(data[i].userId);
+            for (let i in data) {
+                permissionIds.push(data[i].permissionId);
             }
-            userIds = JSON.stringify(userIds);
+            permissionIds = JSON.stringify(permissionIds);
             layer.confirm('确定删除选中的用户？', {icon: 3, title: '提示信息'}, function (index) {
                 $.ajax({
                     type: 'post',
-                    url: '/api/user/delete',
-                    data: userIds,
+                    url: '/api/permission/delete',
+                    data: permissionIds,
                     contentType: 'application/json;charset=utf-8',
                     success: function (res) {
                         layer.msg(res.msg);
@@ -135,7 +130,7 @@ layui.use(['form', 'layer', 'table', 'laytpl'], function () {
     });
 
     //列表操作
-    table.on('tool(userList)', function (obj) {
+    table.on('tool(permissionList)', function (obj) {
         var layEvent = obj.event,
             data = obj.data;
 
@@ -163,13 +158,13 @@ layui.use(['form', 'layer', 'table', 'laytpl'], function () {
             });
         } else if (layEvent === 'del') { //删除
             layer.confirm('确定删除此用户？', {icon: 3, title: '提示信息'}, function (index) {
-                var userIds = [];
-                userIds.push(data.userId);
-                userIds = JSON.stringify(userIds);
+                var permissionIds = [];
+                permissionIds.push(data.permissionId);
+                permissionIds = JSON.stringify(permissionIds);
                 $.ajax({
                     type: 'post',
-                    url: '/api/user/delete',
-                    data: userIds,
+                    url: '/api/permission/delete',
+                    data: permissionIds,
                     contentType: 'application/json;charset=utf-8',
                     success: function (res) {
                         layer.msg(res.msg);

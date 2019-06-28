@@ -19,7 +19,7 @@ layui.use(['form', 'layer'], function () {
             data: req,
             success: function (res) {
                 if (res.code === 200) {
-                    top.layer.msg("用户添加成功！");
+                    top.layer.msg("用户添加成功");
                     layer.closeAll("iframe");
                     //刷新父页面
                     parent.location.reload();
@@ -48,7 +48,7 @@ layui.use(['form', 'layer'], function () {
             data: req,
             success: function (res) {
                 if (res.code === 200) {
-                    top.layer.msg("用户修改成功！");
+                    top.layer.msg("用户修改成功");
                     layer.closeAll("iframe");
                     //刷新父页面
                     parent.location.reload();

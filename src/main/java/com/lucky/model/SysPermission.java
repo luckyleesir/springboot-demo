@@ -35,10 +35,22 @@ public class SysPermission implements Serializable {
     private String name;
 
     /**
-     * 权限值
+     * 权限值（应用于controller注解）
      */
-    @ApiModelProperty(value="权限值")
+    @ApiModelProperty(value="权限值（应用于controller注解）")
     private String value;
+
+    /**
+     * 权限对应url
+     */
+    @ApiModelProperty(value="权限对应url")
+    private String url;
+
+    /**
+     * 权限图标
+     */
+    @ApiModelProperty(value="权限图标")
+    private String icon;
 
     /**
      * 权限描述

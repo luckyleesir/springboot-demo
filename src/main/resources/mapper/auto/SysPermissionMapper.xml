@@ -6,6 +6,8 @@
     <result column="pid" jdbcType="BIGINT" property="pid" />
     <result column="name" jdbcType="VARCHAR" property="name" />
     <result column="value" jdbcType="VARCHAR" property="value" />
+    <result column="url" jdbcType="VARCHAR" property="url" />
+    <result column="icon" jdbcType="VARCHAR" property="icon" />
     <result column="description" jdbcType="VARCHAR" property="description" />
     <result column="type" jdbcType="TINYINT" property="type" />
     <result column="status" jdbcType="TINYINT" property="status" />
@@ -71,7 +73,8 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    permission_id, pid, name, value, description, type, status, create_time, update_time
+    permission_id, pid, name, value, url, icon, description, type, status, create_time, 
+    update_time
   </sql>
   <select id="selectByExample" parameterType="com.lucky.model.SysPermissionExample" resultMap="BaseResultMap">
     select
@@ -105,13 +108,13 @@
   </delete>
   <insert id="insert" parameterType="com.lucky.model.SysPermission">
     insert into sys_permission (permission_id, pid, name, 
-      value, description, type, 
-      status, create_time, update_time
-      )
+      value, url, icon, description, 
+      type, status, create_time, 
+      update_time)
     values (#{permissionId,jdbcType=BIGINT}, #{pid,jdbcType=BIGINT}, #{name,jdbcType=VARCHAR}, 
-      #{value,jdbcType=VARCHAR}, #{description,jdbcType=VARCHAR}, #{type,jdbcType=TINYINT}, 
-      #{status,jdbcType=TINYINT}, #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}
-      )
+      #{value,jdbcType=VARCHAR}, #{url,jdbcType=VARCHAR}, #{icon,jdbcType=VARCHAR}, #{description,jdbcType=VARCHAR}, 
+      #{type,jdbcType=TINYINT}, #{status,jdbcType=TINYINT}, #{createTime,jdbcType=TIMESTAMP}, 
+      #{updateTime,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="com.lucky.model.SysPermission">
     insert into sys_permission
@@ -127,6 +130,12 @@
       </if>
       <if test="value != null">
         value,
+      </if>
+      <if test="url != null">
+        url,
+      </if>
+      <if test="icon != null">
+        icon,
       </if>
       <if test="description != null">
         description,
@@ -156,6 +165,12 @@
       </if>
       <if test="value != null">
         #{value,jdbcType=VARCHAR},
+      </if>
+      <if test="url != null">
+        #{url,jdbcType=VARCHAR},
+      </if>
+      <if test="icon != null">
+        #{icon,jdbcType=VARCHAR},
       </if>
       <if test="description != null">
         #{description,jdbcType=VARCHAR},
@@ -195,6 +210,12 @@
       <if test="record.value != null">
         value = #{record.value,jdbcType=VARCHAR},
       </if>
+      <if test="record.url != null">
+        url = #{record.url,jdbcType=VARCHAR},
+      </if>
+      <if test="record.icon != null">
+        icon = #{record.icon,jdbcType=VARCHAR},
+      </if>
       <if test="record.description != null">
         description = #{record.description,jdbcType=VARCHAR},
       </if>
@@ -221,6 +242,8 @@
       pid = #{record.pid,jdbcType=BIGINT},
       name = #{record.name,jdbcType=VARCHAR},
       value = #{record.value,jdbcType=VARCHAR},
+      url = #{record.url,jdbcType=VARCHAR},
+      icon = #{record.icon,jdbcType=VARCHAR},
       description = #{record.description,jdbcType=VARCHAR},
       type = #{record.type,jdbcType=TINYINT},
       status = #{record.status,jdbcType=TINYINT},
@@ -241,6 +264,12 @@
       </if>
       <if test="value != null">
         value = #{value,jdbcType=VARCHAR},
+      </if>
+      <if test="url != null">
+        url = #{url,jdbcType=VARCHAR},
+      </if>
+      <if test="icon != null">
+        icon = #{icon,jdbcType=VARCHAR},
       </if>
       <if test="description != null">
         description = #{description,jdbcType=VARCHAR},
@@ -265,6 +294,8 @@
     set pid = #{pid,jdbcType=BIGINT},
       name = #{name,jdbcType=VARCHAR},
       value = #{value,jdbcType=VARCHAR},
+      url = #{url,jdbcType=VARCHAR},
+      icon = #{icon,jdbcType=VARCHAR},
       description = #{description,jdbcType=VARCHAR},
       type = #{type,jdbcType=TINYINT},
       status = #{status,jdbcType=TINYINT},

@@ -10,6 +10,7 @@ import com.lucky.util.PageUtil;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -77,7 +78,7 @@ public class SysUserController {
     }
 
     @ApiOperation(value = "用户列表")
-    //@PreAuthorize("hasAuthority('pms:product:read')")
+    @PreAuthorize("hasAuthority('sys:user:read')")
     @GetMapping("/list")
     public Result list(@RequestParam(required = false) String name,
                        @RequestParam(defaultValue = "1") int pageNum,

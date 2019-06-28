@@ -1,0 +1,20 @@
+/*layui-body*/
+.layui-body{overflow:hidden; border-top:3px solid #1AA094;border-left:2px solid #1AA094; background:#fff;}
+.footer{ text-align: center;  line-height:20px;border-left: 2px solid #1AA094; z-index:999;background: #ca2b8d;height: 20px }
+
+/*body tabs*/
+.tabs{margin: 0;height:40px; border-bottom:1px solid #e2e2e2;}
+.layui-tab-title{position: absolute}
+.layui-tab-title .layui-this{ background-color:#1AA094; color:#fff; }
+.layui-tab-title .layui-this:after{ border:none; }
+
+/*!*多窗口页面操作下拉*!*/
+.close-box{ position:absolute; right:0; background-color:#fff !important; color:#000; border-left:1px solid #e2e2e2; padding: 0;margin-right: 2px}
+.close-box .layui-nav-item{ line-height:40px; }
+.close-box .layui-nav-item>a,.close-box .layui-nav-item>a:hover{ color:#000; }
+.close-box .layui-nav-child{ top:40px; }
+
+/**iframe**/
+.iframe{position: absolute; width: 100%; height: 100%;left: 0;border: 0;}
+.chide-iframe{padding-top: 40px;}
+

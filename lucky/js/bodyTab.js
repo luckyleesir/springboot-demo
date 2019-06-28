@@ -79,7 +79,7 @@ layui.define(["element","jquery"],function(exports){
             ulHtml += '</li>';
         }
         return ulHtml;
-    }
+    };
 	//获取二级菜单数据
 	Tab.prototype.render = function() {
 		//显示左侧菜单
