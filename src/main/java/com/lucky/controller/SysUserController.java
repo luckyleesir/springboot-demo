@@ -3,6 +3,7 @@ package com.lucky.controller;
 import com.github.pagehelper.PageInfo;
 import com.google.common.collect.Maps;
 import com.lucky.common.response.Result;
+import com.lucky.dto.MenuNodeDto;
 import com.lucky.model.SysUser;
 import com.lucky.service.SysUserService;
 import com.lucky.util.JwtTokenUtil;
@@ -78,7 +79,7 @@ public class SysUserController {
     }
 
     @ApiOperation(value = "用户列表")
-    @PreAuthorize("hasAuthority('sys:user:read')")
+    //@PreAuthorize("hasAuthority('sys:user:read')")
     @GetMapping("/list")
     public Result list(@RequestParam(required = false) String name,
                        @RequestParam(defaultValue = "1") int pageNum,
@@ -145,6 +146,12 @@ public class SysUserController {
     @GetMapping("/permission/{userId}")
     public Result getPermissionList(@PathVariable Long userId) {
         return Result.success(sysUserService.getPermissionList(userId));
+    }
+
+    @ApiOperation(value = "获取指定用户菜单层级")
+    @GetMapping("/menu/treeList")
+    public Result menuTreeList() {
+        return Result.success(sysUserService.getUserMenu());
     }
 
 }

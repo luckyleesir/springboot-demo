@@ -36,8 +36,9 @@ public class ExceptionController {
 
     /**
      * 捕捉其他所有异常
+     * 开发时注释掉，方便debug看错误信息
      */
-    @ExceptionHandler(Exception.class)
+    //@ExceptionHandler(Exception.class)
     public Result globalException(Throwable ex) {
         log.error(ex.toString());
         return Result.failed(ex.getMessage());

@@ -67,17 +67,18 @@ public class SysPermissionController {
 
     @ApiOperation(value = "权限列表")
     @GetMapping("/list")
-    public Result list(@RequestParam(defaultValue = "1") int pageNum,
+    public Result list(@RequestParam(required = false) String name,
+                       @RequestParam(defaultValue = "1") int pageNum,
                        @RequestParam(defaultValue = "50") int pageSize,
                        @RequestParam(required = false) String orderBy) {
-        List<SysPermission> sysPermissionList = sysPermissionService.list(PageUtil.set(pageNum, pageSize, orderBy));
+        List<SysPermission> sysPermissionList = sysPermissionService.list(name,PageUtil.set(pageNum, pageSize, orderBy));
         return Result.success(new PageInfo<>(sysPermissionList));
     }
 
     @ApiOperation(value = "权限树层级")
     @GetMapping("/treeList")
-    public Result treeList() {
-        List<PermissionNodeDto> permissionNodeDtoList = sysPermissionService.treeList();
+    public Result treeList(@RequestParam(required = false) SysPermission sysPermission) {
+        List<PermissionNodeDto> permissionNodeDtoList = sysPermissionService.treeList(sysPermission);
         return Result.success(permissionNodeDtoList);
     }
 

@@ -1,7 +1,5 @@
 package com.lucky.mapper.auto;
 
-import com.lucky.model.SysMenu;
-import com.lucky.model.SysMenuExample;
 import java.util.List;
 import org.apache.ibatis.annotations.Param;
 

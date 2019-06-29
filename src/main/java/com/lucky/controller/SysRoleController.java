@@ -67,8 +67,8 @@ public class SysRoleController {
 
     @ApiOperation(value = "角色列表")
     @GetMapping("/list")
-    public Result list(@RequestParam(defaultValue = "1") int pageNum, @RequestParam(defaultValue = "50") int pageSize, @RequestParam(required = false) String orderBy) {
-        List<SysRole> sysRoleList = sysRoleService.list(PageUtil.set(pageNum, pageSize, orderBy));
+    public Result list(@RequestParam(required = false) String name, @RequestParam(defaultValue = "1") int pageNum, @RequestParam(defaultValue = "50") int pageSize, @RequestParam(required = false) String orderBy) {
+        List<SysRole> sysRoleList = sysRoleService.list(name, PageUtil.set(pageNum, pageSize, orderBy));
         return Result.success(new PageInfo<>(sysRoleList));
     }
 
@@ -88,4 +88,11 @@ public class SysRoleController {
         }
         return Result.failed();
     }
+
+    @ApiOperation(value = "获取角色权限树")
+    @GetMapping("/permissionTree/{roleId}")
+    public Result getRolePermissionTree(@PathVariable Long roleId) {
+        return Result.success(sysRoleService.getRolePermissionTree(roleId));
+    }
+
 }

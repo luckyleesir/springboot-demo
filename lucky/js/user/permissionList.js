@@ -32,14 +32,17 @@ layui.use(['form', 'layer', 'table', 'laytpl'], function () {
         id: "permissionListTable",
         cols: [[
             {type: "checkbox", fixed: "left", width: 50},
+            {title: '操作', width: 120, templet: '#permissionListBar', fixed: "left", align: "center"},
             {field: 'permissionId', title: '权限id', minWidth: 100, align: "center"},
             {field: 'pid', title: '权限父id', minWidth: 100, align: "center"},
             {field: 'name', title: '权限名称', minWidth: 100, align: "center"},
             {field: 'value', title: '权限值', align: 'center'},
             {field: 'url', title: '路径', align: 'center'},
-            {field: 'icon', title: '图标', align: 'center',templet:function (d) {
+            {
+                field: 'icon', title: '图标', align: 'center', templet: function (d) {
                     return '<i class = "layui-icon ' + d.icon + '">';
-                }},
+                }
+            },
             {field: 'description', title: '权限描述', align: 'center'},
             {
                 field: 'type', title: '权限类型', align: 'center', templet: function (d) {
@@ -52,7 +55,7 @@ layui.use(['form', 'layer', 'table', 'laytpl'], function () {
                 }
             },
             {field: 'createTime', title: '创建时间', align: 'center', minWidth: 150, sort: true},
-            {field: 'updateTime', title: '更新时间', align: 'center', minWidth: 150, sort: true},
+            {field: 'updateTime', title: '更新时间', align: 'center', minWidth: 150, sort: true}
         ]],
         size: 'sm',
         toolbar: true
@@ -71,27 +74,30 @@ layui.use(['form', 'layer', 'table', 'laytpl'], function () {
     });
 
     //添加用户
-    $("#addUserBtn").click(function () {
-        addUser();
+    $("#addPermissionBtn").click(function () {
+        addPermission();
     });
 
-    function addUser(edit) {
+    function addPermission(edit) {
         var index = layui.layer.open({
-            title: "添加用户",
+            title: "添加权限",
             type: 2,
             content: "permissionAdd.html",
             maxmin: true,
-            area: ['600px', '500px'],
+            area: ['600px', '600px'],
             success: function (layero, index) {
                 var body = layui.layer.getChildFrame('body', index);
                 if (edit) {
-                    layui.layer.title('编辑用户',index);
-                    body.find("#permissionId").val(edit.permissionId);  //登录名
-                    body.find("#permissionname").val(edit.permissionname).attr('readonly');  //登录名
-                    body.find("#email").val(edit.email);  //邮箱
-                    body.find("#sex input[value=" + edit.sex + "]").prop("checked", "checked");  //性别
-                    body.find("#status").val(edit.status);    //用户状态
-                    body.find("#signature").text(edit.signature);    //个性签名
+                    layui.layer.title('编辑权限', index);
+                    body.find("#permissionId").val(edit.permissionId);
+                    body.find("#pid").val(edit.pid);
+                    body.find("#name").val(edit.name);
+                    body.find("#value").val(edit.value);
+                    body.find("#url").val(edit.url);
+                    body.find("#icon").val(edit.icon);
+                    body.find("#description").val(edit.description);
+                    body.find("#type input[value=" + edit.type + "]").prop("checked", "checked");
+                    body.find("#status").val(edit.status);
                     body.find("#add").remove();
                     form.render();
                 } else {
@@ -111,7 +117,7 @@ layui.use(['form', 'layer', 'table', 'laytpl'], function () {
                 permissionIds.push(data[i].permissionId);
             }
             permissionIds = JSON.stringify(permissionIds);
-            layer.confirm('确定删除选中的用户？', {icon: 3, title: '提示信息'}, function (index) {
+            layer.confirm('确定删除选中的权限？', {icon: 3, title: '提示信息'}, function (index) {
                 $.ajax({
                     type: 'post',
                     url: '/api/permission/delete',
@@ -125,7 +131,7 @@ layui.use(['form', 'layer', 'table', 'laytpl'], function () {
                 })
             })
         } else {
-            layer.msg("请选择需要删除的用户");
+            layer.msg("请选择需要删除的权限");
         }
     });
 
@@ -135,29 +141,9 @@ layui.use(['form', 'layer', 'table', 'laytpl'], function () {
             data = obj.data;
 
         if (layEvent === 'edit') { //编辑
-            addUser(data);
-        } else if (layEvent === 'usable') { //启用禁用
-            var _this = $(this),
-                usableText = "是否确定禁用此用户？",
-                btnText = "已禁用";
-            if (_this.text() === "已禁用") {
-                usableText = "是否确定启用此用户？";
-                btnText = "已启用";
-            }
-            layer.confirm(usableText, {
-                icon: 3,
-                title: '系统提示',
-                cancel: function (index) {
-                    layer.close(index);
-                }
-            }, function (index) {
-                _this.text(btnText);
-                layer.close(index);
-            }, function (index) {
-                layer.close(index);
-            });
+            addPermission(data);
         } else if (layEvent === 'del') { //删除
-            layer.confirm('确定删除此用户？', {icon: 3, title: '提示信息'}, function (index) {
+            layer.confirm('确定删除此权限？', {icon: 3, title: '提示信息'}, function (index) {
                 var permissionIds = [];
                 permissionIds.push(data.permissionId);
                 permissionIds = JSON.stringify(permissionIds);

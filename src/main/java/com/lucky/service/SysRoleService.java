@@ -1,6 +1,7 @@
 package com.lucky.service;
 
 import com.github.pagehelper.Page;
+import com.lucky.dto.RolePermissionTreeDto;
 import com.lucky.model.SysPermission;
 import com.lucky.model.SysRole;
 import org.springframework.transaction.annotation.Transactional;
@@ -53,10 +54,11 @@ public interface SysRoleService {
     /**
      * 角色列表
      *
+     * @param name 查询关键字
      * @param page 分页信息
      * @return 角色list
      */
-    List<SysRole> list(Page page);
+    List<SysRole> list(String name, Page page);
 
     /**
      * 获取指定角色权限
@@ -75,4 +77,12 @@ public interface SysRoleService {
      */
     @Transactional(rollbackFor = {Error.class, Exception.class})
     int updateRolePermission(Long roleId, List<Long> permissionIds);
+
+    /**
+     * 角色权限树
+     *
+     * @param roleId
+     * @return
+     */
+    List<RolePermissionTreeDto> getRolePermissionTree(Long roleId);
 }

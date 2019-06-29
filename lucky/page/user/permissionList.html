@@ -23,18 +23,20 @@
                 <a class="layui-btn" id="searchBtn" data-type="reload">搜索</a>
             </div>
             <div class="layui-inline">
-                <a class="layui-btn layui-btn-normal" id="addPermissionBtn">添加</a>
+                <a class="layui-btn layui-btn-normal" id="addPermissionBtn">添加权限</a>
             </div>
             <div class="layui-inline">
-                <a class="layui-btn layui-btn-normal" id="edit">编辑</a>
-            </div>
-            <div class="layui-inline">
-                <a class="layui-btn layui-btn-danger layui-btn-normal" id="delAllBtn">删除</a>
+                <a class="layui-btn layui-btn-danger layui-btn-normal" id="delAllBtn">批量删除</a>
             </div>
         </form>
     </blockquote>
     <table id="permissionList" lay-filter="permissionList"></table>
 
+    <!--操作-->
+    <script type="text/html" id="permissionListBar">
+        <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
+        <a class="layui-btn layui-btn-xs layui-btn-danger" lay-event="del">删除</a>
+    </script>
 </form>
 <script type="text/javascript" src="../../layui/layui.js"></script>
 <script type="text/javascript" src="../../js/user/permissionList.js"></script>

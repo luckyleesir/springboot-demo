@@ -32,6 +32,7 @@ layui.use(['form', 'layer', 'table', 'laytpl'], function () {
         id: "userListTable",
         cols: [[
             {type: "checkbox", fixed: "left", width: 50},
+            {title: '操作', width: 120, templet: '#userListBar', fixed: "left", align: "center"},
             {field: 'username', title: '用户名', minWidth: 100, align: "center"},
             {field: 'name', title: '姓名', minWidth: 100, align: "center"},
             {field: 'nick', title: '昵称', minWidth: 100, align: "center"},
@@ -49,7 +50,6 @@ layui.use(['form', 'layer', 'table', 'laytpl'], function () {
                 }
             },
             {field: 'signature', title: '个性签名', align: 'center'},
-            {title: '操作', minWidth: 175, templet: '#userListBar', fixed: "right", align: "center"}
         ]],
         size: 'sm',
         toolbar: true
@@ -82,7 +82,7 @@ layui.use(['form', 'layer', 'table', 'laytpl'], function () {
             success: function (layero, index) {
                 var body = layui.layer.getChildFrame('body', index);
                 if (edit) {
-                    layui.layer.title('编辑用户',index);
+                    layui.layer.title('编辑用户', index);
                     body.find("#userId").val(edit.userId);  //登录名
                     body.find("#username").val(edit.username).attr('readonly');  //登录名
                     body.find("#email").val(edit.email);  //邮箱

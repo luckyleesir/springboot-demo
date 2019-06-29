@@ -5,9 +5,9 @@ layui.use(['form', 'layer', 'table', 'laytpl'], function () {
         laytpl = layui.laytpl,
         table = layui.table;
 
-    //用户列表
+    //角色列表
     var tableIns = table.render({
-        elem: '#userList',
+        elem: '#roleList',
         url: '/api/role/list',
         request: {
             pageName: 'pageNum', //页码的参数名称，默认：page
@@ -29,27 +29,19 @@ layui.use(['form', 'layer', 'table', 'laytpl'], function () {
         height: "full-125",
         limits: [10, 20, 50, 100],
         limit: 10,
-        id: "userListTable",
+        id: "roleListTable",
         cols: [[
             {type: "checkbox", fixed: "left", width: 50},
-            {field: 'username', title: '用户名', minWidth: 100, align: "center"},
-            {field: 'name', title: '姓名', minWidth: 100, align: "center"},
-            {field: 'nick', title: '昵称', minWidth: 100, align: "center"},
-            {field: 'sex', title: '性别', align: 'center'},
-            {field: 'age', title: '年龄', align: 'center'},
+            {title: '操作', width: 200, templet: '#roleListBar', fixed: "right", align: "center"},
+            {field: 'name', title: '角色名', minWidth: 100, align: "center"},
+            {field: 'description', title: '角色描述', align: 'center'},
             {
-                field: 'status', title: '用户状态', align: 'center', templet: function (d) {
+                field: 'status', title: '角色状态', align: 'center', templet: function (d) {
                     return d.status === 1 ? "启用" : "禁用";
                 }
             },
             {field: 'createTime', title: '创建时间', align: 'center', minWidth: 150, sort: true},
-            {
-                field: 'email', title: '用户邮箱', minWidth: 200, align: 'center', templet: function (d) {
-                    return '<a class="layui-blue" href="mailto:' + d.email + '">' + d.email + '</a>';
-                }
-            },
-            {field: 'signature', title: '个性签名', align: 'center'},
-            {title: '操作', minWidth: 175, templet: '#userListBar', fixed: "right", align: "center"}
+            {field: 'updateTime', title: '更新时间', align: 'center', minWidth: 150, sort: true}
         ]],
         size: 'sm',
         toolbar: true
@@ -57,7 +49,7 @@ layui.use(['form', 'layer', 'table', 'laytpl'], function () {
 
     //搜索
     $("#searchBtn").on("click", function () {
-        table.reload("userListTable", {
+        table.reload("roleListTable", {
             page: {
                 curr: 1 //重新从第 1 页开始
             },
@@ -67,28 +59,26 @@ layui.use(['form', 'layer', 'table', 'laytpl'], function () {
         })
     });
 
-    //添加用户
-    $("#addUserBtn").click(function () {
-        addUser();
+    //添加角色
+    $("#addRoleBtn").click(function () {
+        addRole();
     });
 
-    function addUser(edit) {
+    function addRole(edit) {
         var index = layui.layer.open({
-            title: "添加用户",
+            title: "添加角色",
             type: 2,
-            content: "userAdd.html",
+            content: "roleAdd.html",
             maxmin: true,
             area: ['600px', '500px'],
             success: function (layero, index) {
                 var body = layui.layer.getChildFrame('body', index);
                 if (edit) {
-                    layui.layer.title('编辑用户',index);
-                    body.find("#userId").val(edit.userId);  //登录名
-                    body.find("#username").val(edit.username).attr('readonly');  //登录名
-                    body.find("#email").val(edit.email);  //邮箱
-                    body.find("#sex input[value=" + edit.sex + "]").prop("checked", "checked");  //性别
-                    body.find("#status").val(edit.status);    //用户状态
-                    body.find("#signature").text(edit.signature);    //个性签名
+                    layui.layer.title('编辑角色', index);
+                    body.find("#roleId").val(edit.roleId);
+                    body.find("#name").val(edit.name);
+                    body.find("#description").val(edit.description);
+                    body.find("#status").val(edit.status);
                     body.find("#add").remove();
                     form.render();
                 } else {
@@ -100,19 +90,19 @@ layui.use(['form', 'layer', 'table', 'laytpl'], function () {
 
     //批量删除
     $("#delAllBtn").click(function () {
-        var checkStatus = table.checkStatus('userListTable'),
+        var checkStatus = table.checkStatus('roleListTable'),
             data = checkStatus.data,
-            userIds = [];
+            roleIds = [];
         if (data.length > 0) {
             for (let i in data) {
-                userIds.push(data[i].userId);
+                roleIds.push(data[i].roleId);
             }
-            userIds = JSON.stringify(userIds);
-            layer.confirm('确定删除选中的用户？', {icon: 3, title: '提示信息'}, function (index) {
+            roleIds = JSON.stringify(roleIds);
+            layer.confirm('确定删除选中的角色？', {icon: 3, title: '提示信息'}, function (index) {
                 $.ajax({
                     type: 'post',
-                    url: '/api/user/delete',
-                    data: userIds,
+                    url: '/api/role/delete',
+                    data: roleIds,
                     contentType: 'application/json;charset=utf-8',
                     success: function (res) {
                         layer.msg(res.msg);
@@ -122,46 +112,26 @@ layui.use(['form', 'layer', 'table', 'laytpl'], function () {
                 })
             })
         } else {
-            layer.msg("请选择需要删除的用户");
+            layer.msg("请选择需要删除的角色");
         }
     });
 
     //列表操作
-    table.on('tool(userList)', function (obj) {
+    table.on('tool(roleList)', function (obj) {
         var layEvent = obj.event,
             data = obj.data;
 
         if (layEvent === 'edit') { //编辑
-            addUser(data);
-        } else if (layEvent === 'usable') { //启用禁用
-            var _this = $(this),
-                usableText = "是否确定禁用此用户？",
-                btnText = "已禁用";
-            if (_this.text() === "已禁用") {
-                usableText = "是否确定启用此用户？";
-                btnText = "已启用";
-            }
-            layer.confirm(usableText, {
-                icon: 3,
-                title: '系统提示',
-                cancel: function (index) {
-                    layer.close(index);
-                }
-            }, function (index) {
-                _this.text(btnText);
-                layer.close(index);
-            }, function (index) {
-                layer.close(index);
-            });
+            addRole(data);
         } else if (layEvent === 'del') { //删除
-            layer.confirm('确定删除此用户？', {icon: 3, title: '提示信息'}, function (index) {
-                var userIds = [];
-                userIds.push(data.userId);
-                userIds = JSON.stringify(userIds);
+            layer.confirm('确定删除此角色？', {icon: 3, title: '提示信息'}, function (index) {
+                var roleIds = [];
+                roleIds.push(data.roleId);
+                roleIds = JSON.stringify(roleIds);
                 $.ajax({
                     type: 'post',
-                    url: '/api/user/delete',
-                    data: userIds,
+                    url: '/api/role/delete',
+                    data: roleIds,
                     contentType: 'application/json;charset=utf-8',
                     success: function (res) {
                         layer.msg(res.msg);
@@ -170,7 +140,26 @@ layui.use(['form', 'layer', 'table', 'laytpl'], function () {
                     }
                 })
             });
+        } else if (layEvent === 'assignPermission') {
+            assignPermission(data);
         }
     });
+
+
+    function assignPermission(data) {
+        var index = layui.layer.open({
+            title: "分配权限",
+            type: 2,
+            content: "assignPermission.html",
+            maxmin: true,
+            area: ['600px', '500px'],
+            success: function (layero, index) {
+                var body = layui.layer.getChildFrame('body', index);
+                body.find("#roleId").val(data.roleId);
+                body.find("#name").val(data.name);
+                form.render();
+            }
+        });
+    }
 
 });

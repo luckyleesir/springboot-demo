@@ -1,6 +1,7 @@
 package com.lucky.service;
 
 import com.github.pagehelper.Page;
+import com.lucky.dto.MenuNodeDto;
 import com.lucky.model.SysPermission;
 import com.lucky.model.SysRole;
 import com.lucky.model.SysUser;
@@ -116,4 +117,9 @@ public interface SysUserService {
      * @return 用户
      */
     SysUser getUserByUsername(String username);
+
+    /**
+     * 获取用户菜单
+     */
+    List<MenuNodeDto> getUserMenu();
 }

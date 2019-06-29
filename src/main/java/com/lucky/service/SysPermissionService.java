@@ -53,16 +53,17 @@ public interface SysPermissionService {
     /**
      * 权限列表
      *
+     * @param name 查询关键字
      * @param page 分页信息
      * @return 权限list
      */
-    List<SysPermission> list(Page page);
+    List<SysPermission> list(String name, Page page);
 
     /**
      * 获取权限树结构
      *
      * @return PermissionNodeDto
      */
-    List<PermissionNodeDto> treeList();
+    List<PermissionNodeDto> treeList(SysPermission selectParam);
 
 }

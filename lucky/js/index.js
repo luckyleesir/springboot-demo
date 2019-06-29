@@ -8,7 +8,7 @@ layui.config({
         navbar = layui.navbar();
     $.ajax({
         type: "get",
-        url: "/api/menu/treeList",
+        url: "/api/user/menu/treeList",
         contentType: "application/json; charset=utf-8",
         data: 'json',
         success: function (res) {

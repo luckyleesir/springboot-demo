@@ -8,6 +8,7 @@ import com.lucky.model.SysPermissionExample;
 import com.lucky.service.SysPermissionService;
 import com.lucky.util.PageUtil;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
@@ -51,15 +52,30 @@ public class SysPermissionServiceImpl implements SysPermissionService {
     }
 
     @Override
-    public List<SysPermission> list(Page page) {
+    public List<SysPermission> list(String name, Page page) {
         PageUtil.start(page);
         SysPermissionExample sysPermissionExample = new SysPermissionExample();
+        if (StringUtils.isNotBlank(name)) {
+            String like = "%" + name + "%";
+            sysPermissionExample.createCriteria().andNameLike(like);
+            sysPermissionExample.or().andDescriptionLike(like);
+            sysPermissionExample.or().andValueLike(like);
+        }
         return sysPermissionMapper.selectByExample(sysPermissionExample);
     }
 
     @Override
-    public List<PermissionNodeDto> treeList() {
-        List<SysPermission> sysPermissionList = sysPermissionMapper.selectByExample(new SysPermissionExample());
+    public List<PermissionNodeDto> treeList(SysPermission selectParam) {
+       SysPermissionExample sysPermissionExample =   new SysPermissionExample();
+        if (selectParam!=null){
+            if (selectParam.getType()!=null){
+                sysPermissionExample.createCriteria().andTypeEqualTo(selectParam.getType());
+            }
+            if (selectParam.getStatus()!=null){
+                sysPermissionExample.createCriteria().andStatusEqualTo(selectParam.getStatus());
+            }
+        }
+        List<SysPermission> sysPermissionList = sysPermissionMapper.selectByExample(sysPermissionExample);
         List<PermissionNodeDto> result = sysPermissionList.stream()
                 .filter(sysPermission -> sysPermission.getPid().equals(0L))
                 .map(sysPermission -> convert(sysPermission,sysPermissionList))
