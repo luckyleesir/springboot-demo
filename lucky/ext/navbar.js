@@ -77,33 +77,30 @@ layui.define(['element'], function (exports) {
     /**
      * 打开新窗口
      */
-        //右侧内容tab操作
     let tabIdIndex = 0;
     Navbar.prototype.tabAdd = function (_this) {
-        let that = this;
         if (_this.attr("target") === "_blank") {
             window.open(_this.attr("data-url"));
         } else if (_this.attr("data-url") !== undefined) {
             //已打开的窗口中不存在
-            if (that.hasTab(_this.find("cite").text()) === -1 && _this.siblings("dl.layui-nav-child").length === 0) {
+            if (this.hasTab(_this.find("cite").text()) === -1) {
                 if ($(".layui-tab-title li").length === 10) {
                     layer.msg('只能同时打开' + 10 + '个选项卡哦。不然系统会卡的！');
                     return;
                 }
                 let title = '';
                 tabIdIndex++;
-                title += '<cite>' + _this.find("cite").text() + '</cite>';
-                title += '<i class="layui-unselect layui-tab-close layui-icon layui-icon-close" data-id="' + tabIdIndex + '"></i>';
-                let content = "<iframe class='iframe' src='" + _this.attr("data-url") + "' data-id='" + tabIdIndex + "'></frame>";
-                element.tabAdd('addTab', {
+                title += _this.find("cite").text();
+                title += '<i class="layui-unselect layui-tab-close layui-icon layui-icon-close" lay-id="' + tabIdIndex + '"></i>';
+                let content = "<iframe class='iframe' src='" + _this.attr("data-url") + "' lay-id='" + tabIdIndex + "'></frame>";
+                element.tabAdd('main_tab1', {
                     title: title,
                     content: content,
                     id: new Date().getTime()
                 });
-                element.tabChange('addTab', that.getLayId(_this.find("cite").text()));
-                element.tabChange('addTab', $(this).attr("lay-id")).init();
-                navbar.changeRegresh($(this).index());
             }
+            element.tabChange('main_tab1', this.getLayId(_this.text()));
+            navbar.changeRefresh($(this).index());
         }
     };
 
@@ -111,7 +108,7 @@ layui.define(['element'], function (exports) {
     Navbar.prototype.hasTab = function (title) {
         let tabIndex = -1;
         $(".layui-tab-title li").each(function () {
-            if ($(this).find("cite").text() === title) {
+            if ($(this).text() === title) {
                 tabIndex = 1;
             }
         });
@@ -122,7 +119,7 @@ layui.define(['element'], function (exports) {
     //通过title获取lay-id
     Navbar.prototype.getLayId = function (title) {
         $(".layui-tab-title li").each(function () {
-            if ($(this).find("cite").text() === title) {
+            if ($(this).text() === title) {
                 layId = $(this).attr("lay-id");
             }
         });
@@ -130,8 +127,13 @@ layui.define(['element'], function (exports) {
     };
 
     //是否点击窗口切换刷新页面
-    Navbar.prototype.changeRegresh = function (index) {
+    Navbar.prototype.changeRefresh = function (index) {
         $(".layui-tab-item").eq(index).find("iframe")[0].contentWindow.location.reload();
+    };
+
+    //移除tab
+    Navbar.prototype.removeTab = function (_this) {
+        element.tabDelete("main_tab1", this.getLayId(_this.parent("li").text()));
     };
 
     let navbar = new Navbar();

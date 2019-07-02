@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-    <title>layout 后台大布局 - Layui</title>
+    <title>lucky</title>
     <link rel="stylesheet" href="layui/css/layui.css">
     <link rel="stylesheet" href="css/common.css">
 </head>
@@ -12,24 +12,13 @@
 
     <!-- 头部区域（可配合layui已有的水平导航） -->
     <div class="layui-header">
-        <div class="layui-logo layui-icon layui-icon-login-wechat"> layui 后台布局</div>
+        <div class="layui-logo layui-icon layui-icon-auz"> lucky权限管理系统</div>
         <ul class="layui-nav layui-layout-left">
             <li class="layui-nav-item">
                 <a href="javascript:;" title="侧边伸缩">
                     <i class="layui-icon layui-icon-shrink-right" id="leftNav"></i>
                 </a>
             </li>
-            <!--<li class="layui-nav-item"><a href="">控制台</a></li>-->
-            <!--<li class="layui-nav-item"><a href="">商品管理</a></li>-->
-            <!--<li class="layui-nav-item"><a href="">用户</a></li>-->
-            <!--<li class="layui-nav-item">-->
-            <!--<a href="javascript:;">其它系统</a>-->
-            <!--<dl class="layui-nav-child">-->
-            <!--<dd><a href="">邮件管理</a></dd>-->
-            <!--<dd><a href="">消息管理</a></dd>-->
-            <!--<dd><a href="">授权管理</a></dd>-->
-            <!--</dl>-->
-            <!--</li>-->
         </ul>
         <ul class="layui-nav layui-layout-right">
             <li class="layui-nav-item">
@@ -53,21 +42,11 @@
     </div>
 
     <!-- 主体内容 -->
-    <div class="layui-body">
-        <div class="layui-tab tabs" lay-filter="addTab" id="tabs" >
-            <ul class="layui-tab-title">
+    <div class="layui-body" id="nav1">
+        <div class="layui-tab tabs" id="tabs" lay-filter="main_tab1">
+            <ul id="main_tab1" class="layui-tab-title">
                 <li class="layui-this">
-                    <a style="display: contents" href="javascript:;" data-url="demo.html"><i class="layui-icon" data-icon=""></i><cite>首页</cite></a>
-                </li>
-            </ul>
-            <ul class="layui-nav close-box">
-                <li class="layui-nav-item">
-                    <a href="javascript:"><i class="layui-icon layui-icon-more-vertical">页面操作</i></a>
-                    <dl class="layui-nav-child">
-                        <dd><a href="javascript:" class="refresh refreshThis"> 刷新当前</a></dd>
-                        <dd><a href="javascript:" class="closePageOther"> 关闭其他</a></dd>
-                        <dd><a href="javascript:" class="closePageAll">关闭全部</a></dd>
-                    </dl>
+                    <a style="display: contents" href="javascript:;" data-url="page/main.html"></a>首页
                 </li>
             </ul>
             <div class="layui-tab-content chide-iframe">
@@ -80,7 +59,7 @@
 
     <!-- 底部-->
     <div class="layui-footer footer">
-        © layui.com - 底部固定区域
+        © lucky - 底部固定区域
     </div>
 </div>
 </body>

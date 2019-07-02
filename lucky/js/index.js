@@ -1,11 +1,19 @@
 //注意：导航 依赖 element 模块，否则无法进行功能性操作
 layui.config({
     base: '../ext/'   //navbar组件js所在目录
-}).use(['element', 'form', 'navbar', 'jquery'], function () {
+}).use(['element', 'form', 'navbar', 'jquery', 'tabrightmenu'], function () {
     var $ = layui.jquery,
         element = layui.element,
         form = layui.form,
+        rightmenu_ = layui.tabrightmenu,
         navbar = layui.navbar();
+
+    // 默认方式渲染全部：关闭当前（closethis）、关闭所有但固定（closeallbutpin）、关闭其它但固定（closeothersbutpin）、关闭左侧所有但固定（closeleftbutpin）、关闭右侧所有但固定（closerightbutpin）、刷新当前页（refresh）
+    rightmenu_.render({
+        container: '#nav1',
+        filter: 'main_tab1',
+    });
+
     $.ajax({
         type: "get",
         url: "/api/user/menu/treeList",
@@ -45,5 +53,9 @@ layui.config({
         $(this).parent("li").siblings().removeClass("layui-nav-itemed");
     });
 
+    //删除tab
+    $("body").on("click", "li i.layui-tab-close", function () {
+        navbar.removeTab($(this));
+    });
 
 });

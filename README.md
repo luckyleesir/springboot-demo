@@ -9,4 +9,5 @@ https://www.jianshu.com/p/c89cadcac21f
 https://juejin.im/post/59f1b2766fb9a0450e755993
 
 ##前端插件
-权限树：https://github.com/wangerzi/layui-authtree 
+权限树：https://github.com/wangerzi/layui-authtree
+tab页：https://github.com/TangHanF/layui_plugin
