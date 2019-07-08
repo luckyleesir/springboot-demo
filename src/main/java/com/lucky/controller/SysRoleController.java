@@ -9,6 +9,7 @@ import com.lucky.util.PageUtil;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -29,6 +30,7 @@ public class SysRoleController {
     private SysRoleService sysRoleService;
 
     @ApiOperation(value = "新增角色")
+    @PreAuthorize("hasAuthority('sys:role:add')")
     @PostMapping("/add")
     public Result add(@RequestBody SysRole sysRole) {
         int count = sysRoleService.add(sysRole);
@@ -39,6 +41,7 @@ public class SysRoleController {
     }
 
     @ApiOperation(value = "删除角色")
+    @PreAuthorize("hasAuthority('sys:role:delete')")
     @PostMapping("/delete")
     public Result delete(@RequestBody List<Long> roleIds) {
         int count = sysRoleService.delete(roleIds);
@@ -56,6 +59,7 @@ public class SysRoleController {
     }
 
     @ApiOperation(value = "修改角色")
+    @PreAuthorize("hasAuthority('sys:role:edit')")
     @PostMapping("/update/{roleId}")
     public Result update(@PathVariable Long roleId, @RequestBody SysRole sysRole) {
         int count = sysRoleService.update(roleId, sysRole);
@@ -66,6 +70,7 @@ public class SysRoleController {
     }
 
     @ApiOperation(value = "角色列表")
+    @PreAuthorize("hasAuthority('sys:role:read')")
     @GetMapping("/list")
     public Result list(@RequestParam(required = false) String name, @RequestParam(defaultValue = "1") int pageNum, @RequestParam(defaultValue = "50") int pageSize, @RequestParam(required = false) String orderBy) {
         List<SysRole> sysRoleList = sysRoleService.list(name, PageUtil.set(pageNum, pageSize, orderBy));

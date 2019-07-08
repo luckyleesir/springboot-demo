@@ -13,6 +13,7 @@ layui.use(['form', 'layer'], function () {
             method: 'post',
             url: '/api/role/add',
             contentType: 'application/json;charset=utf-8',
+            headers:  {Authorization:'Bearer ' + layui.data('jwtToken')['Bearer']},
             dataType: 'json',
             data: req,
             success: function (res) {
@@ -40,6 +41,7 @@ layui.use(['form', 'layer'], function () {
             method: 'post',
             url: '/api/role/update/' + roleId,
             contentType: 'application/json;charset=utf-8',
+            headers:  {Authorization:'Bearer ' + layui.data('jwtToken')['Bearer']},
             dataType: 'json',
             data: req,
             success: function (res) {

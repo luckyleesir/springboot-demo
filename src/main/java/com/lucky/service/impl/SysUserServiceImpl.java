@@ -2,6 +2,7 @@ package com.lucky.service.impl;
 
 import cn.hutool.core.collection.CollUtil;
 import com.github.pagehelper.Page;
+import com.lucky.common.SysUserHolder;
 import com.lucky.common.enums.PermissionType;
 import com.lucky.dto.MenuNodeDto;
 import com.lucky.dto.PermissionNodeDto;
@@ -173,6 +174,7 @@ public class SysUserServiceImpl implements SysUserService {
 
     @Override
     public List<MenuNodeDto> getUserMenu() {
+        log.info("{}", SysUserHolder.get());
         SysPermissionExample sysPermissionExample = new SysPermissionExample();
         sysPermissionExample.createCriteria().andTypeEqualTo(PermissionType.MENU.getCode());
         List<SysPermission> sysPermissionList = sysPermissionMapper.selectByExample(sysPermissionExample);

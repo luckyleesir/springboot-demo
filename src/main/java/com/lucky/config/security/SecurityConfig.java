@@ -1,8 +1,11 @@
 package com.lucky.config.security;
 
+import com.alibaba.fastjson.JSON;
+import com.lucky.common.SysUserHolder;
 import com.lucky.model.SysPermission;
 import com.lucky.model.SysUser;
 import com.lucky.service.SysUserService;
+import com.lucky.util.RedisUtil;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -34,7 +37,7 @@ import java.util.List;
  */
 @Configuration
 @EnableWebSecurity
-@EnableGlobalMethodSecurity(prePostEnabled=true)
+@EnableGlobalMethodSecurity(prePostEnabled = true)
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Resource
     private SysUserService sysUserService;
@@ -42,49 +45,31 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     private AccessDeniedExceptionHandler accessDeniedExceptionHandler;
     @Resource
     private AuthenticationExceptionHandler authenticationExceptionHandler;
+    @Resource
+    private RedisUtil redisUtil;
 
     @Override
     protected void configure(HttpSecurity httpSecurity) throws Exception {
         // 由于使用的是JWT，我们这里不需要csrf
-        httpSecurity.csrf()
-                .disable()
+        httpSecurity.csrf().disable()
                 // 基于token，所以不需要session
-                .sessionManagement()
-                .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-                .and()
-                .authorizeRequests()
+                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and().authorizeRequests()
                 // 允许对于网站静态资源的无授权访问
-                .antMatchers(HttpMethod.GET,
-                        "/",
-                        "/*.html",
-                        "/favicon.ico",
-                        "/**/*.html",
-                        "/**/*.css",
-                        "/**/*.js",
-                        "/swagger-resources/**",
-                        "/v2/api-docs/**"
-                )
-                .permitAll()
+                .antMatchers(HttpMethod.GET, "/", "/*.html", "/favicon.ico", "/**/*.html", "/**/*.css", "/**/*.js", "/swagger-resources/**", "/v2/api-docs/**").permitAll()
                 // 对登录注册要允许匿名访问
-                .antMatchers("/user/login", "/user/register")
-                .permitAll()
+                .antMatchers("/user/login", "/user/register").permitAll()
                 //跨域请求会先进行一次options请求
-                .antMatchers(HttpMethod.OPTIONS)
-                .permitAll()
+                .antMatchers(HttpMethod.OPTIONS).permitAll()
                 //测试时全部运行访问
-                .antMatchers("/**")
-                .permitAll()
+                //.antMatchers("/**").permitAll()
                 // 除上面外的所有请求全部需要鉴权认证
-                .anyRequest()
-                .authenticated();
+                .anyRequest().authenticated();
         // 禁用缓存
         httpSecurity.headers().cacheControl();
         // 添加JWT filter
         httpSecurity.addFilterBefore(jwtAuthenticationTokenFilter(), UsernamePasswordAuthenticationFilter.class);
         //添加自定义未授权和未登录结果返回
-        httpSecurity.exceptionHandling()
-                .accessDeniedHandler(accessDeniedExceptionHandler)
-                .authenticationEntryPoint(authenticationExceptionHandler);
+        httpSecurity.exceptionHandling().accessDeniedHandler(accessDeniedExceptionHandler).authenticationEntryPoint(authenticationExceptionHandler);
     }
 
     @Override
@@ -108,6 +93,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         return username -> {
             SysUser sysUser = sysUserService.getUserByUsername(username);
             if (sysUser != null) {
+                redisUtil.set(username, JSON.toJSONString(sysUser));
+                SysUserHolder.set(sysUser);
                 List<SysPermission> permissionList = sysUserService.getPermissionList(sysUser.getUserId());
                 return new SysUserDetails(sysUser, permissionList);
             }
@@ -116,7 +103,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
     @Bean
-    public JwtAuthenticationTokenFilter jwtAuthenticationTokenFilter(){
+    public JwtAuthenticationTokenFilter jwtAuthenticationTokenFilter() {
         return new JwtAuthenticationTokenFilter();
     }
 

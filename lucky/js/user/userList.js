@@ -9,6 +9,7 @@ layui.use(['form', 'layer', 'table', 'laytpl'], function () {
     var tableIns = table.render({
         elem: '#userList',
         url: '/api/user/list',
+        headers:  {Authorization:'Bearer ' + layui.data('jwtToken')['Bearer']},
         request: {
             pageName: 'pageNum', //页码的参数名称，默认：page
             limitName: 'pageSize' //每页数据量的参数名，默认：limit
@@ -114,6 +115,7 @@ layui.use(['form', 'layer', 'table', 'laytpl'], function () {
                     url: '/api/user/delete',
                     data: userIds,
                     contentType: 'application/json;charset=utf-8',
+                    headers:  {Authorization:'Bearer ' + layui.data('jwtToken')['Bearer']},
                     success: function (res) {
                         layer.msg(res.msg);
                         tableIns.reload();
@@ -163,6 +165,7 @@ layui.use(['form', 'layer', 'table', 'laytpl'], function () {
                     url: '/api/user/delete',
                     data: userIds,
                     contentType: 'application/json;charset=utf-8',
+                    headers:  {Authorization:'Bearer ' + layui.data('jwtToken')['Bearer']},
                     success: function (res) {
                         layer.msg(res.msg);
                         tableIns.reload();

@@ -11,6 +11,7 @@ layui.config({
         method: 'get',
         url: '/api/role/permissionTree/' + roleId,
         contentType: 'application/json;charset=utf-8',
+        headers:  {Authorization:'Bearer ' + layui.data('jwtToken')['Bearer']},
         dataType: 'json',
         success: function (res) {
             if (res.code === 200) {
@@ -56,6 +57,7 @@ layui.config({
         $.ajax({
             method: 'post',
             url: '/api/role/permission/update/' + roleId,
+            headers:  {Authorization:'Bearer ' + layui.data('jwtToken')['Bearer']},
             contentType: 'application/json;charset=utf-8',
             dataType: 'json',
             data: permissionIds,

@@ -17,6 +17,13 @@ layui.use(['form', 'layer', 'jquery'], function () {
             data: data.field,
             success: function (res) {
                 if (res.code === 200) {
+                    //请求成功后，写入token
+                    layui.data('jwtToken', {
+                        key: 'Bearer',
+                        value: res.data.token
+                    });
+
+                    console.log(layui.data('jwtToken'));
                     location.href = "../../index.html";
                 } else {
                     layer.msg(res.msg, {

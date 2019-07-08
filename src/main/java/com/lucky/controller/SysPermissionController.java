@@ -9,6 +9,7 @@ import com.lucky.util.PageUtil;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -29,6 +30,7 @@ public class SysPermissionController {
     private SysPermissionService sysPermissionService;
 
     @ApiOperation(value = "新增权限")
+    @PreAuthorize("hasAuthority('sys:permission:add')")
     @PostMapping("/add")
     public Result add(@RequestBody SysPermission sysPermission) {
         int count = sysPermissionService.add(sysPermission);
@@ -39,6 +41,7 @@ public class SysPermissionController {
     }
 
     @ApiOperation(value = "删除权限")
+    @PreAuthorize("hasAuthority('sys:permission:delete')")
     @PostMapping("/delete")
     public Result delete(@RequestBody List<Long> permissionIds) {
         int count = sysPermissionService.delete(permissionIds);
@@ -56,6 +59,7 @@ public class SysPermissionController {
     }
 
     @ApiOperation(value = "修改权限")
+    @PreAuthorize("hasAuthority('sys:permission:edit')")
     @PostMapping("/update/{permissionId}")
     public Result update(@PathVariable Long permissionId, @RequestBody SysPermission sysPermission) {
         int count = sysPermissionService.update(permissionId, sysPermission);
@@ -66,6 +70,7 @@ public class SysPermissionController {
     }
 
     @ApiOperation(value = "权限列表")
+    @PreAuthorize("hasAuthority('sys:permission:read')")
     @GetMapping("/list")
     public Result list(@RequestParam(required = false) String name,
                        @RequestParam(defaultValue = "1") int pageNum,

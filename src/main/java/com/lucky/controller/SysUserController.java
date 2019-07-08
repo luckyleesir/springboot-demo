@@ -79,7 +79,7 @@ public class SysUserController {
     }
 
     @ApiOperation(value = "用户列表")
-    //@PreAuthorize("hasAuthority('sys:user:read')")
+    @PreAuthorize("hasAuthority('sys:user:read')")
     @GetMapping("/list")
     public Result list(@RequestParam(required = false) String name,
                        @RequestParam(defaultValue = "1") int pageNum,
@@ -97,6 +97,7 @@ public class SysUserController {
 
 
     @ApiOperation(value = "添加用户")
+    @PreAuthorize("hasAuthority('sys:user:add')")
     @PostMapping("/add")
     public Result add(@RequestBody SysUser sysUser) {
         int count = sysUserService.add(sysUser);
@@ -107,6 +108,7 @@ public class SysUserController {
     }
 
     @ApiOperation(value = "修改用户")
+    @PreAuthorize("hasAuthority('sys:user:edit')")
     @PostMapping("/update/{userId}")
     public Result update(@PathVariable Long userId, @RequestBody SysUser sysUser) {
         int count = sysUserService.update(userId, sysUser);
@@ -117,6 +119,7 @@ public class SysUserController {
     }
 
     @ApiOperation(value = "删除用户")
+    @PreAuthorize("hasAuthority('sys:user:delete')")
     @PostMapping("/delete")
     public Result delete(@RequestBody List<Long> userIds) {
         int count = sysUserService.delete(userIds);

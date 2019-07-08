@@ -18,6 +18,7 @@ layui.config({
         type: "get",
         url: "/api/user/menu/treeList",
         contentType: "application/json; charset=utf-8",
+        headers:  {Authorization:'Bearer ' + layui.data('jwtToken')['Bearer']},
         data: 'json',
         success: function (res) {
             if (res.code === 200) {
