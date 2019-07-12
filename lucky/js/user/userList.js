@@ -33,7 +33,7 @@ layui.use(['form', 'layer', 'table', 'laytpl'], function () {
         id: "userListTable",
         cols: [[
             {type: "checkbox", fixed: "left", width: 50},
-            {title: '操作', width: 120, templet: '#userListBar', fixed: "left", align: "center"},
+            {title: '操作', width: 180, templet: '#userListBar', fixed: "left", align: "center"},
             {field: 'username', title: '用户名', minWidth: 100, align: "center"},
             {field: 'name', title: '姓名', minWidth: 100, align: "center"},
             {field: 'nick', title: '昵称', minWidth: 100, align: "center"},
@@ -135,26 +135,8 @@ layui.use(['form', 'layer', 'table', 'laytpl'], function () {
 
         if (layEvent === 'edit') { //编辑
             addUser(data);
-        } else if (layEvent === 'usable') { //启用禁用
-            var _this = $(this),
-                usableText = "是否确定禁用此用户？",
-                btnText = "已禁用";
-            if (_this.text() === "已禁用") {
-                usableText = "是否确定启用此用户？";
-                btnText = "已启用";
-            }
-            layer.confirm(usableText, {
-                icon: 3,
-                title: '系统提示',
-                cancel: function (index) {
-                    layer.close(index);
-                }
-            }, function (index) {
-                _this.text(btnText);
-                layer.close(index);
-            }, function (index) {
-                layer.close(index);
-            });
+        } else if (layEvent === 'assignRole') { //授权
+
         } else if (layEvent === 'del') { //删除
             layer.confirm('确定删除此用户？', {icon: 3, title: '提示信息'}, function (index) {
                 var userIds = [];
