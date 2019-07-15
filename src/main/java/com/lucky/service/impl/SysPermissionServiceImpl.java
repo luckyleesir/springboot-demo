@@ -50,7 +50,7 @@ public class SysPermissionServiceImpl extends ServiceImpl<SysPermissionMapper, S
     }
 
     @Override
-    public IPage<SysPermission> list(Page page, String name) {
+    public IPage<SysPermission> list(Page<SysPermission> page, String name) {
         LambdaQueryWrapper<SysPermission> sysPermissionLambdaQueryWrapper = new LambdaQueryWrapper<>();
         if (StringUtils.isNotBlank(name)) {
             sysPermissionLambdaQueryWrapper.like(SysPermission::getName, name).or().like(SysPermission::getValue, name).or().like(SysPermission::getDescription, name);
@@ -70,8 +70,7 @@ public class SysPermissionServiceImpl extends ServiceImpl<SysPermissionMapper, S
             }
         }
         List<SysPermission> sysPermissionList = this.list(sysPermissionLambdaQueryWrapper);
-        List<PermissionNodeDto> result = sysPermissionList.stream().filter(sysPermission -> sysPermission.getPid().equals(0L)).map(sysPermission -> convert(sysPermission, sysPermissionList)).collect(Collectors.toList());
-        return result;
+        return sysPermissionList.stream().filter(sysPermission -> sysPermission.getPid().equals(0L)).map(sysPermission -> convert(sysPermission, sysPermissionList)).collect(Collectors.toList());
     }
 
     /**

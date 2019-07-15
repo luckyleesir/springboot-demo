@@ -62,7 +62,7 @@ public interface ISysRoleService extends IService<SysRole> {
      * @param name 查询关键字
      * @return 角色list
      */
-    IPage<SysRole> list(Page page, String name);
+    IPage<SysRole> list(Page<SysRole> page, String name);
 
     /**
      * 获取指定角色权限

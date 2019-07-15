@@ -53,7 +53,7 @@ public interface ISysUserService extends IService<SysUser> {
      * @param page 分页
      * @return 用户列表
      */
-    IPage<SysUser> list(Page page, String name);
+    IPage<SysUser> list(Page<SysUser> page, String name);
 
     /**
      * 用户详情

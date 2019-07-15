@@ -61,7 +61,7 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> impl
     }
 
     @Override
-    public IPage<SysRole> list(Page page, String name) {
+    public IPage<SysRole> list(Page<SysRole> page, String name) {
         LambdaQueryWrapper<SysRole> sysRoleLambdaQueryWrapper = new LambdaQueryWrapper<>();
         if (StringUtils.isNotBlank(name)) {
             sysRoleLambdaQueryWrapper.like(SysRole::getName, name).or().like(SysRole::getDescription, name);

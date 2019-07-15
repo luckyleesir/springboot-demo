@@ -61,7 +61,7 @@ public interface ISysPermissionService extends IService<SysPermission> {
      * @param name 查询关键字
      * @return 权限list
      */
-    IPage<SysPermission> list(Page page, String name);
+    IPage<SysPermission> list(Page<SysPermission> page, String name);
 
     /**
      * 获取权限树结构

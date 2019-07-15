@@ -88,16 +88,7 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
     }
 
     @Override
-    public String refreshToken(String oldToken) {
-        String token = oldToken.substring(jwtTokenUtil.getTokenHead().length());
-        if (jwtTokenUtil.canRefresh(token)) {
-            return jwtTokenUtil.refreshToken(token);
-        }
-        return null;
-    }
-
-    @Override
-    public IPage<SysUser> list(Page page, String name) {
+    public IPage<SysUser> list(Page<SysUser> page, String name) {
         LambdaQueryWrapper<SysUser> sysUserLambdaQueryWrapper = new LambdaQueryWrapper<>();
         if (StringUtils.isNotBlank(name)) {
             sysUserLambdaQueryWrapper.like(SysUser::getUsername, name);
@@ -105,6 +96,15 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
             sysUserLambdaQueryWrapper.or().like(SysUser::getNick, name);
         }
         return this.page(page, sysUserLambdaQueryWrapper);
+    }
+
+    @Override
+    public String refreshToken(String oldToken) {
+        String token = oldToken.substring(jwtTokenUtil.getTokenHead().length());
+        if (jwtTokenUtil.canRefresh(token)) {
+            return jwtTokenUtil.refreshToken(token);
+        }
+        return null;
     }
 
 
