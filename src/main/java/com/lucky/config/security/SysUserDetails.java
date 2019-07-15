@@ -29,9 +29,7 @@ public class SysUserDetails implements UserDetails {
     public Collection<? extends GrantedAuthority> getAuthorities() {
         //返回当前用户的权限
         return permissionList.stream().
-                filter(permission -> permission.getValue() != null)
-                .map(permission -> new SimpleGrantedAuthority(permission.getValue()))
-                .collect(Collectors.toList());
+                filter(permission -> permission.getValue() != null).map(permission -> new SimpleGrantedAuthority(permission.getValue())).collect(Collectors.toList());
     }
 
     @Override
@@ -61,6 +59,6 @@ public class SysUserDetails implements UserDetails {
 
     @Override
     public boolean isEnabled() {
-        return sysUser.getStatus() != 0x00;
+        return sysUser.getStatus() == 0x01;
     }
 }

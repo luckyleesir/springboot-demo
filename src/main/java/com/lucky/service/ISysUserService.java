@@ -1,6 +1,8 @@
 package com.lucky.service;
 
-import com.github.pagehelper.Page;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.baomidou.mybatisplus.extension.service.IService;
 import com.lucky.dto.MenuNodeDto;
 import com.lucky.model.SysPermission;
 import com.lucky.model.SysRole;
@@ -10,19 +12,22 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 /**
- * 用户管理
+ * <p>
+ * 用户表 服务类
+ * </p>
  *
  * @author lucky
+ * @since 2019-07-15
  */
-public interface SysUserService {
+public interface ISysUserService extends IService<SysUser> {
 
     /**
      * 用户注册
      *
      * @param sysUser 注册信息
-     * @return
+     * @return 成功或失败
      */
-    int register(SysUser sysUser);
+    boolean register(SysUser sysUser);
 
     /**
      * 用户登录
@@ -48,7 +53,7 @@ public interface SysUserService {
      * @param page 分页
      * @return 用户列表
      */
-    List<SysUser> list(String name, Page page);
+    IPage<SysUser> list(Page page, String name);
 
     /**
      * 用户详情
@@ -60,20 +65,21 @@ public interface SysUserService {
 
     /**
      * 添加用户
+     *
      * @param sysUser 用户信息
-     * @return 添加条数
+     * @return 成功或失败
      */
-    int add(SysUser sysUser);
+    boolean add(SysUser sysUser);
 
     /**
      * 修改用户信息
      *
      * @param userId  用户id
      * @param sysUser 用户信息
-     * @return 成功条数
+     * @return 成功或失败
      */
     @Transactional(rollbackFor = {Error.class, Exception.class})
-    int update(Long userId, SysUser sysUser);
+    boolean update(Long userId, SysUser sysUser);
 
     /**
      * 批量删除用户
@@ -89,10 +95,10 @@ public interface SysUserService {
      *
      * @param userId  用户id
      * @param roleIds 角色id数组
-     * @return 分配成功条数
+     * @return 成功或失败
      */
     @Transactional(rollbackFor = {Error.class, Exception.class})
-    int updateUserRole(Long userId, List<Long> roleIds);
+    boolean updateUserRole(Long userId, List<Long> roleIds);
 
     /**
      * 获取指定用户角色
@@ -114,12 +120,14 @@ public interface SysUserService {
      * 根据username查询用户
      *
      * @param username 用户名
-     * @return 用户
+     * @return 用户详情
      */
     SysUser getUserByUsername(String username);
 
     /**
      * 获取用户菜单
+     *
+     * @return 用户菜单树
      */
     List<MenuNodeDto> getUserMenu();
 }

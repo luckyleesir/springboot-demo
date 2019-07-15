@@ -9,7 +9,7 @@ layui.use(['form', 'layer', 'table', 'laytpl'], function () {
     var tableIns = table.render({
         elem: '#permissionList',
         url: '/api/permission/list',
-        headers:  {Authorization:'Bearer ' + layui.data('jwtToken')['Bearer']},
+        headers: {Authorization: 'Bearer ' + layui.data('jwtToken')['Bearer']},
         request: {
             pageName: 'pageNum', //页码的参数名称，默认：page
             limitName: 'pageSize' //每页数据量的参数名，默认：limit
@@ -19,7 +19,7 @@ layui.use(['form', 'layer', 'table', 'laytpl'], function () {
                 "code": res.code, //解析接口状态
                 "msg": res.msg, //解析提示文本
                 "count": res.data.total, //解析数据长度
-                "data": res.data.list //解析数据列表
+                "data": res.data.records //解析数据列表
             };
         },
         response: {
@@ -122,7 +122,7 @@ layui.use(['form', 'layer', 'table', 'laytpl'], function () {
                 $.ajax({
                     type: 'post',
                     url: '/api/permission/delete',
-                    headers:  {Authorization:'Bearer ' + layui.data('jwtToken')['Bearer']},
+                    headers: {Authorization: 'Bearer ' + layui.data('jwtToken')['Bearer']},
                     data: permissionIds,
                     contentType: 'application/json;charset=utf-8',
                     success: function (res) {
@@ -152,7 +152,7 @@ layui.use(['form', 'layer', 'table', 'laytpl'], function () {
                 $.ajax({
                     type: 'post',
                     url: '/api/permission/delete',
-                    headers:  {Authorization:'Bearer ' + layui.data('jwtToken')['Bearer']},
+                    headers: {Authorization: 'Bearer ' + layui.data('jwtToken')['Bearer']},
                     data: permissionIds,
                     contentType: 'application/json;charset=utf-8',
                     success: function (res) {

@@ -1,13 +1,11 @@
 package com.lucky.controller;
 
-import com.github.pagehelper.PageInfo;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.google.common.collect.Maps;
 import com.lucky.common.response.Result;
-import com.lucky.dto.MenuNodeDto;
 import com.lucky.model.SysUser;
-import com.lucky.service.SysUserService;
+import com.lucky.service.ISysUserService;
 import com.lucky.util.JwtTokenUtil;
-import com.lucky.util.PageUtil;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
@@ -31,18 +29,15 @@ import java.util.Map;
 public class SysUserController {
 
     @Resource
-    private SysUserService sysUserService;
+    private ISysUserService sysUserService;
     @Resource
     private JwtTokenUtil jwtTokenUtil;
 
     @ApiOperation(value = "用户注册")
     @PostMapping("/register")
     public Result register(@RequestBody SysUser sysUser) {
-        int count = sysUserService.register(sysUser);
-        if (count==0){
-            return Result.failed();
-        }
-        return Result.success(count);
+        boolean success = sysUserService.register(sysUser);
+        return Result.handle(success);
     }
 
     @ApiOperation(value = "用户登录")
@@ -81,12 +76,8 @@ public class SysUserController {
     @ApiOperation(value = "用户列表")
     @PreAuthorize("hasAuthority('sys:user:read')")
     @GetMapping("/list")
-    public Result list(@RequestParam(required = false) String name,
-                       @RequestParam(defaultValue = "1") int pageNum,
-                       @RequestParam(defaultValue = "50") int pageSize,
-                       @RequestParam(required = false) String orderBy) {
-        List<SysUser> sysUserList = sysUserService.list(name, PageUtil.set(pageNum, pageSize, orderBy));
-        return Result.success(new PageInfo<>(sysUserList));
+    public Result list(@RequestParam(required = false) String name, @RequestParam(defaultValue = "1") int pageNum, @RequestParam(defaultValue = "50") int pageSize) {
+        return Result.success(sysUserService.list(new Page(pageNum, pageSize), name));
     }
 
     @ApiOperation(value = "用户详情")
@@ -100,22 +91,16 @@ public class SysUserController {
     @PreAuthorize("hasAuthority('sys:user:add')")
     @PostMapping("/add")
     public Result add(@RequestBody SysUser sysUser) {
-        int count = sysUserService.add(sysUser);
-        if (count==0){
-            return Result.failed();
-        }
-        return Result.success(count);
+        boolean success = sysUserService.add(sysUser);
+        return Result.handle(success);
     }
 
     @ApiOperation(value = "修改用户")
     @PreAuthorize("hasAuthority('sys:user:edit')")
     @PostMapping("/update/{userId}")
     public Result update(@PathVariable Long userId, @RequestBody SysUser sysUser) {
-        int count = sysUserService.update(userId, sysUser);
-        if (count == 0) {
-            return Result.failed();
-        }
-        return Result.success(count);
+        boolean success = sysUserService.update(userId, sysUser);
+        return Result.handle(success);
     }
 
     @ApiOperation(value = "删除用户")
@@ -132,11 +117,8 @@ public class SysUserController {
     @ApiOperation(value = "修改用户角色")
     @PostMapping("/role/update/{userId}")
     public Result updateUserRole(@PathVariable Long userId, @RequestBody List<Long> roleIds) {
-        int count = sysUserService.updateUserRole(userId, roleIds);
-        if (count == 0) {
-            return Result.failed();
-        }
-        return Result.success(count);
+        boolean success = sysUserService.updateUserRole(userId, roleIds);
+        return Result.handle(success);
     }
 
     @ApiOperation(value = "获取指定用户角色")

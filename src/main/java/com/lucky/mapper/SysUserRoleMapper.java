@@ -1,5 +1,6 @@
-package com.lucky.mapper.custom;
+package com.lucky.mapper;
 
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.lucky.model.SysPermission;
 import com.lucky.model.SysRole;
 import com.lucky.model.SysUserRole;
@@ -8,13 +9,14 @@ import org.apache.ibatis.annotations.Param;
 import java.util.List;
 
 /**
- * 用户角色自定义mapper
+ * <p>
+ * 用户角色表 Mapper 接口
+ * </p>
  *
- * @author: lucky
- * @date: 2019/6/18 10:14
+ * @author lucky
+ * @since 2019-07-15
  */
-public interface SysUserRoleCustomMapper {
-
+public interface SysUserRoleMapper extends BaseMapper<SysUserRole> {
     /**
      * 批量插入用户角色
      *

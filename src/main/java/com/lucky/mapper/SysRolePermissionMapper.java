@@ -1,5 +1,6 @@
-package com.lucky.mapper.custom;
+package com.lucky.mapper;
 
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.lucky.model.SysPermission;
 import com.lucky.model.SysRolePermission;
 import org.apache.ibatis.annotations.Param;
@@ -7,18 +8,14 @@ import org.apache.ibatis.annotations.Param;
 import java.util.List;
 
 /**
- * @author: lucky
- * @date: 2019/6/17 20:31
+ * <p>
+ * 角色权限表 Mapper 接口
+ * </p>
+ *
+ * @author lucky
+ * @since 2019-07-15
  */
-public interface SysRolePermissionCustomMapper {
-
-    /**
-     * 批量插入角色和权限关系
-     *
-     * @param list 角色权限关系
-     * @return 插入数量
-     */
-    int insertList(@Param("list") List<SysRolePermission> list);
+public interface SysRolePermissionMapper extends BaseMapper<SysRolePermission> {
 
     /***
      * 根据角色获取权限

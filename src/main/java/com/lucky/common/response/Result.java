@@ -117,4 +117,19 @@ public class Result<T> implements Serializable {
     public static <T> Result<T> forbidden(T data) {
         return new Result<>(ResultCode.FORBIDDEN.getCode(), ResultCode.FORBIDDEN.getMsg(), data);
     }
+
+    /**
+     * 结果处理
+     *
+     * @param success
+     * @param <T>
+     * @return
+     */
+    public static <T> Result<T> handle(boolean success) {
+        if (success) {
+            return success();
+        } else {
+            return failed();
+        }
+    }
 }

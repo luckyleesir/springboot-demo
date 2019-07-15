@@ -1,11 +1,10 @@
 package com.lucky.controller;
 
-import com.github.pagehelper.PageInfo;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.lucky.common.response.Result;
 import com.lucky.dto.PermissionNodeDto;
 import com.lucky.model.SysPermission;
-import com.lucky.service.SysPermissionService;
-import com.lucky.util.PageUtil;
+import com.lucky.service.ISysPermissionService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
@@ -27,28 +26,22 @@ import java.util.List;
 public class SysPermissionController {
 
     @Resource
-    private SysPermissionService sysPermissionService;
+    private ISysPermissionService sysPermissionService;
 
     @ApiOperation(value = "新增权限")
     @PreAuthorize("hasAuthority('sys:permission:add')")
     @PostMapping("/add")
     public Result add(@RequestBody SysPermission sysPermission) {
-        int count = sysPermissionService.add(sysPermission);
-        if (count == 0) {
-            return Result.failed();
-        }
-        return Result.success(count);
+        boolean success = sysPermissionService.add(sysPermission);
+        return Result.handle(success);
     }
 
     @ApiOperation(value = "删除权限")
     @PreAuthorize("hasAuthority('sys:permission:delete')")
     @PostMapping("/delete")
     public Result delete(@RequestBody List<Long> permissionIds) {
-        int count = sysPermissionService.delete(permissionIds);
-        if (count < permissionIds.size()) {
-            return Result.failed();
-        }
-        return Result.success(count);
+        boolean success = sysPermissionService.delete(permissionIds);
+        return Result.handle(success);
     }
 
     @ApiOperation(value = "权限详情")
@@ -62,22 +55,15 @@ public class SysPermissionController {
     @PreAuthorize("hasAuthority('sys:permission:edit')")
     @PostMapping("/update/{permissionId}")
     public Result update(@PathVariable Long permissionId, @RequestBody SysPermission sysPermission) {
-        int count = sysPermissionService.update(permissionId, sysPermission);
-        if (count == 0) {
-            return Result.failed();
-        }
-        return Result.success(count);
+        boolean success = sysPermissionService.update(permissionId, sysPermission);
+        return Result.handle(success);
     }
 
     @ApiOperation(value = "权限列表")
     @PreAuthorize("hasAuthority('sys:permission:read')")
     @GetMapping("/list")
-    public Result list(@RequestParam(required = false) String name,
-                       @RequestParam(defaultValue = "1") int pageNum,
-                       @RequestParam(defaultValue = "50") int pageSize,
-                       @RequestParam(required = false) String orderBy) {
-        List<SysPermission> sysPermissionList = sysPermissionService.list(name,PageUtil.set(pageNum, pageSize, orderBy));
-        return Result.success(new PageInfo<>(sysPermissionList));
+    public Result list(@RequestParam(required = false) String name, @RequestParam(defaultValue = "1") int pageNum, @RequestParam(defaultValue = "50") int pageSize) {
+        return Result.success(sysPermissionService.list(new Page(pageNum, pageSize), name));
     }
 
     @ApiOperation(value = "权限树层级")

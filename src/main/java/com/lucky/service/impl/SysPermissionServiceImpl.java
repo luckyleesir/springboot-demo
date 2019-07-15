@@ -1,85 +1,76 @@
 package com.lucky.service.impl;
 
-import com.github.pagehelper.Page;
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.lucky.dto.PermissionNodeDto;
-import com.lucky.mapper.auto.SysPermissionMapper;
+import com.lucky.mapper.SysPermissionMapper;
 import com.lucky.model.SysPermission;
-import com.lucky.model.SysPermissionExample;
-import com.lucky.service.SysPermissionService;
-import com.lucky.util.PageUtil;
+import com.lucky.service.ISysPermissionService;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
-import javax.annotation.Resource;
 import java.util.List;
 import java.util.stream.Collectors;
 
 /**
- * @author: lucky
- * @date: 2019/6/12 16:03
+ * <p>
+ * 权限表 服务实现类
+ * </p>
+ *
+ * @author lucky
+ * @since 2019-07-15
  */
 @Slf4j
 @Service
-public class SysPermissionServiceImpl implements SysPermissionService {
-
-    @Resource
-    private SysPermissionMapper sysPermissionMapper;
-
+public class SysPermissionServiceImpl extends ServiceImpl<SysPermissionMapper, SysPermission> implements ISysPermissionService {
 
     @Override
-    public int add(SysPermission sysPermission) {
-        return sysPermissionMapper.insertSelective(sysPermission);
+    public boolean add(SysPermission sysPermission) {
+        return this.save(sysPermission);
     }
 
     @Override
-    public int delete(List<Long> permissionIds) {
-        SysPermissionExample sysPermissionExample = new SysPermissionExample();
-        sysPermissionExample.createCriteria().andPermissionIdIn(permissionIds);
-        return sysPermissionMapper.deleteByExample(sysPermissionExample);
+    public boolean delete(List<Long> permissionIds) {
+        return this.removeByIds(permissionIds);
     }
 
     @Override
     public SysPermission detail(Long permissionId) {
-        return sysPermissionMapper.selectByPrimaryKey(permissionId);
+        return this.getById(permissionId);
     }
 
     @Override
-    public int update(Long permissionId, SysPermission sysPermission) {
+    public boolean update(Long permissionId, SysPermission sysPermission) {
         sysPermission.setPermissionId(permissionId);
-        return sysPermissionMapper.updateByPrimaryKeySelective(sysPermission);
+        return this.updateById(sysPermission);
     }
 
     @Override
-    public List<SysPermission> list(String name, Page page) {
-        PageUtil.start(page);
-        SysPermissionExample sysPermissionExample = new SysPermissionExample();
+    public IPage<SysPermission> list(Page page, String name) {
+        LambdaQueryWrapper<SysPermission> sysPermissionLambdaQueryWrapper = new LambdaQueryWrapper<>();
         if (StringUtils.isNotBlank(name)) {
-            String like = "%" + name + "%";
-            sysPermissionExample.createCriteria().andNameLike(like);
-            sysPermissionExample.or().andDescriptionLike(like);
-            sysPermissionExample.or().andValueLike(like);
+            sysPermissionLambdaQueryWrapper.like(SysPermission::getName, name).or().like(SysPermission::getValue, name).or().like(SysPermission::getDescription, name);
         }
-        return sysPermissionMapper.selectByExample(sysPermissionExample);
+        return this.page(page, sysPermissionLambdaQueryWrapper);
     }
 
     @Override
     public List<PermissionNodeDto> treeList(SysPermission selectParam) {
-       SysPermissionExample sysPermissionExample =   new SysPermissionExample();
-        if (selectParam!=null){
-            if (selectParam.getType()!=null){
-                sysPermissionExample.createCriteria().andTypeEqualTo(selectParam.getType());
+        LambdaQueryWrapper<SysPermission> sysPermissionLambdaQueryWrapper = new LambdaQueryWrapper<>();
+        if (selectParam != null) {
+            if (selectParam.getType() != null) {
+                sysPermissionLambdaQueryWrapper.eq(SysPermission::getType, selectParam.getType());
             }
-            if (selectParam.getStatus()!=null){
-                sysPermissionExample.createCriteria().andStatusEqualTo(selectParam.getStatus());
+            if (selectParam.getStatus() != null) {
+                sysPermissionLambdaQueryWrapper.eq(SysPermission::getStatus, selectParam.getStatus());
             }
         }
-        List<SysPermission> sysPermissionList = sysPermissionMapper.selectByExample(sysPermissionExample);
-        List<PermissionNodeDto> result = sysPermissionList.stream()
-                .filter(sysPermission -> sysPermission.getPid().equals(0L))
-                .map(sysPermission -> convert(sysPermission,sysPermissionList))
-                .collect(Collectors.toList());
+        List<SysPermission> sysPermissionList = this.list(sysPermissionLambdaQueryWrapper);
+        List<PermissionNodeDto> result = sysPermissionList.stream().filter(sysPermission -> sysPermission.getPid().equals(0L)).map(sysPermission -> convert(sysPermission, sysPermissionList)).collect(Collectors.toList());
         return result;
     }
 
@@ -89,11 +80,8 @@ public class SysPermissionServiceImpl implements SysPermissionService {
      */
     private PermissionNodeDto convert(SysPermission sysPermission, List<SysPermission> sysPermissionList) {
         PermissionNodeDto permissionNodeDto = new PermissionNodeDto();
-        BeanUtils.copyProperties(sysPermission,permissionNodeDto);
-        List<PermissionNodeDto> children = sysPermissionList.stream()
-                .filter(subPermission -> subPermission.getPid().equals(sysPermission.getPermissionId()))
-                .map(subPermission -> convert(subPermission,sysPermissionList))
-                .collect(Collectors.toList());
+        BeanUtils.copyProperties(sysPermission, permissionNodeDto);
+        List<PermissionNodeDto> children = sysPermissionList.stream().filter(subPermission -> subPermission.getPid().equals(sysPermission.getPermissionId())).map(subPermission -> convert(subPermission, sysPermissionList)).collect(Collectors.toList());
         permissionNodeDto.setChildren(children);
         return permissionNodeDto;
     }

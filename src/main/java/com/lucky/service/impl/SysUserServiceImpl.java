@@ -1,23 +1,24 @@
 package com.lucky.service.impl;
 
-import cn.hutool.core.collection.CollUtil;
-import com.github.pagehelper.Page;
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.lucky.common.SysUserHolder;
 import com.lucky.common.enums.PermissionType;
 import com.lucky.dto.MenuNodeDto;
-import com.lucky.dto.PermissionNodeDto;
-import com.lucky.mapper.auto.SysPermissionMapper;
-import com.lucky.mapper.auto.SysUserMapper;
-import com.lucky.mapper.auto.SysUserRoleMapper;
-import com.lucky.mapper.custom.SysUserRoleCustomMapper;
-import com.lucky.model.*;
-import com.lucky.service.SysPermissionService;
-import com.lucky.service.SysUserService;
+import com.lucky.mapper.SysPermissionMapper;
+import com.lucky.mapper.SysUserMapper;
+import com.lucky.mapper.SysUserRoleMapper;
+import com.lucky.model.SysPermission;
+import com.lucky.model.SysRole;
+import com.lucky.model.SysUser;
+import com.lucky.model.SysUserRole;
+import com.lucky.service.ISysUserRoleService;
+import com.lucky.service.ISysUserService;
 import com.lucky.util.JwtTokenUtil;
-import com.lucky.util.PageUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.beans.BeanUtils;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.AuthenticationException;
@@ -34,21 +35,19 @@ import java.util.UUID;
 import java.util.stream.Collectors;
 
 /**
- * 用户管理
+ * <p>
+ * 用户表 服务实现类
+ * </p>
  *
- * @author: lucky
- * @date: 2019/6/11 16:28
+ * @author lucky
+ * @since 2019-07-15
  */
 @Slf4j
 @Service
-public class SysUserServiceImpl implements SysUserService {
+public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> implements ISysUserService {
 
     @Resource
-    private SysUserMapper sysUserMapper;
-    @Resource
     private SysUserRoleMapper sysUserRoleMapper;
-    @Resource
-    private SysUserRoleCustomMapper sysUserRoleCustomMapper;
     @Resource
     private PasswordEncoder passwordEncoder;
     @Resource
@@ -57,15 +56,17 @@ public class SysUserServiceImpl implements SysUserService {
     private JwtTokenUtil jwtTokenUtil;
     @Resource
     private SysPermissionMapper sysPermissionMapper;
+    @Resource
+    private ISysUserRoleService sysUserRoleService;
 
     @Override
-    public int register(SysUser sysUser) {
+    public boolean register(SysUser sysUser) {
         SysUser user = this.getUserByUsername(sysUser.getUsername());
         if (user != null) {
             throw new RuntimeException("用户名已存在");
         }
         sysUser.setPassword(passwordEncoder.encode(sysUser.getPassword()));
-        return sysUserMapper.insertSelective(sysUser);
+        return this.save(sysUser);
     }
 
     @Override
@@ -96,54 +97,51 @@ public class SysUserServiceImpl implements SysUserService {
     }
 
     @Override
-    public List<SysUser> list(String name, Page page) {
-        PageUtil.start(page);
-        SysUserExample sysUserExample = new SysUserExample();
+    public IPage<SysUser> list(Page page, String name) {
+        LambdaQueryWrapper<SysUser> sysUserLambdaQueryWrapper = new LambdaQueryWrapper<>();
         if (StringUtils.isNotBlank(name)) {
-            sysUserExample.createCriteria().andUsernameLike("%" + name + "%");
-            sysUserExample.or().andNameLike("%" + name + "%");
-            sysUserExample.or().andNickLike("%" + name + "%");
+            sysUserLambdaQueryWrapper.like(SysUser::getUsername, name);
+            sysUserLambdaQueryWrapper.or().like(SysUser::getName, name);
+            sysUserLambdaQueryWrapper.or().like(SysUser::getNick, name);
         }
-        return sysUserMapper.selectByExample(sysUserExample);
+        return this.page(page, sysUserLambdaQueryWrapper);
     }
 
 
     @Override
     public SysUser detail(Long userId) {
-        return sysUserMapper.selectByPrimaryKey(userId);
+        return this.getById(userId);
     }
 
     @Override
-    public int add(SysUser sysUser) {
+    public boolean add(SysUser sysUser) {
         SysUser user = this.getUserByUsername(sysUser.getUsername());
         if (user != null) {
             throw new RuntimeException("用户名已存在");
         }
         //后台管理员直接添加
         sysUser.setPassword(passwordEncoder.encode(UUID.randomUUID().toString()));
-        return sysUserMapper.insertSelective(sysUser);
+        return this.save(sysUser);
     }
 
     @Override
-    public int update(Long userId, SysUser sysUser) {
+    public boolean update(Long userId, SysUser sysUser) {
         sysUser.setUserId(userId);
         sysUser.setPassword(null);
-        return sysUserMapper.updateByPrimaryKeySelective(sysUser);
+        return this.updateById(sysUser);
     }
 
     @Override
     public int delete(List<Long> userIds) {
-        SysUserExample sysUserExample = new SysUserExample();
-        sysUserExample.createCriteria().andUserIdIn(userIds);
-        return sysUserMapper.deleteByExample(sysUserExample);
+        return this.baseMapper.deleteBatchIds(userIds);
     }
 
     @Override
-    public int updateUserRole(Long userId, List<Long> roleIds) {
+    public boolean updateUserRole(Long userId, List<Long> roleIds) {
         //删除原来的用户角色关系
-        SysUserRoleExample sysUserRoleExample = new SysUserRoleExample();
-        sysUserRoleExample.createCriteria().andUserIdEqualTo(userId);
-        sysUserRoleMapper.deleteByExample(sysUserRoleExample);
+        LambdaQueryWrapper<SysUserRole> sysUserRoleLambdaQueryWrapper = new LambdaQueryWrapper<>();
+        sysUserRoleLambdaQueryWrapper.eq(SysUserRole::getUserId, userId);
+        sysUserRoleMapper.delete(sysUserRoleLambdaQueryWrapper);
 
         List<SysUserRole> sysUserRoleList = new ArrayList<>();
         for (Long roleId : roleIds) {
@@ -152,37 +150,33 @@ public class SysUserServiceImpl implements SysUserService {
             sysUserRole.setRoleId(roleId);
             sysUserRoleList.add(sysUserRole);
         }
-        return sysUserRoleCustomMapper.insertList(sysUserRoleList);
+        return sysUserRoleService.saveBatch(sysUserRoleList);
     }
 
     @Override
     public List<SysRole> getRoleList(Long userId) {
-        return sysUserRoleCustomMapper.getRoleList(userId);
+        return sysUserRoleMapper.getRoleList(userId);
     }
 
     @Override
     public List<SysPermission> getPermissionList(Long userId) {
-        return sysUserRoleCustomMapper.getPermissionList(userId);
+        return sysUserRoleMapper.getPermissionList(userId);
     }
 
     @Override
     public SysUser getUserByUsername(String username) {
-        SysUserExample sysUserExample = new SysUserExample();
-        sysUserExample.createCriteria().andUsernameEqualTo(username);
-        return CollUtil.getFirst(sysUserMapper.selectByExample(sysUserExample));
+        LambdaQueryWrapper<SysUser> sysUserLambdaQueryWrapper = new LambdaQueryWrapper<>();
+        sysUserLambdaQueryWrapper.eq(SysUser::getUsername, username);
+        return this.getOne(sysUserLambdaQueryWrapper);
     }
 
     @Override
     public List<MenuNodeDto> getUserMenu() {
         log.info("{}", SysUserHolder.get());
-        SysPermissionExample sysPermissionExample = new SysPermissionExample();
-        sysPermissionExample.createCriteria().andTypeEqualTo(PermissionType.MENU.getCode());
-        List<SysPermission> sysPermissionList = sysPermissionMapper.selectByExample(sysPermissionExample);
-        List<MenuNodeDto> menuNodeDtoList = sysPermissionList.stream()
-                .filter(sysPermission -> sysPermission.getPid().equals(0L))
-                .map(sysPermission -> convert(sysPermission,sysPermissionList))
-                .collect(Collectors.toList());
-        return menuNodeDtoList;
+        LambdaQueryWrapper<SysPermission> sysPermissionLambdaQueryWrapper = new LambdaQueryWrapper<>();
+        sysPermissionLambdaQueryWrapper.eq(SysPermission::getType, PermissionType.MENU.getCode());
+        List<SysPermission> sysPermissionList = sysPermissionMapper.selectList(sysPermissionLambdaQueryWrapper);
+        return sysPermissionList.stream().filter(sysPermission -> sysPermission.getPid().equals(0L)).map(sysPermission -> convert(sysPermission, sysPermissionList)).collect(Collectors.toList());
     }
 
     /**
@@ -196,10 +190,7 @@ public class SysUserServiceImpl implements SysUserService {
         menuNodeDto.setMenuId(sysPermission.getPermissionId());
         menuNodeDto.setPid(sysPermission.getPid());
         menuNodeDto.setTitle(sysPermission.getName());
-        List<MenuNodeDto> children = sysPermissionList.stream()
-                .filter(subPermission -> subPermission.getPid().equals(sysPermission.getPermissionId()))
-                .map(subPermission -> convert(subPermission,sysPermissionList))
-                .collect(Collectors.toList());
+        List<MenuNodeDto> children = sysPermissionList.stream().filter(subPermission -> subPermission.getPid().equals(sysPermission.getPermissionId())).map(subPermission -> convert(subPermission, sysPermissionList)).collect(Collectors.toList());
         menuNodeDto.setChildren(children);
         return menuNodeDto;
     }

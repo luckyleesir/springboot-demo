@@ -1,6 +1,8 @@
 package com.lucky.service;
 
-import com.github.pagehelper.Page;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.baomidou.mybatisplus.extension.service.IService;
 import com.lucky.dto.RolePermissionTreeDto;
 import com.lucky.model.SysPermission;
 import com.lucky.model.SysRole;
@@ -9,56 +11,58 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 /**
- * 角色管理
+ * <p>
+ * 角色表 服务类
+ * </p>
  *
- * @author: lucky
- * @date: 2019/6/12 16:01
+ * @author lucky
+ * @since 2019-07-15
  */
-public interface SysRoleService {
+public interface ISysRoleService extends IService<SysRole> {
 
     /**
      * 添加角色
      *
      * @param sysRole 角色新增参数
-     * @return 添加成功的条数
+     * @return 成功或失败
      */
     @Transactional(rollbackFor = {Error.class, Exception.class})
-    int add(SysRole sysRole);
+    boolean add(SysRole sysRole);
 
     /**
      * 批量删除角色
      *
      * @param roleIds 角色id数组
-     * @return 删除成功的条数
+     * @return 成功或失败
      */
     @Transactional(rollbackFor = {Error.class, Exception.class})
-    int delete(List<Long> roleIds);
+    boolean delete(List<Long> roleIds);
 
     /**
      * 角色详情
      *
      * @param roleId 角色id
-     * @return SysRole
+     * @return 角色详情
      */
     SysRole detail(Long roleId);
 
     /**
      * 修改角色
      *
-     * @param sysRole 角色修改参数
      * @param roleId  角色id
-     * @return 修改成功条数
+     * @param sysRole 角色修改参数
+     * @return 成功或失败
      */
-    int update(Long roleId, SysRole sysRole);
+    boolean update(Long roleId, SysRole sysRole);
 
     /**
      * 角色列表
      *
-     * @param name 查询关键字
      * @param page 分页信息
+     * @param name 查询关键字
      * @return 角色list
      */
-    List<SysRole> list(String name, Page page);
+    IPage<SysRole> list(Page page, String name);
 
     /**
      * 获取指定角色权限
@@ -73,16 +77,16 @@ public interface SysRoleService {
      *
      * @param roleId        角色id
      * @param permissionIds 权限id数组
-     * @return 修改的数量
+     * @return 成功或失败
      */
     @Transactional(rollbackFor = {Error.class, Exception.class})
-    int updateRolePermission(Long roleId, List<Long> permissionIds);
+    boolean updateRolePermission(Long roleId, List<Long> permissionIds);
 
     /**
      * 角色权限树
      *
-     * @param roleId
-     * @return
+     * @param roleId 角色id
+     * @return 角色权限树结构
      */
     List<RolePermissionTreeDto> getRolePermissionTree(Long roleId);
 }

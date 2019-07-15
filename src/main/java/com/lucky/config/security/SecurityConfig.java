@@ -4,7 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.lucky.common.SysUserHolder;
 import com.lucky.model.SysPermission;
 import com.lucky.model.SysUser;
-import com.lucky.service.SysUserService;
+import com.lucky.service.ISysUserService;
 import com.lucky.util.RedisUtil;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
@@ -40,7 +40,7 @@ import java.util.List;
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Resource
-    private SysUserService sysUserService;
+    private ISysUserService sysUserService;
     @Resource
     private AccessDeniedExceptionHandler accessDeniedExceptionHandler;
     @Resource
@@ -61,7 +61,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 //跨域请求会先进行一次options请求
                 .antMatchers(HttpMethod.OPTIONS).permitAll()
                 //测试时全部运行访问
-                //.antMatchers("/**").permitAll()
+                .antMatchers("/**").permitAll()
                 // 除上面外的所有请求全部需要鉴权认证
                 .anyRequest().authenticated();
         // 禁用缓存

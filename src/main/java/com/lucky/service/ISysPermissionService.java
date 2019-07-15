@@ -1,6 +1,8 @@
 package com.lucky.service;
 
-import com.github.pagehelper.Page;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.baomidou.mybatisplus.extension.service.IService;
 import com.lucky.dto.PermissionNodeDto;
 import com.lucky.model.SysPermission;
 import org.springframework.transaction.annotation.Transactional;
@@ -8,36 +10,38 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 /**
- * 用户权限
+ * <p>
+ * 权限表 服务类
+ * </p>
  *
- * @author: lucky
- * @date: 2019/6/12 16:02
+ * @author lucky
+ * @since 2019-07-15
  */
-public interface SysPermissionService {
+public interface ISysPermissionService extends IService<SysPermission> {
 
     /**
      * 添加权限
      *
      * @param sysPermission 权限新增参数
-     * @return 添加成功的条数
+     * @return 成功或失败
      */
     @Transactional(rollbackFor = {Error.class, Exception.class})
-    int add(SysPermission sysPermission);
+    boolean add(SysPermission sysPermission);
 
     /**
      * 批量删除权限
      *
      * @param permissionIds 权限id数组
-     * @return 删除成功的条数
+     * @return 成功或失败
      */
     @Transactional(rollbackFor = {Error.class, Exception.class})
-    int delete(List<Long> permissionIds);
+    boolean delete(List<Long> permissionIds);
 
     /**
      * 权限详情
      *
      * @param permissionId 权限id
-     * @return SysPermission
+     * @return 权限详情
      */
     SysPermission detail(Long permissionId);
 
@@ -46,23 +50,24 @@ public interface SysPermissionService {
      *
      * @param permissionId  权限id
      * @param sysPermission 权限修改参数
-     * @return 修改成功条数
+     * @return 成功或失败
      */
-    int update(Long permissionId, SysPermission sysPermission);
+    boolean update(Long permissionId, SysPermission sysPermission);
 
     /**
      * 权限列表
      *
-     * @param name 查询关键字
      * @param page 分页信息
+     * @param name 查询关键字
      * @return 权限list
      */
-    List<SysPermission> list(String name, Page page);
+    IPage<SysPermission> list(Page page, String name);
 
     /**
      * 获取权限树结构
      *
-     * @return PermissionNodeDto
+     * @param selectParam 过滤条件
+     * @return 权限树结构
      */
     List<PermissionNodeDto> treeList(SysPermission selectParam);
 

@@ -1,90 +1,65 @@
 package com.lucky.model;
 
-import com.alibaba.fastjson.JSON;
+import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableId;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
-import java.io.Serializable;
-import java.util.Date;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.EqualsAndHashCode;
+import lombok.experimental.Accessors;
 
-@ApiModel(value="com.lucky.model.SysPermission")
+import java.io.Serializable;
+import java.time.LocalDateTime;
+
+/**
+ * <p>
+ * 权限表
+ * </p>
+ *
+ * @author lucky
+ * @since 2019-07-15
+ */
 @Data
-@Builder
-@AllArgsConstructor
-@NoArgsConstructor
+@EqualsAndHashCode(callSuper = false)
+@Accessors(chain = true)
+@ApiModel(value="SysPermission对象", description="权限表")
 public class SysPermission implements Serializable {
-    /**
-     * 权限id
-     */
-    @ApiModelProperty(value="权限id")
+
+    private static final long serialVersionUID=1L;
+
+    @ApiModelProperty(value = "权限id")
+    @TableId(value = "permission_id", type = IdType.AUTO)
     private Long permissionId;
 
-    /**
-     * 父级权限id
-     */
-    @ApiModelProperty(value="父级权限id")
+    @ApiModelProperty(value = "父级权限id")
     private Long pid;
 
-    /**
-     * 权限名称
-     */
-    @ApiModelProperty(value="权限名称")
+    @ApiModelProperty(value = "权限名称")
     private String name;
 
-    /**
-     * 权限值（应用于controller注解）
-     */
-    @ApiModelProperty(value="权限值（应用于controller注解）")
+    @ApiModelProperty(value = "权限值（应用于controller注解）")
     private String value;
 
-    /**
-     * 权限对应url
-     */
-    @ApiModelProperty(value="权限对应url")
+    @ApiModelProperty(value = "权限对应url")
     private String url;
 
-    /**
-     * 权限图标
-     */
-    @ApiModelProperty(value="权限图标")
+    @ApiModelProperty(value = "权限图标")
     private String icon;
 
-    /**
-     * 权限描述
-     */
-    @ApiModelProperty(value="权限描述")
+    @ApiModelProperty(value = "权限描述")
     private String description;
 
-    /**
-     * 权限类型：0->目录；1->菜单；2->按钮（接口绑定权限）
-     */
-    @ApiModelProperty(value="权限类型：0->目录；1->菜单；2->按钮（接口绑定权限）")
+    @ApiModelProperty(value = "权限类型：0->目录；1->菜单；2->按钮（接口绑定权限）")
     private Byte type;
 
-    /**
-     * 启用状态；0->禁用；1->启用
-     */
-    @ApiModelProperty(value="启用状态；0->禁用；1->启用")
+    @ApiModelProperty(value = "启用状态；0->禁用；1->启用")
     private Byte status;
 
-    /**
-     * 创建时间
-     */
-    @ApiModelProperty(value="创建时间")
-    private Date createTime;
+    @ApiModelProperty(value = "创建时间")
+    private LocalDateTime createTime;
 
-    /**
-     * 最后修改时间
-     */
-    @ApiModelProperty(value="最后修改时间")
-    private Date updateTime;
+    @ApiModelProperty(value = "最后修改时间")
+    private LocalDateTime updateTime;
 
-    private static final long serialVersionUID = 1L;
 
-    public String toJson() {
-        return JSON.toJSONString(this);
-    }
 }

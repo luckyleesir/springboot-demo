@@ -1,60 +1,50 @@
 package com.lucky.model;
 
-import com.alibaba.fastjson.JSON;
+import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableId;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
-import java.io.Serializable;
-import java.util.Date;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.EqualsAndHashCode;
+import lombok.experimental.Accessors;
 
-@ApiModel(value="com.lucky.model.SysRole")
+import java.io.Serializable;
+import java.time.LocalDateTime;
+
+/**
+ * <p>
+ * 角色表
+ * </p>
+ *
+ * @author lucky
+ * @since 2019-07-15
+ */
 @Data
-@Builder
-@AllArgsConstructor
-@NoArgsConstructor
+@EqualsAndHashCode(callSuper = false)
+@Accessors(chain = true)
+@ApiModel(value="SysRole对象", description="角色表")
 public class SysRole implements Serializable {
-    /**
-     * 角色id
-     */
-    @ApiModelProperty(value="角色id")
+
+    private static final long serialVersionUID=1L;
+
+    @ApiModelProperty(value = "角色id")
+    @TableId(value = "role_id", type = IdType.AUTO)
     private Long roleId;
 
-    /**
-     * 角色名称
-     */
-    @ApiModelProperty(value="角色名称")
+    @ApiModelProperty(value = "角色名称")
     private String name;
 
-    /**
-     * 角色描述
-     */
-    @ApiModelProperty(value="角色描述")
+    @ApiModelProperty(value = "角色描述")
     private String description;
 
-    /**
-     * 启用状态；0->禁用；1->启用
-     */
-    @ApiModelProperty(value="启用状态；0->禁用；1->启用")
+    @ApiModelProperty(value = "启用状态；0->禁用；1->启用")
     private Byte status;
 
-    /**
-     * 创建时间
-     */
-    @ApiModelProperty(value="创建时间")
-    private Date createTime;
+    @ApiModelProperty(value = "创建时间")
+    private LocalDateTime createTime;
 
-    /**
-     * 最后修改时间
-     */
-    @ApiModelProperty(value="最后修改时间")
-    private Date updateTime;
+    @ApiModelProperty(value = "最后修改时间")
+    private LocalDateTime updateTime;
 
-    private static final long serialVersionUID = 1L;
 
-    public String toJson() {
-        return JSON.toJSONString(this);
-    }
 }

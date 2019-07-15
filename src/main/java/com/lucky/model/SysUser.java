@@ -1,96 +1,68 @@
 package com.lucky.model;
 
-import com.alibaba.fastjson.JSON;
+import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableId;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
-import java.io.Serializable;
-import java.util.Date;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.EqualsAndHashCode;
+import lombok.experimental.Accessors;
 
-@ApiModel(value="com.lucky.model.SysUser")
+import java.io.Serializable;
+import java.time.LocalDateTime;
+
+/**
+ * <p>
+ * 用户表
+ * </p>
+ *
+ * @author lucky
+ * @since 2019-07-15
+ */
 @Data
-@Builder
-@AllArgsConstructor
-@NoArgsConstructor
+@EqualsAndHashCode(callSuper = false)
+@Accessors(chain = true)
+@ApiModel(value = "SysUser对象", description = "用户表")
 public class SysUser implements Serializable {
-    /**
-     * 用户id
-     */
-    @ApiModelProperty(value="用户id")
-    private Long userId;
-
-    /**
-     * 用户名
-     */
-    @ApiModelProperty(value="用户名")
-    private String username;
-
-    /**
-     * 密码
-     */
-    @ApiModelProperty(value="密码")
-    private String password;
-
-    /**
-     * 姓名
-     */
-    @ApiModelProperty(value="姓名")
-    private String name;
-
-    /**
-     * 昵称
-     */
-    @ApiModelProperty(value="昵称")
-    private String nick;
-
-    /**
-     * 个性签名
-     */
-    @ApiModelProperty(value="个性签名")
-    private String signature;
-
-    /**
-     * 性别
-     */
-    @ApiModelProperty(value="性别")
-    private String sex;
-
-    /**
-     * 年龄
-     */
-    @ApiModelProperty(value="年龄")
-    private Integer age;
-
-    /**
-     * 邮箱
-     */
-    @ApiModelProperty(value="邮箱")
-    private String email;
-
-    /**
-     * 启用状态；0->禁用；1->启用
-     */
-    @ApiModelProperty(value="启用状态；0->禁用；1->启用")
-    private Byte status;
-
-    /**
-     * 创建时间
-     */
-    @ApiModelProperty(value="创建时间")
-    private Date createTime;
-
-    /**
-     * 最后修改时间
-     */
-    @ApiModelProperty(value="最后修改时间")
-    private Date updateTime;
 
     private static final long serialVersionUID = 1L;
 
-    public String toJson() {
-        return JSON.toJSONString(this);
-    }
+    @ApiModelProperty(value = "用户id")
+    @TableId(value = "user_id", type = IdType.AUTO)
+    private Long userId;
+
+    @ApiModelProperty(value = "用户名")
+    private String username;
+
+    @ApiModelProperty(value = "密码")
+    private String password;
+
+    @ApiModelProperty(value = "姓名")
+    private String name;
+
+    @ApiModelProperty(value = "昵称")
+    private String nick;
+
+    @ApiModelProperty(value = "个性签名")
+    private String signature;
+
+    @ApiModelProperty(value = "性别")
+    private String sex;
+
+    @ApiModelProperty(value = "年龄")
+    private Integer age;
+
+    @ApiModelProperty(value = "邮箱")
+    private String email;
+
+    @ApiModelProperty(value = "启用状态；0->禁用；1->启用")
+    private Byte status;
+
+    @ApiModelProperty(value = "创建时间")
+    private LocalDateTime createTime;
+
+    @ApiModelProperty(value = "最后修改时间")
+    private LocalDateTime updateTime;
+
+
 }

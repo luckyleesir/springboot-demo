@@ -1,15 +1,18 @@
 package com.lucky.service.impl;
 
-import com.github.pagehelper.Page;
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.lucky.dto.RolePermissionTreeDto;
-import com.lucky.mapper.auto.SysPermissionMapper;
-import com.lucky.mapper.auto.SysRoleMapper;
-import com.lucky.mapper.auto.SysRolePermissionMapper;
-import com.lucky.mapper.custom.SysRolePermissionCustomMapper;
-import com.lucky.model.*;
-import com.lucky.service.SysPermissionService;
-import com.lucky.service.SysRoleService;
-import com.lucky.util.PageUtil;
+import com.lucky.mapper.SysRoleMapper;
+import com.lucky.mapper.SysRolePermissionMapper;
+import com.lucky.model.SysPermission;
+import com.lucky.model.SysRole;
+import com.lucky.model.SysRolePermission;
+import com.lucky.service.ISysRolePermissionService;
+import com.lucky.service.ISysPermissionService;
+import com.lucky.service.ISysRoleService;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
@@ -19,71 +22,64 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 /**
- * 角色管理
+ * <p>
+ * 角色表 服务实现类
+ * </p>
  *
- * @author: lucky
- * @date: 2019/6/12 16:02
+ * @author lucky
+ * @since 2019-07-15
  */
 @Service
-public class SysRoleServiceImpl implements SysRoleService {
+public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> implements ISysRoleService {
 
-    @Resource
-    private SysRoleMapper sysRoleMapper;
-    @Resource
-    private SysRolePermissionCustomMapper sysRolePermissionCustomMapper;
     @Resource
     private SysRolePermissionMapper sysRolePermissionMapper;
     @Resource
-    private SysPermissionService sysPermissionService;
+    private ISysPermissionService sysPermissionService;
     @Resource
-    private SysPermissionMapper sysPermissionMapper;
+    private ISysRolePermissionService sysRolePermissionService;
 
     @Override
-    public int add(SysRole sysRole) {
-        return sysRoleMapper.insertSelective(sysRole);
+    public boolean add(SysRole sysRole) {
+        return this.save(sysRole);
     }
 
     @Override
-    public int delete(List<Long> roleIds) {
-        SysRoleExample sysRoleExample = new SysRoleExample();
-        sysRoleExample.createCriteria().andRoleIdIn(roleIds);
-        return sysRoleMapper.deleteByExample(sysRoleExample);
+    public boolean delete(List<Long> roleIds) {
+        return this.removeByIds(roleIds);
     }
 
     @Override
     public SysRole detail(Long roleId) {
-        return sysRoleMapper.selectByPrimaryKey(roleId);
+        return this.getById(roleId);
     }
 
     @Override
-    public int update(Long roleId, SysRole sysRole) {
+    public boolean update(Long roleId, SysRole sysRole) {
         sysRole.setRoleId(roleId);
-        return sysRoleMapper.updateByPrimaryKeySelective(sysRole);
+        return this.updateById(sysRole);
     }
 
     @Override
-    public List<SysRole> list(String name, Page page) {
-        PageUtil.start(page);
-        SysRoleExample sysRoleExample = new SysRoleExample();
+    public IPage<SysRole> list(Page page, String name) {
+        LambdaQueryWrapper<SysRole> sysRoleLambdaQueryWrapper = new LambdaQueryWrapper<>();
         if (StringUtils.isNotBlank(name)) {
-            String like = "%" + name + "%";
-            sysRoleExample.createCriteria().andNameLike(like);
-            sysRoleExample.or().andDescriptionLike(like);
+            sysRoleLambdaQueryWrapper.like(SysRole::getName, name).or().like(SysRole::getDescription, name);
         }
-        return sysRoleMapper.selectByExample(sysRoleExample);
+        return this.page(page, sysRoleLambdaQueryWrapper);
     }
 
     @Override
     public List<SysPermission> getPermissionList(Long roleId) {
-        return sysRolePermissionCustomMapper.getPermissionList(roleId);
+        return sysRolePermissionMapper.getPermissionList(roleId);
     }
 
     @Override
-    public int updateRolePermission(Long roleId, List<Long> permissionIds) {
+    public boolean updateRolePermission(Long roleId, List<Long> permissionIds) {
         //先删除原有关系
-        SysRolePermissionExample sysRolePermissionExample = new SysRolePermissionExample();
-        sysRolePermissionExample.createCriteria().andRoleIdEqualTo(roleId);
-        sysRolePermissionMapper.deleteByExample(sysRolePermissionExample);
+        LambdaQueryWrapper<SysRolePermission> sysRolePermissionLambdaQueryWrapper = new LambdaQueryWrapper<>();
+        sysRolePermissionLambdaQueryWrapper.eq(SysRolePermission::getRoleId, roleId);
+        sysRolePermissionService.remove(sysRolePermissionLambdaQueryWrapper);
 
         List<SysRolePermission> sysRolePermissionList = new ArrayList<>();
         for (Long permissionId : permissionIds) {
@@ -92,7 +88,7 @@ public class SysRoleServiceImpl implements SysRoleService {
             sysRolePermission.setPermissionId(permissionId);
             sysRolePermissionList.add(sysRolePermission);
         }
-        return sysRolePermissionCustomMapper.insertList(sysRolePermissionList);
+        return sysRolePermissionService.saveBatch(sysRolePermissionList);
     }
 
     @Override
@@ -100,9 +96,8 @@ public class SysRoleServiceImpl implements SysRoleService {
         //找出该角色所有权限id
         List<SysPermission> rolePermissions = getPermissionList(roleId);
         List<Long> permissionIds = rolePermissions.stream().map(SysPermission::getPermissionId).collect(Collectors.toList());
-        List<SysPermission> sysPermissionList = sysPermissionMapper.selectByExample(new SysPermissionExample());
-        List<RolePermissionTreeDto> result = sysPermissionList.stream().filter(sysPermission -> sysPermission.getPid().equals(0L)).map(sysPermission -> convert(sysPermission, sysPermissionList, permissionIds)).collect(Collectors.toList());
-        return result;
+        List<SysPermission> sysPermissionList = sysPermissionService.list();
+        return sysPermissionList.stream().filter(sysPermission -> sysPermission.getPid().equals(0L)).map(sysPermission -> convert(sysPermission, sysPermissionList, permissionIds)).collect(Collectors.toList());
     }
 
 
