@@ -63,7 +63,7 @@ public class SysPermissionController {
     @PreAuthorize("hasAuthority('sys:permission:read')")
     @GetMapping("/list")
     public Result list(@RequestParam(required = false) String name, @RequestParam(defaultValue = "1") int pageNum, @RequestParam(defaultValue = "50") int pageSize) {
-        return Result.success(sysPermissionService.list(new Page(pageNum, pageSize), name));
+        return Result.success(sysPermissionService.list(new Page<>(pageNum, pageSize), name));
     }
 
     @ApiOperation(value = "权限树层级")

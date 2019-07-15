@@ -77,7 +77,7 @@ public class SysUserController {
     @PreAuthorize("hasAuthority('sys:user:read')")
     @GetMapping("/list")
     public Result list(@RequestParam(required = false) String name, @RequestParam(defaultValue = "1") int pageNum, @RequestParam(defaultValue = "50") int pageSize) {
-        return Result.success(sysUserService.list(new Page(pageNum, pageSize), name));
+        return Result.success(sysUserService.list(new Page<>(pageNum, pageSize), name));
     }
 
     @ApiOperation(value = "用户详情")
