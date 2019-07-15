@@ -8,6 +8,7 @@ import com.lucky.common.SysUserHolder;
 import com.lucky.common.enums.PermissionType;
 import com.lucky.dto.MenuNodeDto;
 import com.lucky.mapper.SysPermissionMapper;
+import com.lucky.mapper.SysRoleMapper;
 import com.lucky.mapper.SysUserMapper;
 import com.lucky.mapper.SysUserRoleMapper;
 import com.lucky.model.SysPermission;
@@ -58,6 +59,8 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
     private SysPermissionMapper sysPermissionMapper;
     @Resource
     private ISysUserRoleService sysUserRoleService;
+    @Resource
+    private SysRoleMapper sysRoleMapper;
 
     @Override
     public boolean register(SysUser sysUser) {
@@ -155,12 +158,12 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
 
     @Override
     public List<SysRole> getRoleList(Long userId) {
-        return sysUserRoleMapper.getRoleList(userId);
+        return sysRoleMapper.getUserRoleList(userId);
     }
 
     @Override
     public List<SysPermission> getPermissionList(Long userId) {
-        return sysUserRoleMapper.getPermissionList(userId);
+        return sysPermissionMapper.getUserPermissionList(userId);
     }
 
     @Override

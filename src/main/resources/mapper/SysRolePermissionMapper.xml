@@ -14,14 +14,4 @@
         id, role_id, permission_id
     </sql>
 
-    <select id="getPermissionList" resultMap="com.lucky.mapper.SysPermissionMapper.BaseResultMap">
-        SELECT
-            p.*
-        FROM
-            sys_role_permission r
-            LEFT JOIN sys_permission p ON r.permission_id = p.permission_id
-        WHERE
-            r.role_id = #{roleId};
-    </select>
-
 </mapper>

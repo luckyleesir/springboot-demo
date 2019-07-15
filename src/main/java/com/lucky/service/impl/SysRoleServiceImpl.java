@@ -5,13 +5,13 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.lucky.dto.RolePermissionTreeDto;
+import com.lucky.mapper.SysPermissionMapper;
 import com.lucky.mapper.SysRoleMapper;
-import com.lucky.mapper.SysRolePermissionMapper;
 import com.lucky.model.SysPermission;
 import com.lucky.model.SysRole;
 import com.lucky.model.SysRolePermission;
-import com.lucky.service.ISysRolePermissionService;
 import com.lucky.service.ISysPermissionService;
+import com.lucky.service.ISysRolePermissionService;
 import com.lucky.service.ISysRoleService;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
@@ -33,7 +33,7 @@ import java.util.stream.Collectors;
 public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> implements ISysRoleService {
 
     @Resource
-    private SysRolePermissionMapper sysRolePermissionMapper;
+    private SysPermissionMapper sysPermissionMapper;
     @Resource
     private ISysPermissionService sysPermissionService;
     @Resource
@@ -71,7 +71,7 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> impl
 
     @Override
     public List<SysPermission> getPermissionList(Long roleId) {
-        return sysRolePermissionMapper.getPermissionList(roleId);
+        return sysPermissionMapper.getRolePermissionList(roleId);
     }
 
     @Override

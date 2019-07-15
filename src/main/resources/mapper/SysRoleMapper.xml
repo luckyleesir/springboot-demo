@@ -17,4 +17,10 @@
         role_id, name, description, status, create_time, update_time
     </sql>
 
+    <select id="getUserRoleList" resultMap="BaseResultMap">
+        SELECT r.*
+        FROM sys_user_role ur
+                 LEFT JOIN sys_role r ON ur.role_id = r.role_id
+        WHERE ur.user_id = #{userId}
+    </select>
 </mapper>

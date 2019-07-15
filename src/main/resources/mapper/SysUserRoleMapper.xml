@@ -13,32 +13,4 @@
     <sql id="Base_Column_List">
         id, user_id, role_id
     </sql>
-
-    <!--批量新增回写主键支持-->
-    <insert id="insertList">
-        INSERT INTO sys_user_role (user_id, role_id) VALUES
-        <foreach collection="list" separator="," item="item" index="index">
-            (#{item.userId,jdbcType=BIGINT},
-            #{item.roleId,jdbcType=BIGINT})
-        </foreach>
-    </insert>
-
-    <select id="getRoleList" resultMap="com.lucky.mapper.SysRoleMapper.BaseResultMap">
-        SELECT r.*
-        FROM sys_user_role ur
-        LEFT JOIN sys_role r ON ur.role_id = r.role_id
-        WHERE ur.user_id = #{userId}
-    </select>
-
-    <select id="getPermissionList" resultMap="com.lucky.mapper.SysPermissionMapper.BaseResultMap">
-        SELECT
-        p.*
-        FROM
-        sys_user_role ur
-        LEFT JOIN sys_role r ON ur.role_id = r.role_id
-        LEFT JOIN sys_role_permission rp ON r.role_id = rp.role_id
-        LEFT JOIN sys_permission p ON rp.permission_id = p.permission_id
-        WHERE
-        ur.user_id = #{userId}
-    </select>
 </mapper>
