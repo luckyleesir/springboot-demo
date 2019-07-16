@@ -29,35 +29,31 @@
         LEFT JOIN sys_user_role ur ON u.user_id = ur.user_id
         LEFT JOIN sys_role r ON ur.role_id = r.role_id
         WHERE 1 = 1
-        <if test="sysUserDto != null">
-            <if test="sysUserDto.username != null and sysUserDto.username != ''">
-                AND u.username LIKE CONCAT('%',#{sysUserDto.username},'%')
-            </if>
-            <if test="sysUserDto.name != null and sysUserDto.name != ''">
-                AND u.name LIKE CONCAT('%',#{sysUserDto.name},'%')
-            </if>
-            <if test="sysUserDto.nick != null and sysUserDto.nick != ''">
-                AND u.nick LIKE CONCAT('%',#{sysUserDto.nick},'%')
-            </if>
-            <if test="sysUserDto.signature != null and sysUserDto.signature != ''">
-                AND u.signature LIKE CONCAT('%',#{sysUserDto.signature},'%')
-            </if>
-            <if test="sysUserDto.email != null and sysUserDto.email != ''">
-                AND u.email LIKE CONCAT('%',#{sysUserDto.email},'%')
-            </if>
-            <if test="sysUserDto.status != null and sysUserDto.status != ''">
-                AND u.status = #{sysUserDto.status}
-            </if>
+        <if test="sysUserDto.username != null and sysUserDto.username != ''">
+            AND u.username LIKE CONCAT('%',#{sysUserDto.username},'%')
+        </if>
+        <if test="sysUserDto.name != null and sysUserDto.name != ''">
+            AND u.name LIKE CONCAT('%',#{sysUserDto.name},'%')
+        </if>
+        <if test="sysUserDto.nick != null and sysUserDto.nick != ''">
+            AND u.nick LIKE CONCAT('%',#{sysUserDto.nick},'%')
+        </if>
+        <if test="sysUserDto.signature != null and sysUserDto.signature != ''">
+            AND u.signature LIKE CONCAT('%',#{sysUserDto.signature},'%')
+        </if>
+        <if test="sysUserDto.email != null and sysUserDto.email != ''">
+            AND u.email LIKE CONCAT('%',#{sysUserDto.email},'%')
+        </if>
+        <if test="sysUserDto.status != null and sysUserDto.status != ''">
+            AND u.status = #{sysUserDto.status}
         </if>
         GROUP BY u.user_id
         HAVING 1=1
-        <if test="sysUserDto != null">
-            <if test="sysUserDto.roleId != null and sysUserDto.roleId != ''">
-                AND FIND_IN_SET(#{sysUserDto.roleId},role_id)
-            </if>
-            <if test="sysUserDto.roleName != null and sysUserDto.roleName != ''">
-                AND FIND_IN_SET(#{sysUserDto.roleName},role_name)
-            </if>
+        <if test="sysUserDto.roleId != null and sysUserDto.roleId != ''">
+            AND FIND_IN_SET(#{sysUserDto.roleId},role_id)
+        </if>
+        <if test="sysUserDto.roleName != null and sysUserDto.roleName != ''">
+            AND FIND_IN_SET(#{sysUserDto.roleName},role_name)
         </if>
     </select>
 </mapper>
