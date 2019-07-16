@@ -66,6 +66,13 @@ public class SysRoleController {
         return Result.success(sysRoleService.list(new Page(pageNum, pageSize), name));
     }
 
+    @ApiOperation(value = "所有角色列表")
+    @PreAuthorize("hasAuthority('sys:role:read')")
+    @GetMapping("/listAll")
+    public Result listAll() {
+        return Result.success(sysRoleService.list());
+    }
+
     @ApiOperation(value = "获取角色所有权限")
     @GetMapping("/permission/{roleId}")
     public Result getPermissionList(@PathVariable Long roleId) {

@@ -14,7 +14,7 @@ import lombok.EqualsAndHashCode;
  */
 @EqualsAndHashCode(callSuper = true)
 @Data
-@ApiModel(value = "SysUserDto对象", description = "用户列表对象")
+@ApiModel(value = "SysUserDto对象", description = "用户对象")
 public class SysUserDto extends SysUser {
 
     @ApiModelProperty(value = "角色id(逗号分隔)")

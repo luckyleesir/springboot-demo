@@ -19,6 +19,7 @@ import com.lucky.model.SysUserRole;
 import com.lucky.service.ISysUserRoleService;
 import com.lucky.service.ISysUserService;
 import com.lucky.util.JwtTokenUtil;
+import com.lucky.util.StringUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -118,21 +119,26 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
     }
 
     @Override
-    public boolean add(SysUser sysUser) {
-        SysUser user = this.getUserByUsername(sysUser.getUsername());
+    public boolean add(SysUserDto sysUserDto) {
+        SysUser user = this.getUserByUsername(sysUserDto.getUsername());
         if (user != null) {
             throw new RuntimeException("用户名已存在");
         }
+        if (StringUtils.isBlank(sysUserDto.getRoleId())) {
+            throw new RuntimeException("请选择角色");
+        }
         //后台管理员直接添加
-        sysUser.setPassword(passwordEncoder.encode(UUID.randomUUID().toString()));
-        return this.save(sysUser);
+        sysUserDto.setPassword(passwordEncoder.encode(UUID.randomUUID().toString()));
+        this.save(sysUserDto);
+        return this.updateUserRole(sysUserDto.getUserId(), StringUtil.getList(sysUserDto.getRoleId()));
     }
 
     @Override
-    public boolean update(Long userId, SysUser sysUser) {
-        sysUser.setUserId(userId);
-        sysUser.setPassword(null);
-        return this.updateById(sysUser);
+    public boolean update(Long userId, SysUserDto sysUserDto) {
+        sysUserDto.setUserId(userId);
+        sysUserDto.setPassword(null);
+        this.updateById(sysUserDto);
+        return this.updateUserRole(sysUserDto.getUserId(), StringUtil.getList(sysUserDto.getRoleId()));
     }
 
     @Override
@@ -202,5 +208,18 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
     @Override
     public IPage<SysUserDto> list(Page<SysUserDto> page, SysUserDto sysUserDto) {
         return this.baseMapper.list(page, sysUserDto);
+    }
+
+    @Override
+    public boolean changePassword(String username, String ordPassword, String password) {
+        SysUser sysUser = this.getUserByUsername(username);
+        if (sysUser == null) {
+            throw new RuntimeException("账号不存在");
+        }
+        if (!passwordEncoder.matches(ordPassword, sysUser.getPassword())) {
+            throw new RuntimeException("密码不正确");
+        }
+        sysUser.setPassword(passwordEncoder.encode(password));
+        return this.updateById(sysUser);
     }
 }

@@ -70,6 +70,11 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> impl
     }
 
     @Override
+    public List<SysRole> listAll() {
+        return this.list();
+    }
+
+    @Override
     public List<SysPermission> getPermissionList(Long roleId) {
         return sysPermissionMapper.getRolePermissionList(roleId);
     }

@@ -1,7 +1,7 @@
 //注意：导航 依赖 element 模块，否则无法进行功能性操作
 layui.config({
     base: '../ext/'   //navbar组件js所在目录
-}).use(['element', 'form', 'navbar', 'jquery', 'tabrightmenu'], function () {
+}).use(['element', 'form', 'navbar', 'jquery', 'tabrightmenu', 'layer'], function () {
     var $ = layui.jquery,
         element = layui.element,
         form = layui.form,
@@ -18,7 +18,7 @@ layui.config({
         type: "get",
         url: "/api/user/menu/treeList",
         contentType: "application/json; charset=utf-8",
-        headers:  {Authorization:'Bearer ' + layui.data('jwtToken')['Bearer']},
+        headers: {Authorization: 'Bearer ' + layui.data('jwtToken')['Bearer']},
         data: 'json',
         success: function (res) {
             if (res.code === 200) {
@@ -58,5 +58,38 @@ layui.config({
     $("body").on("click", "li i.layui-tab-close", function () {
         navbar.removeTab($(this));
     });
+
+    //有户名显示
+    $("#userName").text(layui.data('user')['username']);
+
+    //注销
+    $("#logout").on("click", function () {
+        layui.data('jwtToken', {
+            key: 'Bearer',
+            remove: true
+        });
+        layui.data('user', {
+            key: 'username',
+            remove: true
+        });
+    });
+
+    //修改密码
+    $("#changePassword").on("click", function () {
+        var index = layui.layer.open({
+            title: "修改密码",
+            type: 2,
+            content: "page/user/changePassword.html",
+            area: ['400px', '300px'],
+            shade: 0.5
+        });
+    });
+
+
+    if (layui.data('jwtToken')['Bearer'] === undefined || layui.data('jwtToken')['Bearer'] === '') {
+        setTimeout(function () {
+            location.href = "../page/user/login.html";
+        }, 2000);
+    }
 
 });

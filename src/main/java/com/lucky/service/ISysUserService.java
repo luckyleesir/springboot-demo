@@ -67,20 +67,20 @@ public interface ISysUserService extends IService<SysUser> {
     /**
      * 添加用户
      *
-     * @param sysUser 用户信息
+     * @param sysUserDto 用户信息
      * @return 成功或失败
      */
-    boolean add(SysUser sysUser);
+    boolean add(SysUserDto sysUserDto);
 
     /**
      * 修改用户信息
      *
-     * @param userId  用户id
-     * @param sysUser 用户信息
+     * @param userId     用户id
+     * @param sysUserDto 用户信息
      * @return 成功或失败
      */
     @Transactional(rollbackFor = {Error.class, Exception.class})
-    boolean update(Long userId, SysUser sysUser);
+    boolean update(Long userId, SysUserDto sysUserDto);
 
     /**
      * 批量删除用户
@@ -140,4 +140,14 @@ public interface ISysUserService extends IService<SysUser> {
      * @return 用户分页列表
      */
     IPage<SysUserDto> list(Page<SysUserDto> page, SysUserDto sysUserDto);
+
+    /**
+     * 修改密码
+     *
+     * @param username    用户名
+     * @param ordPassword 旧密码
+     * @param password    密码
+     * @return 成功或失败
+     */
+    boolean changePassword(String username, String ordPassword, String password);
 }

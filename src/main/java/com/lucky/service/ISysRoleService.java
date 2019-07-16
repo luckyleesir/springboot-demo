@@ -65,6 +65,13 @@ public interface ISysRoleService extends IService<SysRole> {
     IPage<SysRole> list(Page<SysRole> page, String name);
 
     /**
+     * 所有角色列表
+     *
+     * @return 角色
+     */
+    List<SysRole> listAll();
+
+    /**
      * 获取指定角色权限
      *
      * @param roleId 角色id

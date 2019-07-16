@@ -8,8 +8,8 @@ layui.use(['form', 'layer', 'table', 'laytpl'], function () {
     //用户列表
     var tableIns = table.render({
         elem: '#userList',
-        url: '/api/user/list',
-        headers:  {Authorization:'Bearer ' + layui.data('jwtToken')['Bearer']},
+        url: '/api/user/querylist',
+        headers: {Authorization: 'Bearer ' + layui.data('jwtToken')['Bearer']},
         request: {
             pageName: 'pageNum', //页码的参数名称，默认：page
             limitName: 'pageSize' //每页数据量的参数名，默认：limit
@@ -39,6 +39,8 @@ layui.use(['form', 'layer', 'table', 'laytpl'], function () {
             {field: 'nick', title: '昵称', minWidth: 100, align: "center"},
             {field: 'sex', title: '性别', align: 'center'},
             {field: 'age', title: '年龄', align: 'center'},
+            {field: 'roleId', title: '角色id', minWidth: 100, align: "center", hide: true},
+            {field: 'roleName', title: '角色', minWidth: 100, align: "center"},
             {
                 field: 'status', title: '用户状态', align: 'center', templet: function (d) {
                     return d.status === 1 ? "启用" : "禁用";
@@ -90,6 +92,7 @@ layui.use(['form', 'layer', 'table', 'laytpl'], function () {
                     body.find("#sex input[value=" + edit.sex + "]").prop("checked", "checked");  //性别
                     body.find("#status").val(edit.status);    //用户状态
                     body.find("#signature").text(edit.signature);    //个性签名
+                    body.find("#roleTag").val(edit.roleId);//角色id
                     body.find("#add").remove();
                     form.render();
                 } else {
@@ -115,7 +118,7 @@ layui.use(['form', 'layer', 'table', 'laytpl'], function () {
                     url: '/api/user/delete',
                     data: userIds,
                     contentType: 'application/json;charset=utf-8',
-                    headers:  {Authorization:'Bearer ' + layui.data('jwtToken')['Bearer']},
+                    headers: {Authorization: 'Bearer ' + layui.data('jwtToken')['Bearer']},
                     success: function (res) {
                         layer.msg(res.msg);
                         tableIns.reload();
@@ -135,8 +138,6 @@ layui.use(['form', 'layer', 'table', 'laytpl'], function () {
 
         if (layEvent === 'edit') { //编辑
             addUser(data);
-        } else if (layEvent === 'assignRole') { //授权
-
         } else if (layEvent === 'del') { //删除
             layer.confirm('确定删除此用户？', {icon: 3, title: '提示信息'}, function (index) {
                 var userIds = [];
@@ -147,7 +148,7 @@ layui.use(['form', 'layer', 'table', 'laytpl'], function () {
                     url: '/api/user/delete',
                     data: userIds,
                     contentType: 'application/json;charset=utf-8',
-                    headers:  {Authorization:'Bearer ' + layui.data('jwtToken')['Bearer']},
+                    headers: {Authorization: 'Bearer ' + layui.data('jwtToken')['Bearer']},
                     success: function (res) {
                         layer.msg(res.msg);
                         tableIns.reload();

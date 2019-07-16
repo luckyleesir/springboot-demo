@@ -22,8 +22,10 @@ layui.use(['form', 'layer', 'jquery'], function () {
                         key: 'Bearer',
                         value: res.data.token
                     });
-
-                    console.log(layui.data('jwtToken'));
+                    layui.data('user', {
+                        key: 'username',
+                        value: $("#userName").val()
+                    });
                     location.href = "../../index.html";
                 } else {
                     layer.msg(res.msg, {

@@ -98,16 +98,16 @@ public class SysUserController {
     @ApiOperation(value = "添加用户")
     @PreAuthorize("hasAuthority('sys:user:add')")
     @PostMapping("/add")
-    public Result add(@RequestBody SysUser sysUser) {
-        boolean success = sysUserService.add(sysUser);
+    public Result add(@RequestBody SysUserDto sysUserDto) {
+        boolean success = sysUserService.add(sysUserDto);
         return Result.handle(success);
     }
 
     @ApiOperation(value = "修改用户")
     @PreAuthorize("hasAuthority('sys:user:edit')")
     @PostMapping("/update/{userId}")
-    public Result update(@PathVariable Long userId, @RequestBody SysUser sysUser) {
-        boolean success = sysUserService.update(userId, sysUser);
+    public Result update(@PathVariable Long userId, @RequestBody SysUserDto sysUserDto) {
+        boolean success = sysUserService.update(userId, sysUserDto);
         return Result.handle(success);
     }
 
@@ -147,4 +147,10 @@ public class SysUserController {
         return Result.success(sysUserService.getUserMenu());
     }
 
+    @ApiOperation(value = "修改密码")
+    @PostMapping("/changePassword")
+    public Result changePassword(@RequestParam String username, @RequestParam String oldPassword, @RequestParam String password) {
+        boolean success = sysUserService.changePassword(username, oldPassword, password);
+        return Result.handle(success);
+    }
 }

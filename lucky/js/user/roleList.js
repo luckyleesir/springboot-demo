@@ -89,8 +89,9 @@ layui.use(['form', 'layer', 'table', 'laytpl'], function () {
         });
     }
 
+
     //批量删除
-    $("#delAllBtn").click(function () {
+    $("#delAllBtn").on('click', function () {
         var checkStatus = table.checkStatus('roleListTable'),
             data = checkStatus.data,
             roleIds = [];
