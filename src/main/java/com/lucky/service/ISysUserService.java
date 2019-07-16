@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.lucky.dto.MenuNodeDto;
+import com.lucky.dto.SysUserDto;
 import com.lucky.model.SysPermission;
 import com.lucky.model.SysRole;
 import com.lucky.model.SysUser;
@@ -130,4 +131,13 @@ public interface ISysUserService extends IService<SysUser> {
      * @return 用户菜单树
      */
     List<MenuNodeDto> getUserMenu();
+
+    /**
+     * 用户列表查询（关联角色）
+     *
+     * @param page       分页
+     * @param sysUserDto 查询条件
+     * @return 用户分页列表
+     */
+    IPage<SysUserDto> list(Page<SysUserDto> page, SysUserDto sysUserDto);
 }

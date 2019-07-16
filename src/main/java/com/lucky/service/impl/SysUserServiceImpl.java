@@ -7,6 +7,7 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.lucky.common.SysUserHolder;
 import com.lucky.common.enums.PermissionType;
 import com.lucky.dto.MenuNodeDto;
+import com.lucky.dto.SysUserDto;
 import com.lucky.mapper.SysPermissionMapper;
 import com.lucky.mapper.SysRoleMapper;
 import com.lucky.mapper.SysUserMapper;
@@ -196,5 +197,10 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
         List<MenuNodeDto> children = sysPermissionList.stream().filter(subPermission -> subPermission.getPid().equals(sysPermission.getPermissionId())).map(subPermission -> convert(subPermission, sysPermissionList)).collect(Collectors.toList());
         menuNodeDto.setChildren(children);
         return menuNodeDto;
+    }
+
+    @Override
+    public IPage<SysUserDto> list(Page<SysUserDto> page, SysUserDto sysUserDto) {
+        return this.baseMapper.list(page, sysUserDto);
     }
 }

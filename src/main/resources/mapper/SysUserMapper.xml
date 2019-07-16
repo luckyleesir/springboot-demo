@@ -4,18 +4,18 @@
 
     <!-- 通用查询映射结果 -->
     <resultMap id="BaseResultMap" type="com.lucky.model.SysUser">
-        <id column="user_id" property="userId" />
-        <result column="username" property="username" />
-        <result column="password" property="password" />
-        <result column="name" property="name" />
-        <result column="nick" property="nick" />
-        <result column="signature" property="signature" />
-        <result column="sex" property="sex" />
-        <result column="age" property="age" />
-        <result column="email" property="email" />
-        <result column="status" property="status" />
-        <result column="create_time" property="createTime" />
-        <result column="update_time" property="updateTime" />
+        <id column="user_id" property="userId"/>
+        <result column="username" property="username"/>
+        <result column="password" property="password"/>
+        <result column="name" property="name"/>
+        <result column="nick" property="nick"/>
+        <result column="signature" property="signature"/>
+        <result column="sex" property="sex"/>
+        <result column="age" property="age"/>
+        <result column="email" property="email"/>
+        <result column="status" property="status"/>
+        <result column="create_time" property="createTime"/>
+        <result column="update_time" property="updateTime"/>
     </resultMap>
 
     <!-- 通用查询结果列 -->
@@ -23,4 +23,41 @@
         user_id, username, password, name, nick, signature, sex, age, email, status, create_time, update_time
     </sql>
 
+    <select id="list" resultType="com.lucky.dto.SysUserDto" parameterType="com.lucky.dto.SysUserDto">
+        SELECT u.*, GROUP_CONCAT(r.role_id) role_id, GROUP_CONCAT(r.name) role_name
+        FROM sys_user u
+        LEFT JOIN sys_user_role ur ON u.user_id = ur.user_id
+        LEFT JOIN sys_role r ON ur.role_id = r.role_id
+        WHERE 1 = 1
+        <if test="sysUserDto != null">
+            <if test="sysUserDto.username != null and sysUserDto.username != ''">
+                AND u.username LIKE CONCAT('%',#{sysUserDto.username},'%')
+            </if>
+            <if test="sysUserDto.name != null and sysUserDto.name != ''">
+                AND u.name LIKE CONCAT('%',#{sysUserDto.name},'%')
+            </if>
+            <if test="sysUserDto.nick != null and sysUserDto.nick != ''">
+                AND u.nick LIKE CONCAT('%',#{sysUserDto.nick},'%')
+            </if>
+            <if test="sysUserDto.signature != null and sysUserDto.signature != ''">
+                AND u.signature LIKE CONCAT('%',#{sysUserDto.signature},'%')
+            </if>
+            <if test="sysUserDto.email != null and sysUserDto.email != ''">
+                AND u.email LIKE CONCAT('%',#{sysUserDto.email},'%')
+            </if>
+            <if test="sysUserDto.status != null and sysUserDto.status != ''">
+                AND u.status = #{sysUserDto.status}
+            </if>
+        </if>
+        GROUP BY u.user_id
+        HAVING 1=1
+        <if test="sysUserDto != null">
+            <if test="sysUserDto.roleId != null and sysUserDto.roleId != ''">
+                AND FIND_IN_SET(#{sysUserDto.roleId},role_id)
+            </if>
+            <if test="sysUserDto.roleName != null and sysUserDto.roleName != ''">
+                AND FIND_IN_SET(#{sysUserDto.roleName},role_name)
+            </if>
+        </if>
+    </select>
 </mapper>

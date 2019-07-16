@@ -4,12 +4,12 @@
 
     <!-- 通用查询映射结果 -->
     <resultMap id="BaseResultMap" type="com.lucky.model.SysRole">
-        <id column="role_id" property="roleId" />
-        <result column="name" property="name" />
-        <result column="description" property="description" />
-        <result column="status" property="status" />
-        <result column="create_time" property="createTime" />
-        <result column="update_time" property="updateTime" />
+        <id column="role_id" property="roleId"/>
+        <result column="name" property="name"/>
+        <result column="description" property="description"/>
+        <result column="status" property="status"/>
+        <result column="create_time" property="createTime"/>
+        <result column="update_time" property="updateTime"/>
     </resultMap>
 
     <!-- 通用查询结果列 -->
@@ -20,7 +20,7 @@
     <select id="getUserRoleList" resultMap="BaseResultMap">
         SELECT r.*
         FROM sys_user_role ur
-                 LEFT JOIN sys_role r ON ur.role_id = r.role_id
+        LEFT JOIN sys_role r ON ur.role_id = r.role_id
         WHERE ur.user_id = #{userId}
     </select>
 </mapper>
