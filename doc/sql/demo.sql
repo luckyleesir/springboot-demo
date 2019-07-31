@@ -11,7 +11,7 @@
  Target Server Version : 50721
  File Encoding         : 65001
 
- Date: 19/07/2019 17:57:34
+ Date: 31/07/2019 20:55:17
 */
 
 SET NAMES utf8mb4;
@@ -43,9 +43,8 @@ CREATE TABLE `sys_permission`  (
 INSERT INTO `sys_permission` VALUES (1, 0, '用户系统', 'user:user', NULL, 'layui-icon-user', '用户系统菜单', 1, 1, '2019-06-28 16:01:37', '2019-07-08 18:31:15');
 INSERT INTO `sys_permission` VALUES (2, 1, '角色管理', 'sys:role:read', 'page/user/roleList.html', '', '角色管理菜单', 1, 1, '2019-06-28 16:27:23', '2019-07-08 18:35:13');
 INSERT INTO `sys_permission` VALUES (3, 1, '权限管理', 'sys:permission:read', 'page/user/permissionList.html', NULL, '权限管理菜单', 1, 1, '2019-06-28 16:27:50', '2019-07-08 18:32:10');
-INSERT INTO `sys_permission` VALUES (4, 0, '系统管理', 'sys', '', '', '系统管理菜单', 1, 1, '2019-06-28 16:28:06', '2019-07-08 18:37:07');
-INSERT INTO `sys_permission` VALUES (5, 4, '系统日志', 'sys:log:read', '', '', '系统日志菜单', 1, 1, '2019-06-28 16:28:16', '2019-07-08 18:37:38');
-INSERT INTO `sys_permission` VALUES (6, 4, '菜单设置', 'sys:user:read', NULL, NULL, '菜单设置', 1, 1, '2019-06-28 16:28:29', '2019-07-15 17:17:14');
+INSERT INTO `sys_permission` VALUES (4, 0, '系统管理', 'sys', '', '', '系统管理菜单', 1, 1, '2019-06-28 16:28:06', '2019-07-31 20:37:27');
+INSERT INTO `sys_permission` VALUES (5, 4, '系统日志', 'sys:log:read', 'page/system/kibana.html', '', '系统日志菜单', 1, 1, '2019-06-28 16:28:16', '2019-07-31 20:37:29');
 INSERT INTO `sys_permission` VALUES (7, 1, '用户管理', 'sys:user:read', 'page/user/userList.html', '', '用户管理菜单', 1, 1, '2019-06-28 16:28:42', '2019-07-08 18:33:34');
 INSERT INTO `sys_permission` VALUES (8, 7, '添加用户', 'sys:user:add', NULL, NULL, '添加用户按钮', 2, 1, '2019-07-08 18:28:30', '2019-07-08 18:33:16');
 INSERT INTO `sys_permission` VALUES (9, 7, '删除用户', 'sys:user:delete', NULL, NULL, '删除用户按钮', 2, 1, '2019-07-08 18:29:07', '2019-07-08 18:33:37');
@@ -108,7 +107,6 @@ INSERT INTO `sys_role_permission` VALUES (220, 3, 9);
 INSERT INTO `sys_role_permission` VALUES (221, 3, 10);
 INSERT INTO `sys_role_permission` VALUES (222, 3, 4);
 INSERT INTO `sys_role_permission` VALUES (223, 3, 5);
-INSERT INTO `sys_role_permission` VALUES (224, 3, 6);
 
 -- ----------------------------
 -- Table structure for sys_user
