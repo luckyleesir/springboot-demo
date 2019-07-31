@@ -139,7 +139,7 @@
 
     <!--日志输出到logstash-->
     <appender name="LOGSTASH" class="net.logstash.logback.appender.LogstashTcpSocketAppender">
-        <destination>localhost:5602</destination>
+        <destination>10.66.35.13:4560</destination>
         <encoder charset="UTF-8" class="net.logstash.logback.encoder.LogstashEncoder" />
     </appender>
 
@@ -173,7 +173,7 @@
         <appender-ref ref="INFO_FILE" />
         <appender-ref ref="WARN_FILE" />
         <appender-ref ref="ERROR_FILE" />
-        <appender-ref ref="LOGSTASH"/>
+       <!-- <appender-ref ref="LOGSTASH"/>-->
     </root>
 
 </configuration>
